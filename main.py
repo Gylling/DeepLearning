@@ -25,7 +25,7 @@ grad_eps = .5
 value_coef = .5
 entropy_coef = .01
 channels_in = 64*64*3
-actions = 10
+actions = 15
 
 
 # Network definitions. We have defined a policy network for you in advance. It uses the popular `NatureDQN` encoder architecture (see below), while policy and value functions are linear projections from the encodings. There is plenty of opportunity to experiment with architectures, so feel free to do that! Perhaps implement the `Impala` encoder from [this paper](https://arxiv.org/pdf/1802.01561.pdf) (perhaps minus the LSTM).
