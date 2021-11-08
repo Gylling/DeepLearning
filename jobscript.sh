@@ -9,4 +9,4 @@
  #BSUB -e logs/%J.err
  <loading of modules, dependencies etc.>
  echo "Running script..."
- python3 train.py
+ python3 main.py
