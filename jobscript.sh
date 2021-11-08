@@ -5,8 +5,8 @@
  #BSUB -n 1
  #BSUB -W 10:00
  #BSUB -R "rusage[mem=32GB]"
- #BSUB -o logs/out.txt
- #BSUB -e logs/error.txt
+ #BSUB -o logs/%J.out
+ #BSUB -e logs/%J.err
 
  echo "Running script..."
  python3 main.py
