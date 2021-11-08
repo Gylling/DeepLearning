@@ -1,4 +1,6 @@
  #!/bin/sh
+ source ~/.bashrc
+
  #BSUB -q gpuv100
  #BSUB -gpu "num=1"
  #BSUB -J myJob
