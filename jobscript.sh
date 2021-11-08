@@ -1,7 +1,7 @@
  #!/bin/sh
  source ~/.bashrc
 
- #BSUB -q gpuv100
+ #BSUB -q voltash
  #BSUB -gpu "num=1"
  #BSUB -J myJob
  #BSUB -n 1
