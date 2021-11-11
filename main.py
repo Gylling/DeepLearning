@@ -1,3 +1,4 @@
+import imageio
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -206,7 +207,8 @@ def record_and_eval_policy(policy):
 
     # Save frames as video
     frames = torch.stack(frames)
-    torch.save(frames, "frames.pt")
+    # torch.save(frames, "frames.pt")
+    imageio.mimsave("video.mp4", frames, fps=25)
 
 complete_policy = create_and_train_network()
 record_and_eval_policy(complete_policy)
