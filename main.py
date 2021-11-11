@@ -1,4 +1,3 @@
-import imageio-ffmpeg as img
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -207,10 +206,7 @@ def record_and_eval_policy(policy):
 
     # Save frames as video
     frames = torch.stack(frames)
-    writer = img.write_frames('vid.mp4', frames[0].shape[:2], fps=25)
-    for frame in frames:
-        writer.send(frame)
-    writer.close()
+    torch.save(frames, "frames.pt")
 
 complete_policy = create_and_train_network()
 record_and_eval_policy(complete_policy)
