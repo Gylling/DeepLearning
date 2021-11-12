@@ -5,8 +5,11 @@
  #BSUB -gpu "num=1"
  #BSUB -J myJob
  #BSUB -n 1
- #BSUB -W 10:00
- #BSUB -R "rusage[mem=32GB]"
+ #BSUB -W 16:00
+ #BSUB -u gylling.erik@gmail.com
+ #BSUB -B
+ #BSUB -N
+ #BSUB -R "rusage[mem=64GB]"
  #BSUB -o logs/%J.out
  #BSUB -e logs/%J.err
 
