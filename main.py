@@ -17,7 +17,7 @@ from utils import make_env, Storage, orthogonal_init
 # implementation.
 
 # Hyperparameters
-total_steps = 8e6
+total_steps = 20e6
 num_envs = 32
 num_levels = 10
 num_steps = 256
