@@ -175,7 +175,7 @@ def create_and_train_network():
         print(f'Step: {step}\tMean reward: {storage.get_reward()}')
 
     print('Completed training!')
-    torch.save(policy.state_dict, 'checkpoint.pt')
+    torch.save(policy.state_dict, f'checkpoint-{time.time()}.pt')
     return policy
 
 
