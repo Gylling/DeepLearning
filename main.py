@@ -2,6 +2,7 @@ import torch
 import imageio
 import torch.nn as nn
 import torch.nn.functional as F
+import time
 
 # The cell below installs `procgen` and downloads a small `utils.py` script that contains some utility functions. You
 # may want to inspect the file for more details.
@@ -208,7 +209,7 @@ def record_and_eval_policy(policy):
     # Save frames as video
     frames = torch.stack(frames)
     # torch.save(frames, "frames.pt")
-    imageio.mimsave("video.mp4", frames, fps=25)
+    imageio.mimsave(f"video-{time.time()}.mp4", frames, fps=25)
 
 complete_policy = create_and_train_network()
 record_and_eval_policy(complete_policy)
