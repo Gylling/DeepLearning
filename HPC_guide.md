@@ -90,6 +90,7 @@ Now reload your module by:
 
 Now you are ready to push a job to the queue. 
 **jobscript.sh** defines the job that we need for now. You can find information on the files content at [DTU-HPS's website for jobscripts](https://www.hpc.dtu.dk/?page_id=1416)
+You can change the email in **jobscript.sh**  to receive notifications at start and end of execution.
 
 You push the job to the queue by using following command - make sure to be in the folder of the repository:
 
