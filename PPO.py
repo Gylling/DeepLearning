@@ -2,6 +2,7 @@ import torch
 import imageio
 import torch.nn as nn
 import torch.nn.functional as F
+import random
 import time
 
 # The cell below installs `procgen` and downloads a small `utils.py` script that contains some utility functions. You
@@ -27,6 +28,8 @@ eps = .2
 grad_eps = .5
 value_coef = .5
 entropy_coef = .01
+multi_games = True
+
 # Network definitions. We have defined a policy network for you in advance. It uses the popular `NatureDQN` encoder
 # architecture (see below), while policy and value functions are linear projections from the encodings. There is
 # plenty of opportunity to experiment with architectures, so feel free to do that! Perhaps implement the `Impala`
@@ -78,6 +81,31 @@ class Policy(nn.Module):
         dist = torch.distributions.Categorical(logits=logits)
 
         return dist, value
+
+
+def choose_game(seed):
+    if multi_games: 
+        return [
+            "bigfish",
+            "bossfight",
+            "caveflyer",
+            "chaser",
+            "climber",
+            "coinrun",
+            "dodgeball",
+            "fruitbot",
+            "heist",
+            "jumper",
+            "leaper",
+            "maze",
+            "miner",
+            "ninja",
+            "plunder",
+            "starpilot",
+        ][seed % 16]
+    else:
+        return "starpilot"
+
 
 
 def create_and_train_network():
@@ -182,7 +210,7 @@ def create_and_train_network():
 # Below cell can be used for policy evaluation and saves an episode to mp4 for you to view.
 def record_and_eval_policy(policy):
     # Make evaluation environment
-    eval_env = make_env(num_envs, start_level=num_levels, num_levels=num_levels)
+    eval_env = make_env(num_envs, env_name=choose_game(random.randint(0,15)), start_level=num_levels, num_levels=num_levels)
     obs = eval_env.reset()
 
     frames = []
