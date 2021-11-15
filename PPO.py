@@ -20,7 +20,7 @@ from utils import make_env, Storage, orthogonal_init
 # Hyperparameters
 total_steps = 20e6
 num_envs = 32
-num_levels = 10
+num_levels = 100
 num_steps = 256
 num_epochs = 3
 batch_size = 512
@@ -111,7 +111,8 @@ def choose_game(seed):
 def create_and_train_network():
     # Define environment
     # check the utils.py file for info on arguments
-    env = make_env(num_envs, num_levels=num_levels)
+    count = 0
+    env = make_env(num_envs, env_name=choose_game(count), num_levels=1)
     print('Observation space:', env.observation_space.shape)
     print('Action space:', env.action_space.n)
     channels_in = env.observation_space.shape[0]
@@ -201,6 +202,9 @@ def create_and_train_network():
         # Update stats
         step += num_envs * num_steps
         print(f'Step: {step}\tMean reward: {storage.get_reward()}')
+        count = (count + 1) % num_levels
+        env = make_env(env_name=choose_game(count), start_level=count, num_levels=1)
+        obs = env.reset()
 
     print('Completed training!')
     torch.save(policy.state_dict, f'checkpoint-{time.time()}.pt')
@@ -237,7 +241,8 @@ def record_and_eval_policy(policy):
     # Save frames as video
     frames = torch.stack(frames)
     # torch.save(frames, "frames.pt")
-    imageio.mimsave(f"video-{time.time()}.mp4", frames, fps=25)
+    imageio.mimsave(f'video-backup-{time.time()}', frames, fps=25)
+    imageio.mimsave(f'videos/ppo/video-{time.time()}', frames, fps=25)
 
 complete_policy = create_and_train_network()
 record_and_eval_policy(complete_policy)

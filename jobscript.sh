@@ -14,4 +14,4 @@
  #BSUB -e logs/%J.err
 
  echo "Running script..."
- python3 main.py
+ python3 ppo.py

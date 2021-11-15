@@ -24,12 +24,6 @@ import random
 # The cell below installs `procgen` and downloads a small `utils.py` script that contains some utility functions. You
 # may want to inspect the file for more details.
 
-if not "procgen" in sys.modules:
-  ! pip install procgen
-
-if not os.path.isfile("utils.py"):
-  ! wget https://raw.githubusercontent.com/nicklashansen/ppo-procgen-utils/main/utils.py
-
 from utils import make_env, Storage, orthogonal_init
 
 
@@ -41,7 +35,7 @@ total_steps = 8e6
 num_envs = 32
 num_levels = 100
 start_level = 3
-total_levels = int(10)
+total_levels = 100
 num_steps = 256
 num_epochs = 3
 batch_size = 512
@@ -55,6 +49,7 @@ current_level = 0
 beta = 0.1
 gamma = 0.99
 lmbda = 0.95
+multi_games = True
 
 # Network definitions. We have defined a policy network for you in advance. It uses the popular `NatureDQN` encoder
 # architecture (see below), while policy and value functions are linear projections from the encodings. There is
@@ -121,7 +116,7 @@ def get_replay_level():
 def update_ranks(lvls_seen):
   ranks = sorted(lvls_seen, reverse=True, key=lambda lvl: lvl.score)
   for i in range(1,len(ranks)+1):
-    ranks[i-1].rank = i;
+    ranks[i-1].rank = i
 
 def sum_of_score_dist():
   sum = 0
@@ -143,6 +138,29 @@ def staleness_dist(lvl, summed_episode_diffs):
   staleness = current_level - lvl.last_played
   staleness_weight = staleness/summed_episode_diffs
   return staleness_weight
+
+def choose_game(seed):
+    if multi_games: 
+        return [
+            "bigfish",
+            "bossfight",
+            "caveflyer",
+            "chaser",
+            "climber",
+            "coinrun",
+            "dodgeball",
+            "fruitbot",
+            "heist",
+            "jumper",
+            "leaper",
+            "maze",
+            "miner",
+            "ninja",
+            "plunder",
+            "starpilot",
+        ][seed % 16]
+    else:
+        return "starpilot"
 
 
 class Flatten(nn.Module):
@@ -198,7 +216,7 @@ def create_and_train_network():
     # Define environment
     # check the utils.py file for info on arguments
     x = current_milli_time()
-    env = make_env(num_envs, num_levels=1, start_level=start_level)
+    env = make_env(num_envs, env_name=choose_game(start_level), num_levels=1, start_level=start_level)
     y = current_milli_time()
     print(f"Difference is {y-x} ms")
     print('Observation space:', env.observation_space)
@@ -310,19 +328,20 @@ def create_and_train_network():
         level.set_score(storage.advantage[-num_steps:])
         print(played_levels)
         current_level += 1
-
-        env = make_env(start_level=get_new_level_seed(), num_levels=1)
+        seed = get_new_level_seed()
+        env = make_env(env_name=choose_game(seed), start_level=seed, num_levels=1)
         obs = env.reset()
 
     print('Completed training!')
-    torch.save(policy.state_dict, 'checkpoint.pt')
+    torch.save(policy.state_dict, f'checkpoint-backup-{time.time()}.pt')
+    torch.save(policy.state_dict, f'checkpoints/plr/checkpoint-{time.time()}.pt')
     return policy
 
 
 # Below cell can be used for policy evaluation and saves an episode to mp4 for you to view.
 def record_and_eval_policy(policy):
     # Make evaluation environment
-    eval_env = make_env(num_envs, start_level=num_levels, num_levels=num_levels)
+    eval_env = make_env(num_envs, env_name=choose_game(random.randint(0,15)), start_level=num_levels, num_levels=num_levels)
     obs = eval_env.reset()
 
     frames = []
@@ -348,7 +367,8 @@ def record_and_eval_policy(policy):
 
     # Save frames as video
     frames = torch.stack(frames)
-    imageio.mimsave('vid.mp4', frames, fps=25)
+    imageio.mimsave(f'video-backup-{time.time()}', frames, fps=25)
+    imageio.mimsave(f'videos/plr/video-{time.time()}', frames, fps=25)
 
 complete_policy = create_and_train_network()
 record_and_eval_policy(complete_policy)
