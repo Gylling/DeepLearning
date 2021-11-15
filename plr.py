@@ -31,7 +31,7 @@ from utils import make_env, Storage, orthogonal_init
 # implementation.
 
 # Hyperparameters
-total_steps = 8e6
+total_steps = 20e6
 num_envs = 32
 num_levels = 100
 start_level = 3
@@ -326,7 +326,6 @@ def create_and_train_network():
 
         # Update score of level
         level.set_score(storage.advantage[-num_steps:])
-        print(played_levels)
         current_level += 1
         seed = get_new_level_seed()
         env = make_env(env_name=choose_game(seed), start_level=seed, num_levels=1)
