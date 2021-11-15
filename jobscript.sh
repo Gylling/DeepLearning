@@ -9,7 +9,7 @@
  #BSUB -u gylling.erik@gmail.com
  #BSUB -B
  #BSUB -N
- #BSUB -R "rusage[mem=64GB]"
+ #BSUB -R "rusage[mem=32GB]"
  #BSUB -o logs/%J.out
  #BSUB -e logs/%J.err
 
