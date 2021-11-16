@@ -4,6 +4,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import random
 import time
+import os
 
 # The cell below installs `procgen` and downloads a small `utils.py` script that contains some utility functions. You
 # may want to inspect the file for more details.
@@ -12,6 +13,15 @@ import time
 # ! wget https://raw.githubusercontent.com/nicklashansen/ppo-procgen-utils/main/utils.py
 
 from utils import make_env, Storage, orthogonal_init
+
+FOLDER_NAME = "ppo"
+
+def checkfolder(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
+
+checkfolder(f"checkpoints./{FOLDER_NAME}")
+checkfolder(f"videos./{FOLDER_NAME}")
 
 
 # Hyperparameters. These values should be a good starting point. You can modify them later once you have a working

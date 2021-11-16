@@ -19,6 +19,7 @@ import os.path
 import time
 from dataclasses import dataclass, field
 import random
+import os
 
 
 # The cell below installs `procgen` and downloads a small `utils.py` script that contains some utility functions. You
@@ -26,6 +27,14 @@ import random
 
 from utils import make_env, Storage, orthogonal_init
 
+FOLDER_NAME = "ppo"
+
+def checkfolder(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
+
+checkfolder(f"checkpoints./{FOLDER_NAME}")
+checkfolder(f"videos./{FOLDER_NAME}")
 
 # Hyperparameters. These values should be a good starting point. You can modify them later once you have a working
 # implementation.
