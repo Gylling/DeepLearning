@@ -20,8 +20,8 @@ def checkfolder(path):
     if not os.path.exists(path):
         os.makedirs(path)
 
-checkfolder(f"checkpoints./{FOLDER_NAME}")
-checkfolder(f"videos./{FOLDER_NAME}")
+checkfolder(f"checkpoints/{FOLDER_NAME}")
+checkfolder(f"videos/{FOLDER_NAME}")
 
 
 # Hyperparameters. These values should be a good starting point. You can modify them later once you have a working
