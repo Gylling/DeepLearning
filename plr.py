@@ -27,7 +27,7 @@ import os
 
 from utils import make_env, Storage, orthogonal_init
 
-FOLDER_NAME = "ppo"
+FOLDER_NAME = "plr"
 
 def checkfolder(path):
     if not os.path.exists(path):
@@ -341,8 +341,8 @@ def create_and_train_network():
         obs = env.reset()
 
     print('Completed training!')
-    torch.save(policy.state_dict, f'checkpoint-backup-{time.time()}.pt')
-    torch.save(policy.state_dict, f'checkpoints/plr/checkpoint-{time.time()}.pt')
+    torch.save(policy.state_dict, f'{FOLDER_NAME}-checkpoint-backup-{time.time()}.pt')
+    torch.save(policy.state_dict, f'checkpoints/{FOLDER_NAME}/checkpoint-{time.time()}.pt')
     return policy
 
 
@@ -375,8 +375,8 @@ def record_and_eval_policy(policy):
 
     # Save frames as video
     frames = torch.stack(frames)
-    imageio.mimsave(f'video-backup-{time.time()}', frames, fps=25)
-    imageio.mimsave(f'videos/plr/video-{time.time()}', frames, fps=25)
+    imageio.mimsave(f'{FOLDER_NAME}-video-backup-{time.time()}', frames, fps=25)
+    imageio.mimsave(f'videos/{FOLDER_NAME}/video-{time.time()}', frames, fps=25)
 
 complete_policy = create_and_train_network()
 record_and_eval_policy(complete_policy)
