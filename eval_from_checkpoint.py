@@ -267,8 +267,7 @@ def record_and_eval_policy(policy):
 
     # Save frames as video
     frames = torch.stack(frames)
-    imageio.mimsave(f'{FOLDER_NAME}-video-backup-{time.time()}', frames, fps=25)
-    imageio.mimsave(f'videos/{FOLDER_NAME}/video-{time.time()}', frames, fps=25)
+    imageio.mimsave(f'videos/{FOLDER_NAME}/video-{time.time()}.mp4', frames, fps=25)
 
 
 complete_policy = create_network_from_checkpoint("checkpoints/plr/checkpoint-1637047482.9451299.pt")
