@@ -20,30 +20,24 @@ import time
 from dataclasses import dataclass, field
 import random
 import os
+import numpy as np
 
-
-# The cell below installs `procgen` and downloads a small `utils.py` script that contains some utility functions. You
-# may want to inspect the file for more details.
 
 from utils import make_env, Storage, orthogonal_init
 
-FOLDER_NAME = "plr"
 
 def checkfolder(path):
     if not os.path.exists(path):
         os.makedirs(path)
 
-checkfolder(f"checkpoints/{FOLDER_NAME}")
-checkfolder(f"videos/{FOLDER_NAME}")
-
 # Hyperparameters. These values should be a good starting point. You can modify them later once you have a working
 # implementation.
 
+
 # Hyperparameters
 total_steps = 20e6
-num_envs = 32
+num_envs = 128
 num_levels = 100
-start_level = 3
 total_levels = 100
 num_steps = 256
 num_epochs = 3
@@ -53,17 +47,23 @@ grad_eps = .5
 value_coef = .5
 entropy_coef = .01
 played_levels = set()
-played_level_seeds = set()
+level_sequence = np.random.choice(np.arange(total_levels), total_levels, False)
 current_level = 0
 beta = 0.1
 gamma = 0.99
 lmbda = 0.95
-multi_games = True
+num_games = 15
+FOLDER_NAME = f"plr-{num_games}"
+
+checkfolder(f"checkpoints/{FOLDER_NAME}")
+checkfolder(f"videos/{FOLDER_NAME}")
+checkfolder(f"logs/{FOLDER_NAME}")
 
 # Network definitions. We have defined a policy network for you in advance. It uses the popular `NatureDQN` encoder
 # architecture (see below), while policy and value functions are linear projections from the encodings. There is
 # plenty of opportunity to experiment with architectures, so feel free to do that! Perhaps implement the `Impala`
 # encoder from [this paper](https://arxiv.org/pdf/1802.01561.pdf) (perhaps minus the LSTM).
+
 
 @dataclass(unsafe_hash=True)
 class Level:
@@ -74,102 +74,110 @@ class Level:
     rank = 1
 
     def set_score(self, advantages):
-      self.score = advantages.mean().item()
-
+        self.score = advantages.mean().item()
 
 
 def current_milli_time():
     return round(time.time() * 1000)
 
-def get_new_level_seed():
-  global played_levels
-  # Bernoulli distribution decides between seen and unseen levels
-  unseen_levels = [x for x in range(total_levels) if x not in played_level_seeds]
-  play_replay_level = Bernoulli(torch.tensor([len(played_levels)/total_levels])).sample().item()
-  if play_replay_level and len(unseen_levels) > 0:
-    return get_replay_level()
-  else:
-    return get_unseen_level(unseen_levels)
 
-def get_unseen_level(unseen_levels):
-  global played_level_seeds
-  lvl = int(random.choice(unseen_levels))
-  played_level_seeds.add(lvl)
-  return lvl
+def get_new_level_seed():
+    global played_levels
+    # Bernoulli distribution decides between seen and unseen levels
+    play_replay_level = Bernoulli(torch.tensor(
+        [len(played_levels)/total_levels])).sample().item()
+    if play_replay_level and len(level_sequence) > 0:
+        return get_replay_level()
+    else:
+        return get_unseen_level()
+
+
+def get_unseen_level():
+    global level_sequence
+    level_sequence
+    lvl_seed, level_sequence = int(level_sequence[-1]), level_sequence[:-1]
+    return lvl_seed
+
 
 def get_replay_level():
-  rho = 0.3
-  probs = [0]*len(played_levels)
-  lvls_list = list(played_levels)
-  
-  # Calculate ranks once and save it on levels
-  update_ranks(lvls_list)
+    rho = 0.1
+    probs = [0]*len(played_levels)
+    lvls_list = list(played_levels)
 
-  # Calculate sums once per creation of replay distribution
-  score_sum = sum_of_score_dist()
-  summed_episode_diffs = sum_staleness()
+    # Calculate ranks once and save it on levels
+    update_ranks(lvls_list)
 
-  # Calculate probabilities
-  for i in range(len(lvls_list)):
-    lvl = lvls_list[i]
-    probs[i]=(1-rho)*score_dist(lvl,score_sum)+rho*staleness_dist(lvl, summed_episode_diffs)
+    # Calculate sums once per creation of replay distribution
+    score_sum = sum_of_score_dist()
+    summed_episode_diffs = sum_staleness()
 
-  # Create distribution and retrieve an index
-  lvl_index = Categorical(torch.FloatTensor(probs)).sample().item()
+    # Calculate probabilities
+    for i in range(len(lvls_list)):
+        lvl = lvls_list[i]
+        probs[i] = (1-rho)*score_dist(lvl, score_sum)+rho * \
+            staleness_dist(lvl, summed_episode_diffs)
 
-  # return seed of corresponding level
-  return int(lvls_list[lvl_index].seed)
+    # Create distribution and retrieve an index
+    lvl_index = Categorical(torch.FloatTensor(probs)).sample().item()
+
+    # return seed of corresponding level
+    return int(lvls_list[lvl_index].seed)
 
 
- 
 def update_ranks(lvls_seen):
-  ranks = sorted(lvls_seen, reverse=True, key=lambda lvl: lvl.score)
-  for i in range(1,len(ranks)+1):
-    ranks[i-1].rank = i
+    ranks = sorted(lvls_seen, reverse=True, key=lambda lvl: lvl.score)
+    for i in range(1, len(ranks)+1):
+        ranks[i-1].rank = i
+
 
 def sum_of_score_dist():
-  sum = 0
-  for lvl in played_levels:
-    sum += (1/lvl.rank)**(1/beta)
-  return sum if sum > 0 else 1
+    sum = 0
+    for lvl in played_levels:
+        sum += (1/lvl.rank)**(1/beta)
+    return sum if sum > 0 else 1
+
 
 def score_dist(lvl, score_sum):
-      return (1/lvl.rank)**(1/beta)/score_sum
+    return (1/lvl.rank)**(1/beta)/score_sum
+
 
 def sum_staleness():
-  summed_episode_diffs = 0
-  for lvl in played_levels:
-    summed_episode_diffs += current_level - lvl.last_played
-  
-  return summed_episode_diffs if summed_episode_diffs > 0 else 1
+    summed_episode_diffs = 0
+    for lvl in played_levels:
+        summed_episode_diffs += current_level - lvl.last_played
+
+    return summed_episode_diffs if summed_episode_diffs > 0 else 1
+
 
 def staleness_dist(lvl, summed_episode_diffs):
-  staleness = current_level - lvl.last_played
-  staleness_weight = staleness/summed_episode_diffs
-  return staleness_weight
+    staleness = current_level - lvl.last_played
+    staleness_weight = staleness/summed_episode_diffs
+    return staleness_weight
+
 
 def choose_game(seed):
-    if multi_games: 
-        return [
-            "bigfish",
-            "bossfight",
-            "caveflyer",
-            "chaser",
-            "climber",
-            "coinrun",
-            "dodgeball",
-            "fruitbot",
-            "heist",
-            "jumper",
-            "leaper",
-            "maze",
-            "miner",
-            "ninja",
-            "plunder",
-            "starpilot",
-        ][seed % 16]
-    else:
-        return "starpilot"
+    return [
+        ("starpilot", 2.5, 64),
+        ("bigfish", 1, 40),
+        ("bossfight", 0.5, 13),
+        ("caveflyer", 3.5, 12),
+        ("chaser", 0.5, 13),
+        ("climber", 2, 12.6),
+        ("coinrun", 5, 10),
+        ("dodgeball", 1.5, 19),
+        ("heist", 3.5, 10),
+        ("jumper", 3, 10),
+        ("leaper", 3, 10),
+        ("maze", 5, 10),
+        ("miner", 1.5, 13),
+        ("ninja", 3.5, 10),
+        ("plunder", 4.5, 30),
+        ("fruitbot", -1.5, 32)
+    ][seed % num_games]
+
+
+def normalize_reward(reward, min_score, max_score):
+    return (reward-min_score)/(max_score-min_score)
 
 
 class Flatten(nn.Module):
@@ -181,9 +189,12 @@ class Encoder(nn.Module):
     def __init__(self, in_channels, feature_dim):
         super().__init__()
         self.layers = nn.Sequential(
-            nn.Conv2d(in_channels=in_channels, out_channels=32, kernel_size=8, stride=4), nn.ReLU(),
-            nn.Conv2d(in_channels=32, out_channels=64, kernel_size=4, stride=2), nn.ReLU(),
-            nn.Conv2d(in_channels=64, out_channels=64, kernel_size=3, stride=1), nn.ReLU(),
+            nn.Conv2d(in_channels=in_channels, out_channels=32,
+                      kernel_size=8, stride=4), nn.ReLU(),
+            nn.Conv2d(in_channels=32, out_channels=64,
+                      kernel_size=4, stride=2), nn.ReLU(),
+            nn.Conv2d(in_channels=64, out_channels=64,
+                      kernel_size=3, stride=1), nn.ReLU(),
             Flatten(),
             nn.Linear(in_features=1024, out_features=feature_dim), nn.ReLU()
         )
@@ -200,7 +211,8 @@ class Policy(nn.Module):
     def __init__(self, encoder, feature_dim, num_actions):
         super().__init__()
         self.encoder = encoder
-        self.policy = orthogonal_init(nn.Linear(feature_dim, num_actions), gain=.01)
+        self.policy = orthogonal_init(
+            nn.Linear(feature_dim, num_actions), gain=.01)
         self.value = orthogonal_init(nn.Linear(feature_dim, 1), gain=1.)
 
     def act(self, x):
@@ -220,12 +232,16 @@ class Policy(nn.Module):
 
         return dist, value
 
+
 def create_and_train_network():
     global current_level
     # Define environment
     # check the utils.py file for info on arguments
     x = current_milli_time()
-    env = make_env(num_envs, env_name=choose_game(start_level), num_levels=1, start_level=start_level)
+    start_level = get_new_level_seed()
+    game, min_score, max_score = choose_game(start_level)
+    env = make_env(num_envs, env_name=game,
+                   num_levels=1, start_level=start_level)
     y = current_milli_time()
     print(f"Difference is {y-x} ms")
     print('Observation space:', env.observation_space)
@@ -267,6 +283,8 @@ def create_and_train_network():
             # Take step in environment
             next_obs, reward, done, info = env.step(action)
 
+            reward = normalize_reward(reward, min_score, max_score)
+
             # Store data
             storage.store(obs, action, reward, done, info, log_prob, value)
 
@@ -306,7 +324,8 @@ def create_and_train_network():
                 entropy_loss = entropy_coef * new_dist.entropy().mean()
 
                 # Backpropagate losses
-                loss = - pi_loss + value_loss - entropy_loss  # Eq. 9 in PPO article(https://arxiv.org/pdf/1707.06347.pdf)
+                # Eq. 9 in PPO article(https://arxiv.org/pdf/1707.06347.pdf)
+                loss = - pi_loss + value_loss - entropy_loss
                 loss.backward()
 
                 # Clip gradients
@@ -315,40 +334,45 @@ def create_and_train_network():
                 # Update policy
                 optimizer.step()
                 optimizer.zero_grad()
-                
 
          # Update stats
         step += num_envs * num_steps
-        print(f'Step: {step}\tMean reward: {storage.get_reward()}')
-        
+        print(
+            f'Step: {step}\t Game: {game}\t\tMean reward: {storage.get_reward()}')
+
         # TODO: Stop doing this in O(n) time and do it constantly
         level_seed = storage.info[0][1]['level_seed']
         level = None
         if not storage.info[0][1]['level_seed'] in [x.seed for x in played_levels]:
-          level = Level(seed=level_seed, last_played=current_level)
-          # print(f"Playing level for the first time: {level}")
-          played_levels.add(level)
+            level = Level(seed=level_seed, last_played=current_level)
+            # print(f"Playing level for the first time: {level}")
+            played_levels.add(level)
         else:
-          level = [level for level in played_levels if level_seed == level.seed][0]
-          # print(f"Playing a level again: {level}")
-          level.last_played = current_level
+            level = [
+                level for level in played_levels if level_seed == level.seed][0]
+            # print(f"Playing a level again: {level}")
+            level.last_played = current_level
 
         # Update score of level
         level.set_score(storage.advantage[-num_steps:])
         current_level += 1
         seed = get_new_level_seed()
-        env = make_env(env_name=choose_game(seed), start_level=seed, num_levels=1)
+        game, min_score, max_score = choose_game(seed)
+        env = make_env(env_name=game, start_level=seed, num_levels=1)
         obs = env.reset()
 
     print('Completed training!')
-    torch.save(policy.state_dict, f'checkpoints/{FOLDER_NAME}/checkpoint-{time.time()}.pt')
+    torch.save(policy.state_dict,
+               f'checkpoints/{FOLDER_NAME}/checkpoint-{time.time()}.pt')
     return policy
 
 
 # Below cell can be used for policy evaluation and saves an episode to mp4 for you to view.
 def record_and_eval_policy(policy):
     # Make evaluation environment
-    eval_env = make_env(num_envs, env_name=choose_game(random.randint(0,15)), start_level=num_levels, num_levels=num_levels)
+    game, _, _ = choose_game(random.randint(0, 15))
+    eval_env = make_env(num_envs, env_name=game,
+                        start_level=num_levels, num_levels=num_levels)
     obs = eval_env.reset()
 
     frames = []
@@ -374,7 +398,9 @@ def record_and_eval_policy(policy):
 
     # Save frames as video
     frames = torch.stack(frames)
-    imageio.mimsave(f'videos/{FOLDER_NAME}/video-{time.time()}.mp4', frames, fps=25)
+    imageio.mimsave(
+        f'videos/{FOLDER_NAME}/video-{time.time()}.mp4', frames, fps=25)
+
 
 complete_policy = create_and_train_network()
 record_and_eval_policy(complete_policy)
