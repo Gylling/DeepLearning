@@ -57,7 +57,6 @@ FOLDER_NAME = f"plr-{num_games}"
 
 checkfolder(f"checkpoints/{FOLDER_NAME}")
 checkfolder(f"videos/{FOLDER_NAME}")
-checkfolder(f"logs/{FOLDER_NAME}")
 
 # Network definitions. We have defined a policy network for you in advance. It uses the popular `NatureDQN` encoder
 # architecture (see below), while policy and value functions are linear projections from the encodings. There is
