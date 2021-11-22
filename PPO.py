@@ -14,7 +14,8 @@ import os
 
 from utils import make_env, Storage, orthogonal_init
 
-FOLDER_NAME = "ppo"
+num_games = 1
+FOLDER_NAME = f"ppo-{num_games}"
 
 def checkfolder(path):
     if not os.path.exists(path):
@@ -94,27 +95,24 @@ class Policy(nn.Module):
 
 
 def choose_game(seed):
-    if multi_games: 
-        return [
-            "bigfish",
-            "bossfight",
-            "caveflyer",
-            "chaser",
-            "climber",
-            "coinrun",
-            "dodgeball",
-            "fruitbot",
-            "heist",
-            "jumper",
-            "leaper",
-            "maze",
-            "miner",
-            "ninja",
-            "plunder",
-            "starpilot",
-        ][seed % 16]
-    else:
-        return "starpilot"
+    return [
+        "bigfish",
+        "bossfight",
+        "caveflyer",
+        "chaser",
+        "climber",
+        "coinrun",
+        "dodgeball",
+        "fruitbot",
+        "heist",
+        "jumper",
+        "leaper",
+        "maze",
+        "miner",
+        "ninja",
+        "plunder",
+        "starpilot",
+    ][seed % num_games]
 
 
 
