@@ -271,9 +271,6 @@ def create_and_train_network():
     env = make_env(num_envs, env_name=game,
                    num_levels=1, start_level=start_level)
     y = current_milli_time()
-    print(f"Difference is {y-x} ms")
-    print('Observation space:', env.observation_space)
-    print('Action space:', env.action_space.n)
     channels_in = env.observation_space.shape[0]
     actions = env.action_space.n
 
@@ -365,31 +362,27 @@ def create_and_train_network():
 
          # Update stats
         step += num_envs * num_steps
-        print(
-            f'Step: {step}\t Game: {game}\t\tMean reward: {storage.get_reward()}')
 
-        # TODO: Stop doing this in O(n) time and do it constantly
         level_seed = storage.info[0][1]['level_seed']
         level = None
         if not storage.info[0][1]['level_seed'] in [x.seed for x in played_levels]:
             level = Level(seed=level_seed, last_played=current_level)
-            # print(f"Playing level for the first time: {level}")
             played_levels.add(level)
         else:
             level = [
                 level for level in played_levels if level_seed == level.seed][0]
-            # print(f"Playing a level again: {level}")
             level.last_played = current_level
 
         # Update score of level
         level.set_score(storage.advantage[-num_steps:])
+        print(f'{step},{game},{storage.get_reward()},{level.score}')
+
         current_level += 1
         seed = get_new_level_seed()
         game, min_score, max_score = choose_game(seed)
         env = make_env(num_envs, env_name=game, start_level=seed, num_levels=1)
         obs = env.reset()
 
-    print('Completed training!')
     torch.save(policy.state_dict,
                f'checkpoints/{FOLDER_NAME}/checkpoint-{time.time()}.pt')
     return policy
@@ -398,9 +391,10 @@ def create_and_train_network():
 # Below cell can be used for policy evaluation and saves an episode to mp4 for you to view.
 def record_and_eval_policy(policy):
     # Make evaluation environment
-    game, _, _ = choose_game(random.randint(0, 15))
+    seed = random.randint(num_levels, num_levels*2)
+    game, _, _ = choose_game(seed)
     eval_env = make_env(num_envs, env_name=game,
-                        start_level=num_levels, num_levels=num_levels)
+                        start_level=seed, num_levels=num_levels)
     obs = eval_env.reset()
 
     frames = []
@@ -422,7 +416,7 @@ def record_and_eval_policy(policy):
 
     # Calculate average return
     total_reward = torch.stack(total_reward).sum(0).mean(0)
-    print('Average return:', total_reward)
+    print('Validation Average return:', total_reward)
 
     # Save frames as video
     frames = torch.stack(frames)

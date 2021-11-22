@@ -131,9 +131,8 @@ def create_and_train_network():
     # Define environment
     # check the utils.py file for info on arguments
     count = 0
-    env = make_env(num_envs, env_name=choose_game(count), num_levels=num_levels)
-    print('Observation space:', env.observation_space.shape)
-    print('Action space:', env.action_space.n)
+    game = choose_game(count)
+    env = make_env(num_envs, env_name=game, num_levels=num_levels)
     channels_in = env.observation_space.shape[0]
     actions = env.action_space.n
 
@@ -220,12 +219,12 @@ def create_and_train_network():
 
         # Update stats
         step += num_envs * num_steps
-        print(f'Step: {step}\tMean reward: {storage.get_reward()}')
-        # count = (count + 1) % num_levels
-        # env = make_env(num_envs, env_name=choose_game(count), start_level=count, num_levels=1)
-        # obs = env.reset()
+        print(f'{step},{game},{storage.get_reward()}, ')
+        count = (count + 1) % num_levels
+        game = choose_game(count)
+        env = make_env(num_envs, env_name=game, start_level=count, num_levels=1)
+        obs = env.reset()
 
-    print('Completed training!')
     torch.save(policy.state_dict, f'checkpoints/{FOLDER_NAME}/checkpoint-{time.time()}.pt')
     return policy
 
@@ -233,7 +232,9 @@ def create_and_train_network():
 # Below cell can be used for policy evaluation and saves an episode to mp4 for you to view.
 def record_and_eval_policy(policy):
     # Make evaluation environment
-    eval_env = make_env(num_envs, env_name=choose_game(random.randint(0,15)), start_level=num_levels, num_levels=num_levels)
+    seed = random.randint(num_levels, num_levels*2)
+    game = choose_game(seed)
+    eval_env = make_env(num_envs, env_name=game, start_level=seed, num_levels=num_levels)
     obs = eval_env.reset()
 
     frames = []
@@ -255,7 +256,7 @@ def record_and_eval_policy(policy):
 
     # Calculate average return
     total_reward = torch.stack(total_reward).sum(0).mean(0)
-    print('Average return:', total_reward)
+    print('Validation Average return:', total_reward)
 
     # Save frames as video
     frames = torch.stack(frames)
