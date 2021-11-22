@@ -1,5 +1,5 @@
  #!/bin/sh
- NAME=plr-15
+ NAME=plr-16
  mkdir logs/$NAME
 
  source ~/.bashrc

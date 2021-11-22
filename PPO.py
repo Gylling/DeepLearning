@@ -213,7 +213,7 @@ def create_and_train_network():
         step += num_envs * num_steps
         print(f'Step: {step}\tMean reward: {storage.get_reward()}')
         count = (count + 1) % num_levels
-        env = make_env(env_name=choose_game(count), start_level=count, num_levels=1)
+        env = make_env(num_envs, env_name=choose_game(count), start_level=count, num_levels=1)
         obs = env.reset()
 
     print('Completed training!')
