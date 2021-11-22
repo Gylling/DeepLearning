@@ -28,7 +28,7 @@ from utils import make_env, Storage, orthogonal_init
 
 def checkfolder(path):
     if not os.path.exists(path):
-        os.makedirs(path)
+        os.makedirs(path, exist_ok=True)
 
 # Hyperparameters. These values should be a good starting point. You can modify them later once you have a working
 # implementation.

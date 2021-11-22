@@ -18,7 +18,7 @@ FOLDER_NAME = "ppo"
 
 def checkfolder(path):
     if not os.path.exists(path):
-        os.makedirs(path)
+        os.makedirs(path, exist_ok=True)
 
 checkfolder(f"checkpoints/{FOLDER_NAME}")
 checkfolder(f"videos/{FOLDER_NAME}")
