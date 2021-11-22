@@ -7,9 +7,6 @@ Original file is located at
     https://colab.research.google.com/drive/1xN2_zPtrx-ZVBlGVeOCgpP6ZPLQ1uD-9
 """
 
-num_games = 16
-FOLDER_NAME = f"plr-{num_games}"
-
 
 import imageio
 import torch
@@ -57,8 +54,7 @@ beta = 0.1
 gamma = 0.99
 lmbda = 0.95
 
-checkfolder(f"checkpoints/{FOLDER_NAME}")
-checkfolder(f"videos/{FOLDER_NAME}")
+
 
 # Network definitions. We have defined a policy network for you in advance. It uses the popular `NatureDQN` encoder
 # architecture (see below), while policy and value functions are linear projections from the encodings. There is
@@ -155,26 +151,57 @@ def staleness_dist(lvl, summed_episode_diffs):
     staleness_weight = staleness/summed_episode_diffs
     return staleness_weight
 
+games_dict = {
+    "plunder": ("plunder", 4.5, 30),
+    "starpilot": ("starpilot", 2.5, 64),
+    "bossfight": ("bossfight", 0.5, 13),
+    "caveflyer": ("caveflyer", 3.5, 12),
+    "caveflyer": ("dodgeball", 1.5, 19),
+    "chaser":("chaser", 0.5, 13),
+    "miner":("miner", 1.5, 13),
+    "heist":("heist", 3.5, 10),
+    "maze":("maze", 5, 10),
+    "climber":("climber", 2, 12.6),
+    "coinrun":("coinrun", 5, 10),
+    "jumper":("jumper", 3, 10),
+    "ninja":("ninja", 3.5, 10),
+    "leaper":("leaper", 3, 10),
+    "fruitbot":("fruitbot", -1.5, 32),
+    "bigfish":("bigfish", 1, 40)
+}
+
+games = [
+    "plunder",
+    "starpilot",
+    "bossfight",
+    "caveflyer",
+    "dodgeball",
+    "chaser",
+    "miner",
+    "heist",
+    "maze",
+    "climber",
+    "coinrun",
+    "jumper",
+    "ninja",
+    "leaper",
+    "fruitbot",
+    "bigfish"
+]
 
 def choose_game(seed):
-    return [
-        ("starpilot", 2.5, 64),
-        ("bigfish", 1, 40),
-        ("bossfight", 0.5, 13),
-        ("caveflyer", 3.5, 12),
-        ("chaser", 0.5, 13),
-        ("climber", 2, 12.6),
-        ("coinrun", 5, 10),
-        ("dodgeball", 1.5, 19),
-        ("heist", 3.5, 10),
-        ("jumper", 3, 10),
-        ("leaper", 3, 10),
-        ("maze", 5, 10),
-        ("miner", 1.5, 13),
-        ("ninja", 3.5, 10),
-        ("plunder", 4.5, 30),
-        ("fruitbot", -1.5, 32)
-    ][seed % num_games]
+    if category == 1:
+        return games_dict(default_game)
+    elif category == 2:
+        return games_dict(games[:5][seed % 5])
+    elif category == 3:
+        return games_dict(games[5:9][seed % 4])
+    elif category == 4:
+        return games_dict(games[9:13][seed % 4])
+    elif category == 5:
+        return games_dict(games[13:16][seed % 3])
+    else:
+        return games_dict(games[seed % category])
 
 
 def normalize_reward(reward, min_score, max_score):
@@ -403,5 +430,13 @@ def record_and_eval_policy(policy):
         f'videos/{FOLDER_NAME}/video-{time.time()}.mp4', frames, fps=25)
 
 
-complete_policy = create_and_train_network()
-record_and_eval_policy(complete_policy)
+if __name__ == '__main__':
+    default_game = "starpilot"
+    category = int(sys.argv[1])
+    if len(sys.argv) > 2:
+        default_game =sys.argv[2]
+    FOLDER_NAME = f"plr-{default_game if category == 1 else category}"
+    checkfolder(f"checkpoints/{FOLDER_NAME}")
+    checkfolder(f"videos/{FOLDER_NAME}")
+    complete_policy = create_and_train_network()
+    record_and_eval_policy(complete_policy)

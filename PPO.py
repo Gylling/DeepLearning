@@ -5,6 +5,7 @@ import torch.nn.functional as F
 import random
 import time
 import os
+import sys
 
 # The cell below installs `procgen` and downloads a small `utils.py` script that contains some utility functions. You
 # may want to inspect the file for more details.
@@ -14,15 +15,12 @@ import os
 
 from utils import make_env, Storage, orthogonal_init
 
-num_games = 1
-FOLDER_NAME = f"ppo-{num_games}"
 
 def checkfolder(path):
     if not os.path.exists(path):
         os.makedirs(path, exist_ok=True)
 
-checkfolder(f"checkpoints/{FOLDER_NAME}")
-checkfolder(f"videos/{FOLDER_NAME}")
+
 
 
 # Hyperparameters. These values should be a good starting point. You can modify them later once you have a working
@@ -39,7 +37,7 @@ eps = .2
 grad_eps = .5
 value_coef = .5
 entropy_coef = .01
-multi_games = True
+
 
 # Network definitions. We have defined a policy network for you in advance. It uses the popular `NatureDQN` encoder
 # architecture (see below), while policy and value functions are linear projections from the encodings. There is
@@ -93,26 +91,39 @@ class Policy(nn.Module):
 
         return dist, value
 
+games = [
+    "plunder",
+    "starpilot",
+    "bossfight",
+    "caveflyer",
+    "dodgeball",
+    "chaser",
+    "miner",
+    "heist",
+    "maze",
+    "climber",
+    "coinrun",
+    "jumper",
+    "ninja",
+    "leaper",
+    "fruitbot",
+    "bigfish"
+]
+
 
 def choose_game(seed):
-    return [
-        "bigfish",
-        "bossfight",
-        "caveflyer",
-        "chaser",
-        "climber",
-        "coinrun",
-        "dodgeball",
-        "fruitbot",
-        "heist",
-        "jumper",
-        "leaper",
-        "maze",
-        "miner",
-        "ninja",
-        "plunder",
-        "starpilot",
-    ][seed % num_games]
+    if category == 1:
+        return default_game
+    elif category == 2:
+        return games[:5][seed % 5]
+    elif category == 3:
+        return games[5:9][seed % 4]
+    elif category == 4:
+        return games[9:13][seed % 4]
+    elif category == 5:
+        return games[13:16][seed % 3]
+    else:
+        return games[seed % category]
 
 
 
@@ -250,5 +261,14 @@ def record_and_eval_policy(policy):
     frames = torch.stack(frames)
     imageio.mimsave(f'videos/{FOLDER_NAME}/video-{time.time()}.mp4', frames, fps=25)
 
-complete_policy = create_and_train_network()
-record_and_eval_policy(complete_policy)
+
+if __name__ == '__main__':
+    default_game = "starpilot"
+    category = int(sys.argv[1])
+    if len(sys.argv) > 2:
+        default_game =sys.argv[2]
+    FOLDER_NAME = f"ppo-{default_game if category == 1 else category}"
+    checkfolder(f"checkpoints/{FOLDER_NAME}")
+    checkfolder(f"videos/{FOLDER_NAME}")
+    complete_policy = create_and_train_network()
+    record_and_eval_policy(complete_policy)
