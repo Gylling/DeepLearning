@@ -7,6 +7,10 @@ Original file is located at
     https://colab.research.google.com/drive/1xN2_zPtrx-ZVBlGVeOCgpP6ZPLQ1uD-9
 """
 
+num_games = 16
+FOLDER_NAME = f"plr-{num_games}"
+
+
 import imageio
 import torch
 import torch.nn as nn
@@ -52,8 +56,6 @@ current_level = 0
 beta = 0.1
 gamma = 0.99
 lmbda = 0.95
-num_games = 15
-FOLDER_NAME = f"plr-{num_games}"
 
 checkfolder(f"checkpoints/{FOLDER_NAME}")
 checkfolder(f"videos/{FOLDER_NAME}")
