@@ -359,7 +359,7 @@ def create_and_train_network():
         current_level += 1
         seed = get_new_level_seed()
         game, min_score, max_score = choose_game(seed)
-        env = make_env(env_name=game, start_level=seed, num_levels=1)
+        env = make_env(num_envs, env_name=game, start_level=seed, num_levels=1)
         obs = env.reset()
 
     print('Completed training!')
