@@ -191,17 +191,17 @@ games = [
 
 def choose_game(seed):
     if category == 1:
-        return games_dict(default_game)
+        return games_dict[default_game]
     elif category == 2:
-        return games_dict(games[:5][seed % 5])
+        return games_dict[games[:5][seed % 5]]
     elif category == 3:
-        return games_dict(games[5:9][seed % 4])
+        return games_dict[games[5:9][seed % 4]]
     elif category == 4:
-        return games_dict(games[9:13][seed % 4])
+        return games_dict[games[9:13][seed % 4]]
     elif category == 5:
-        return games_dict(games[13:16][seed % 3])
+        return games_dict[games[13:16][seed % 3]]
     else:
-        return games_dict(games[seed % category])
+        return games_dict[games[seed % category]]
 
 
 def normalize_reward(reward, min_score, max_score):
