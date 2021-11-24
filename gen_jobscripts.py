@@ -32,7 +32,7 @@ source ~/.bashrc
 #BSUB -gpu "num=1"
 #BSUB -J {name}
 #BSUB -n 1
-#BSUB -W 16:00
+#BSUB -W 24:00
 #BSUB -u gylling.erik@gmail.com
 #BSUB -B
 #BSUB -N

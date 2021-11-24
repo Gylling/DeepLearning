@@ -439,7 +439,7 @@ def record_and_eval_policy(policy, record_video):
                 frames.append(frame)
 
             # A level is played once.
-            if done:
+            if done.all():
                 break
 
     # Calculate average return
