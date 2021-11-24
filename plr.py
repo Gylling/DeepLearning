@@ -37,9 +37,9 @@ def checkfolder(path):
 
 
 # Hyperparameters
-total_steps = 20e6 #procgen recommends 25e6
+total_steps = 20e6  # procgen recommends 25e6
 num_envs = 32
-num_levels = 200 #procgen recommends 200
+num_levels = 200  # procgen recommends 200
 total_levels = 200
 val_levels = 100
 num_steps = 256
@@ -51,7 +51,8 @@ value_coef = .5
 entropy_coef = .01
 played_levels = set()
 level_sequence = np.random.choice(np.arange(total_levels), total_levels, False)
-test_sequence = np.arange(total_levels,total_levels+val_levels) # choose levels above seen levels
+# choose levels above seen levels
+test_sequence = np.arange(total_levels, total_levels+val_levels)
 current_level = 0
 beta = 0.1
 gamma = 0.99
@@ -94,8 +95,7 @@ def get_new_level_seed():
     d = len(played_levels)/total_levels
     play_replay_level = Bernoulli(torch.tensor([d])).sample().item()
 
-
-    if len(level_sequence) == 0 or play_replay_level==1:
+    if len(level_sequence) == 0 or play_replay_level == 1:
         return get_replay_level()
     else:
         return get_unseen_level()
@@ -149,7 +149,6 @@ def score_dist(lvl, score_sum):
     return (1/lvl.rank)**(1/beta)/score_sum
 
 
-
 def sum_staleness():
     summed_episode_diffs = 0
     for lvl in played_levels:
@@ -163,23 +162,24 @@ def staleness_dist(lvl, summed_episode_diffs):
     staleness_weight = staleness/summed_episode_diffs
     return staleness_weight
 
+
 games_dict = {
     "plunder": ("plunder", 4.5, 30),
     "starpilot": ("starpilot", 2.5, 64),
     "bossfight": ("bossfight", 0.5, 13),
     "caveflyer": ("caveflyer", 3.5, 12),
     "dodgeball": ("dodgeball", 1.5, 19),
-    "chaser":("chaser", 0.5, 13),
-    "miner":("miner", 1.5, 13),
-    "heist":("heist", 3.5, 10),
-    "maze":("maze", 5, 10),
-    "climber":("climber", 2, 12.6),
-    "coinrun":("coinrun", 5, 10),
-    "jumper":("jumper", 3, 10),
-    "ninja":("ninja", 3.5, 10),
-    "leaper":("leaper", 3, 10),
-    "fruitbot":("fruitbot", -1.5, 32),
-    "bigfish":("bigfish", 1, 40)
+    "chaser": ("chaser", 0.5, 13),
+    "miner": ("miner", 1.5, 13),
+    "heist": ("heist", 3.5, 10),
+    "maze": ("maze", 5, 10),
+    "climber": ("climber", 2, 12.6),
+    "coinrun": ("coinrun", 5, 10),
+    "jumper": ("jumper", 3, 10),
+    "ninja": ("ninja", 3.5, 10),
+    "leaper": ("leaper", 3, 10),
+    "fruitbot": ("fruitbot", -1.5, 32),
+    "bigfish": ("bigfish", 1, 40)
 }
 
 games = [
@@ -200,6 +200,7 @@ games = [
     "fruitbot",
     "bigfish"
 ]
+
 
 def choose_game(seed):
     if category == 1:
@@ -388,23 +389,23 @@ def create_and_train_network():
 
         # Update score of level
         level.set_score(storage.advantage)
-        print(f'Step: {step}\tGame: {game},\tSeed: {seed},\tMean reward: {storage.get_reward()}\tMean error: {level.score}')
-        #print(f'{step},{game},{storage.get_reward()},{level.score}')
-        
+        print(
+            f'Step: {step}\tGame: {game},\tSeed: {seed},\tMean reward: {storage.get_reward()}\tMean error: {level.score}')
+        # print(f'{step},{game},{storage.get_reward()},{level.score}')
+
         # Save mean reward
         if current_level % 5 == 0:
-          train_rewards.append(storage.get_reward())
+            train_rewards.append(storage.get_reward())
 
-          # Evaluate network
-          last_iteration = step >= total_steps
-          record_and_eval_policy(policy, last_iteration)
+            # Evaluate network
+            last_iteration = step >= total_steps
+            record_and_eval_policy(policy, last_iteration)
 
         current_level += 1
         seed = get_new_level_seed()
         game, min_score, max_score = choose_game(seed)
         env = make_env(num_envs, env_name=game, start_level=seed, num_levels=1)
         obs = env.reset()
-
 
 
 # Below cell can be used for policy evaluation and saves an episode to mp4 for you to view.
@@ -415,29 +416,31 @@ def record_and_eval_policy(policy, record_video):
 
     # Make evaluation environment
     for seed in test_sequence:
-      game, _, _ = choose_game(seed)
-      eval_env = make_env(num_envs, env_name=game,
-                    num_levels=1, start_level=seed)
-      obs = eval_env.reset()
+        seed = int(seed)
+        game, _, _ = choose_game(seed)
+        eval_env = make_env(num_envs, env_name=game,
+                            num_levels=1, start_level=seed)
+        obs = eval_env.reset()
 
-      # Evaluate policy
-      policy.eval()
-      for _ in range(num_steps*2):
-          # Use policy
-          action, log_prob, value = policy.act(obs)
+        # Evaluate policy
+        policy.eval()
+        for _ in range(num_steps*2):
+            # Use policy
+            action, log_prob, value = policy.act(obs)
 
-          # Take step in environment
-          obs, reward, done, info = eval_env.step(action)
-          total_reward.append(torch.Tensor(reward))
+            # Take step in environment
+            obs, reward, done, info = eval_env.step(action)
+            total_reward.append(torch.Tensor(reward))
 
-          # Render environment and store
-          if record_video:
-            frame = (torch.Tensor(eval_env.render(mode='rgb_array')) * 255.).byte()
-            frames.append(frame)
+            # Render environment and store
+            if record_video:
+                frame = (torch.Tensor(eval_env.render(
+                    mode='rgb_array')) * 255.).byte()
+                frames.append(frame)
 
-          # A level is played once. 
-          if done:
-            break
+            # A level is played once.
+            if done:
+                break
 
     # Calculate average return
     total_reward = torch.stack(total_reward).sum(0).mean(0)
@@ -447,18 +450,20 @@ def record_and_eval_policy(policy, record_video):
 
     # Save frames as video
     if record_video:
-      video_folder = f"videos/{FOLDER_NAME}"
-      checkfolder(video_folder)
-      frames = torch.stack(frames)
-      imageio.mimsave(video_folder+f'/video-{time.time()}.mp4', frames, fps=25)
-
+        video_folder = f"videos/{FOLDER_NAME}"
+        checkfolder(video_folder)
+        frames = torch.stack(frames)
+        imageio.mimsave(
+            video_folder+f'/video-{time.time()}.mp4', frames, fps=25)
 
 
 def write_rewards_to_file():
-  rewards_folder = f"rewards/{FOLDER_NAME}"
-  checkfolder(rewards_folder)
-  np.savetxt(rewards_folder+f"test_rewards-{time.time()}.csv", np.array(test_rewards), delimiter=",", fmt="%10.5f")
-  np.savetxt(rewards_folder+f"train_rewards-{time.time()}.csv", np.array(train_rewards), delimiter=",", fmt="%10.5f")
+    rewards_folder = f"rewards/{FOLDER_NAME}"
+    checkfolder(rewards_folder)
+    np.savetxt(rewards_folder+f"test_rewards-{time.time()}.csv",
+               np.array(test_rewards), delimiter=",", fmt="%10.5f")
+    np.savetxt(rewards_folder+f"train_rewards-{time.time()}.csv",
+               np.array(train_rewards), delimiter=",", fmt="%10.5f")
 
 
 if __name__ == '__main__':
@@ -466,7 +471,7 @@ if __name__ == '__main__':
     category = int(sys.argv[1])
     category = 16
     if len(sys.argv) > 2:
-       default_game =sys.argv[2]
+        default_game = sys.argv[2]
     FOLDER_NAME = f"plr-{default_game if category == 1 else category}"
     create_and_train_network()
     write_rewards_to_file()
