@@ -6,6 +6,7 @@ import random
 import time
 import os
 import sys
+import numpy as np
 
 # The cell below installs `procgen` and downloads a small `utils.py` script that contains some utility functions. You
 # may want to inspect the file for more details.
@@ -29,7 +30,8 @@ def checkfolder(path):
 # Hyperparameters
 total_steps = 20e6
 num_envs = 32
-num_levels = 100
+num_levels = 200
+val_levels = 100
 num_steps = 256
 num_epochs = 3
 batch_size = 512
@@ -37,6 +39,9 @@ eps = .2
 grad_eps = .5
 value_coef = .5
 entropy_coef = .01
+test_rewards = []
+train_rewards = []
+test_sequence = np.arange(num_levels,num_levels+val_levels) # choose levels above seen levels
 
 
 # Network definitions. We have defined a policy network for you in advance. It uses the popular `NatureDQN` encoder
@@ -128,6 +133,7 @@ def choose_game(seed):
 
 
 def create_and_train_network():
+    global train_rewards
     # Define environment
     # check the utils.py file for info on arguments
     count = 0
@@ -219,49 +225,72 @@ def create_and_train_network():
 
         # Update stats
         step += num_envs * num_steps
-        print(f'{step},{game},{storage.get_reward()}, ')
+        print(f'{step},{game},{storage.get_reward()}')
+
+        # Save mean reward
+        if count % 5 == 0:
+          train_rewards.append(storage.get_reward())
+
+          # Evaluate network
+          last_iteration = step >= total_steps
+          record_and_eval_policy(policy, last_iteration)
+
         count = (count + 1) % num_levels
         game = choose_game(count)
         env = make_env(num_envs, env_name=game, start_level=count, num_levels=1)
         obs = env.reset()
 
-    torch.save(policy.state_dict, f'checkpoints/{FOLDER_NAME}/checkpoint-{time.time()}.pt')
-    return policy
-
 
 # Below cell can be used for policy evaluation and saves an episode to mp4 for you to view.
-def record_and_eval_policy(policy):
-    # Make evaluation environment
-    seed = random.randint(num_levels, num_levels*2)
-    game = choose_game(seed)
-    eval_env = make_env(num_envs, env_name=game, start_level=seed, num_levels=num_levels)
-    obs = eval_env.reset()
-
+def record_and_eval_policy(policy, record_video):
+    global test_rewards
     frames = []
     total_reward = []
 
-    # Evaluate policy
-    policy.eval()
-    for _ in range(512):
-        # Use policy
-        action, log_prob, value = policy.act(obs)
+    # Make evaluation environment
+    for seed in test_sequence:
+      game = choose_game(seed)
+      eval_env = make_env(num_envs, env_name=game,
+                    num_levels=1, start_level=seed)
+      obs = eval_env.reset()
 
-        # Take step in environment
-        obs, reward, done, info = eval_env.step(action)
-        total_reward.append(torch.Tensor(reward))
+      # Evaluate policy
+      policy.eval()
+      for _ in range(num_steps*2):
+          # Use policy
+          action, log_prob, value = policy.act(obs)
 
-        # Render environment and store
-        frame = (torch.Tensor(eval_env.render(mode='rgb_array')) * 255.).byte()
-        frames.append(frame)
+          # Take step in environment
+          obs, reward, done, info = eval_env.step(action)
+          total_reward.append(torch.Tensor(reward))
+
+          # Render environment and store
+          if record_video:
+            frame = (torch.Tensor(eval_env.render(mode='rgb_array')) * 255.).byte()
+            frames.append(frame)
+
+          # A level is played once. 
+          if done:
+            break
 
     # Calculate average return
     total_reward = torch.stack(total_reward).sum(0).mean(0)
-    print('Validation Average return:', total_reward)
+
+    # Save mean reward
+    test_rewards.append(total_reward)
 
     # Save frames as video
-    frames = torch.stack(frames)
-    imageio.mimsave(f'videos/{FOLDER_NAME}/video-{time.time()}.mp4', frames, fps=25)
+    if record_video:
+      video_folder = f"videos/{FOLDER_NAME}"
+      checkfolder(video_folder)
+      frames = torch.stack(frames)
+      imageio.mimsave(video_folder+f'/video-{time.time()}.mp4', frames, fps=25)
 
+def write_rewards_to_file():
+  rewards_folder = f"rewards/{FOLDER_NAME}"
+  checkfolder(rewards_folder)
+  np.savetxt(rewards_folder+f"test_rewards-{time.time()}.csv", np.array(test_rewards), delimiter=",", fmt="%10.5f")
+  np.savetxt(rewards_folder+f"train_rewards-{time.time()}.csv", np.array(train_rewards), delimiter=",", fmt="%10.5f")
 
 if __name__ == '__main__':
     default_game = "starpilot"
@@ -269,7 +298,5 @@ if __name__ == '__main__':
     if len(sys.argv) > 2:
         default_game =sys.argv[2]
     FOLDER_NAME = f"ppo-{default_game if category == 1 else category}"
-    checkfolder(f"checkpoints/{FOLDER_NAME}")
-    checkfolder(f"videos/{FOLDER_NAME}")
-    complete_policy = create_and_train_network()
-    record_and_eval_policy(complete_policy)
+    create_and_train_network()
+    write_rewards_to_file()

@@ -1,20 +1,22 @@
  #!/bin/sh
- NAME=plr-16
+ NUM = 1
+ GAME = "starpilot"
+ NAME= "plr-$GAME"
  mkdir logs/$NAME
 
  source ~/.bashrc
 
  #BSUB -q gpua100
  #BSUB -gpu "num=1"
- #BSUB -J plr-1
+ #BSUB -J plr-starpilot
  #BSUB -n 1
  #BSUB -W 16:00
  #BSUB -u gylling.erik@gmail.com
  #BSUB -B
  #BSUB -N
  #BSUB -R "rusage[mem=32GB]"
- #BSUB -o logs/plr-1/%J.out
- #BSUB -e logs/plr-1/%J.err
+ #BSUB -o logs/plr-starpilot/%J.out
+ #BSUB -e logs/plr-starpilot/%J.err
 
- echo "Running ${NAME}"
- python3 plr.py
+ echo "Running $NAME"
+ python3 plr.py $NUM $GAME

@@ -15,6 +15,7 @@ import torch.nn.functional as F
 from torch.distributions.categorical import Categorical
 from torch.distributions.uniform import Uniform
 from torch.distributions.bernoulli import Bernoulli
+import secrets
 import sys
 import os.path
 import time
@@ -22,6 +23,13 @@ from dataclasses import dataclass, field
 import random
 import os
 import numpy as np
+
+
+if not "procgen" in sys.modules:
+  ! pip install procgen
+
+if not os.path.isfile("utils.py"):
+  ! wget https://raw.githubusercontent.com/nicklashansen/ppo-procgen-utils/main/utils.py
 
 
 from utils import make_env, Storage, orthogonal_init
@@ -36,10 +44,11 @@ def checkfolder(path):
 
 
 # Hyperparameters
-total_steps = 20e6
-num_envs = 128
-num_levels = 100
-total_levels = 100
+total_steps = 20e6 #procgen recommends 25e6
+num_envs = 32
+num_levels = 200 #procgen recommends 200
+total_levels = 200
+val_levels = 100
 num_steps = 256
 num_epochs = 3
 batch_size = 512
@@ -49,11 +58,15 @@ value_coef = .5
 entropy_coef = .01
 played_levels = set()
 level_sequence = np.random.choice(np.arange(total_levels), total_levels, False)
+test_sequence = np.arange(total_levels,total_levels+val_levels) # choose levels above seen levels
 current_level = 0
 beta = 0.1
 gamma = 0.99
 lmbda = 0.95
+rho = 0.1
 
+test_rewards = []
+train_rewards = []
 
 
 # Network definitions. We have defined a policy network for you in advance. It uses the popular `NatureDQN` encoder
@@ -71,7 +84,7 @@ class Level:
     rank = 1
 
     def set_score(self, advantages):
-        self.score = advantages.mean().item()
+        self.score = torch.abs(advantages.mean(1)).mean(0).item()
 
 
 def current_milli_time():
@@ -80,10 +93,16 @@ def current_milli_time():
 
 def get_new_level_seed():
     global played_levels
+
+    # Reset seed
+    torch.manual_seed(secrets.randbelow(10000))
+
     # Bernoulli distribution decides between seen and unseen levels
-    play_replay_level = Bernoulli(torch.tensor(
-        [len(played_levels)/total_levels])).sample().item()
-    if play_replay_level and len(level_sequence) > 0:
+    d = len(played_levels)/total_levels
+    play_replay_level = Bernoulli(torch.tensor([d])).sample().item()
+
+
+    if len(level_sequence) == 0 or play_replay_level==1:
         return get_replay_level()
     else:
         return get_unseen_level()
@@ -97,7 +116,6 @@ def get_unseen_level():
 
 
 def get_replay_level():
-    rho = 0.1
     probs = [0]*len(played_levels)
     lvls_list = list(played_levels)
 
@@ -138,6 +156,7 @@ def score_dist(lvl, score_sum):
     return (1/lvl.rank)**(1/beta)/score_sum
 
 
+
 def sum_staleness():
     summed_episode_diffs = 0
     for lvl in played_levels:
@@ -156,7 +175,7 @@ games_dict = {
     "starpilot": ("starpilot", 2.5, 64),
     "bossfight": ("bossfight", 0.5, 13),
     "caveflyer": ("caveflyer", 3.5, 12),
-    "caveflyer": ("dodgeball", 1.5, 19),
+    "dodgeball": ("dodgeball", 1.5, 19),
     "chaser":("chaser", 0.5, 13),
     "miner":("miner", 1.5, 13),
     "heist":("heist", 3.5, 10),
@@ -263,13 +282,14 @@ class Policy(nn.Module):
 
 def create_and_train_network():
     global current_level
+    global train_rewards
     # Define environment
     # check the utils.py file for info on arguments
     x = current_milli_time()
-    start_level = get_new_level_seed()
-    game, min_score, max_score = choose_game(start_level)
+    seed = get_new_level_seed()
+    game, min_score, max_score = choose_game(seed)
     env = make_env(num_envs, env_name=game,
-                   num_levels=1, start_level=start_level)
+                   num_levels=1, start_level=seed)
     y = current_milli_time()
     channels_in = env.observation_space.shape[0]
     actions = env.action_space.n
@@ -374,8 +394,17 @@ def create_and_train_network():
             level.last_played = current_level
 
         # Update score of level
-        level.set_score(storage.advantage[-num_steps:])
-        print(f'{step},{game},{storage.get_reward()},{level.score}')
+        level.set_score(storage.advantage)
+        print(f'Step: {step}\tGame: {game},\tSeed: {seed},\tMean reward: {storage.get_reward()}\tMean error: {level.score}')
+        #print(f'{step},{game},{storage.get_reward()},{level.score}')
+        
+        # Save mean reward
+        if current_level % 5 == 0:
+          train_rewards.append(storage.get_reward())
+
+          # Evaluate network
+          last_iteration = step >= total_steps
+          record_and_eval_policy(policy, last_iteration)
 
         current_level += 1
         seed = get_new_level_seed()
@@ -383,54 +412,68 @@ def create_and_train_network():
         env = make_env(num_envs, env_name=game, start_level=seed, num_levels=1)
         obs = env.reset()
 
-    torch.save(policy.state_dict,
-               f'checkpoints/{FOLDER_NAME}/checkpoint-{time.time()}.pt')
-    return policy
 
 
 # Below cell can be used for policy evaluation and saves an episode to mp4 for you to view.
-def record_and_eval_policy(policy):
-    # Make evaluation environment
-    seed = random.randint(num_levels, num_levels*2)
-    game, _, _ = choose_game(seed)
-    eval_env = make_env(num_envs, env_name=game,
-                        start_level=seed, num_levels=num_levels)
-    obs = eval_env.reset()
-
+def record_and_eval_policy(policy, record_video):
+    global test_rewards
     frames = []
     total_reward = []
 
-    # Evaluate policy
-    policy.eval()
-    for _ in range(512):
-        # Use policy
-        action, log_prob, value = policy.act(obs)
+    # Make evaluation environment
+    for seed in test_sequence:
+      game, _, _ = choose_game(seed)
+      eval_env = make_env(num_envs, env_name=game,
+                    num_levels=1, start_level=seed)
+      obs = eval_env.reset()
 
-        # Take step in environment
-        obs, reward, done, info = eval_env.step(action)
-        total_reward.append(torch.Tensor(reward))
+      # Evaluate policy
+      policy.eval()
+      for _ in range(num_steps*2):
+          # Use policy
+          action, log_prob, value = policy.act(obs)
 
-        # Render environment and store
-        frame = (torch.Tensor(eval_env.render(mode='rgb_array')) * 255.).byte()
-        frames.append(frame)
+          # Take step in environment
+          obs, reward, done, info = eval_env.step(action)
+          total_reward.append(torch.Tensor(reward))
+
+          # Render environment and store
+          if record_video:
+            frame = (torch.Tensor(eval_env.render(mode='rgb_array')) * 255.).byte()
+            frames.append(frame)
+
+          # A level is played once. 
+          if done:
+            break
 
     # Calculate average return
     total_reward = torch.stack(total_reward).sum(0).mean(0)
-    print('Validation Average return:', total_reward)
+
+    # Save mean reward
+    test_rewards.append(total_reward)
 
     # Save frames as video
-    frames = torch.stack(frames)
-    imageio.mimsave(
-        f'videos/{FOLDER_NAME}/video-{time.time()}.mp4', frames, fps=25)
+    if record_video:
+      video_folder = f"videos/{FOLDER_NAME}"
+      checkfolder(video_folder)
+      frames = torch.stack(frames)
+      imageio.mimsave(video_folder+f'/video-{time.time()}.mp4', frames, fps=25)
+
+
+
+def write_rewards_to_file():
+  rewards_folder = f"rewards/{FOLDER_NAME}"
+  checkfolder(rewards_folder)
+  np.savetxt(rewards_folder+f"test_rewards-{time.time()}.csv", np.array(test_rewards), delimiter=",", fmt="%10.5f")
+  np.savetxt(rewards_folder+f"train_rewards-{time.time()}.csv", np.array(train_rewards), delimiter=",", fmt="%10.5f")
 
 
 if __name__ == '__main__':
     default_game = "starpilot"
     category = int(sys.argv[1])
+    category = 16
     if len(sys.argv) > 2:
-        default_game =sys.argv[2]
+       default_game =sys.argv[2]
     FOLDER_NAME = f"plr-{default_game if category == 1 else category}"
-    checkfolder(f"checkpoints/{FOLDER_NAME}")
-    checkfolder(f"videos/{FOLDER_NAME}")
-    complete_policy = create_and_train_network()
-    record_and_eval_policy(complete_policy)
+    create_and_train_network()
+    write_rewards_to_file()
