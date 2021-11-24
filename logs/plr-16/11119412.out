@@ -1,0 +1,721 @@
+Looking in links: https://download.pytorch.org/whl/cu113/torch_stable.html
+Requirement already satisfied: torch==1.10.0+cu113 in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (1.10.0+cu113)
+Requirement already satisfied: torchvision==0.11.1+cu113 in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (0.11.1+cu113)
+Requirement already satisfied: torchaudio==0.10.0+cu113 in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (0.10.0+cu113)
+Requirement already satisfied: typing-extensions in /appl/python/3.7.11/lib/python3.7/site-packages (from torch==1.10.0+cu113) (3.10.0.0)
+Requirement already satisfied: numpy in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (from torchvision==0.11.1+cu113) (1.21.4)
+Requirement already satisfied: pillow!=8.3.0,>=5.3.0 in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (from torchvision==0.11.1+cu113) (8.4.0)
+Requirement already satisfied: procgen in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (0.10.4)
+Requirement already satisfied: numpy<2.0.0,>=1.17.0 in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (from procgen) (1.21.4)
+Requirement already satisfied: filelock<4.0.0,>=3.0.0 in /appl/python/3.7.11/lib/python3.7/site-packages (from procgen) (3.0.12)
+Requirement already satisfied: gym<1.0.0,>=0.15.0 in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (from procgen) (0.21.0)
+Requirement already satisfied: gym3<1.0.0,>=0.3.3 in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (from procgen) (0.3.3)
+Collecting importlib-metadata>=4.8.1
+  Using cached importlib_metadata-4.8.2-py3-none-any.whl (17 kB)
+Requirement already satisfied: cloudpickle>=1.2.0 in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (from gym<1.0.0,>=0.15.0->procgen) (2.0.0)
+Requirement already satisfied: imageio<3.0.0,>=2.6.0 in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (from gym3<1.0.0,>=0.3.3->procgen) (2.10.3)
+Requirement already satisfied: cffi<2.0.0,>=1.13.0 in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (from gym3<1.0.0,>=0.3.3->procgen) (1.15.0)
+Requirement already satisfied: glfw<2.0.0,>=1.8.6 in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (from gym3<1.0.0,>=0.3.3->procgen) (1.12.0)
+Requirement already satisfied: moderngl<6.0.0,>=5.5.4 in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (from gym3<1.0.0,>=0.3.3->procgen) (5.6.4)
+Requirement already satisfied: imageio-ffmpeg<0.4.0,>=0.3.0 in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (from gym3<1.0.0,>=0.3.3->procgen) (0.3.0)
+Requirement already satisfied: pycparser in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (from cffi<2.0.0,>=1.13.0->gym3<1.0.0,>=0.3.3->procgen) (2.21)
+Requirement already satisfied: pillow>=8.3.2 in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (from imageio<3.0.0,>=2.6.0->gym3<1.0.0,>=0.3.3->procgen) (8.4.0)
+Requirement already satisfied: typing-extensions>=3.6.4 in /appl/python/3.7.11/lib/python3.7/site-packages (from importlib-metadata>=4.8.1->gym<1.0.0,>=0.15.0->procgen) (3.10.0.0)
+Requirement already satisfied: zipp>=0.5 in /appl/python/3.7.11/lib/python3.7/site-packages (from importlib-metadata>=4.8.1->gym<1.0.0,>=0.15.0->procgen) (3.5.0)
+Requirement already satisfied: glcontext<3,>=2 in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (from moderngl<6.0.0,>=5.5.4->gym3<1.0.0,>=0.3.3->procgen) (2.3.4)
+Installing collected packages: importlib-metadata
+Successfully installed importlib-metadata-4.8.2
+Requirement already satisfied: imageio in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (2.10.3)
+Requirement already satisfied: pillow>=8.3.2 in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (from imageio) (8.4.0)
+Requirement already satisfied: numpy in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (from imageio) (1.21.4)
+Looking in links: https://download.pytorch.org/whl/cu113/torch_stable.html
+Requirement already satisfied: torch==1.10.0+cu113 in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (1.10.0+cu113)
+Requirement already satisfied: torchvision==0.11.1+cu113 in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (0.11.1+cu113)
+Requirement already satisfied: torchaudio==0.10.0+cu113 in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (0.10.0+cu113)
+Requirement already satisfied: typing-extensions in /appl/python/3.7.11/lib/python3.7/site-packages (from torch==1.10.0+cu113) (3.10.0.0)
+Requirement already satisfied: pillow!=8.3.0,>=5.3.0 in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (from torchvision==0.11.1+cu113) (8.4.0)
+Requirement already satisfied: numpy in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (from torchvision==0.11.1+cu113) (1.21.4)
+Requirement already satisfied: procgen in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (0.10.4)
+Requirement already satisfied: gym3<1.0.0,>=0.3.3 in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (from procgen) (0.3.3)
+Requirement already satisfied: filelock<4.0.0,>=3.0.0 in /appl/python/3.7.11/lib/python3.7/site-packages (from procgen) (3.0.12)
+Requirement already satisfied: numpy<2.0.0,>=1.17.0 in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (from procgen) (1.21.4)
+Requirement already satisfied: gym<1.0.0,>=0.15.0 in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (from procgen) (0.21.0)
+Collecting importlib-metadata>=4.8.1
+  Using cached importlib_metadata-4.8.2-py3-none-any.whl (17 kB)
+Requirement already satisfied: cloudpickle>=1.2.0 in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (from gym<1.0.0,>=0.15.0->procgen) (2.0.0)
+Requirement already satisfied: imageio-ffmpeg<0.4.0,>=0.3.0 in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (from gym3<1.0.0,>=0.3.3->procgen) (0.3.0)
+Requirement already satisfied: glfw<2.0.0,>=1.8.6 in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (from gym3<1.0.0,>=0.3.3->procgen) (1.12.0)
+Requirement already satisfied: moderngl<6.0.0,>=5.5.4 in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (from gym3<1.0.0,>=0.3.3->procgen) (5.6.4)
+Requirement already satisfied: cffi<2.0.0,>=1.13.0 in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (from gym3<1.0.0,>=0.3.3->procgen) (1.15.0)
+Requirement already satisfied: imageio<3.0.0,>=2.6.0 in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (from gym3<1.0.0,>=0.3.3->procgen) (2.10.3)
+Requirement already satisfied: pycparser in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (from cffi<2.0.0,>=1.13.0->gym3<1.0.0,>=0.3.3->procgen) (2.21)
+Requirement already satisfied: pillow>=8.3.2 in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (from imageio<3.0.0,>=2.6.0->gym3<1.0.0,>=0.3.3->procgen) (8.4.0)
+Requirement already satisfied: typing-extensions>=3.6.4 in /appl/python/3.7.11/lib/python3.7/site-packages (from importlib-metadata>=4.8.1->gym<1.0.0,>=0.15.0->procgen) (3.10.0.0)
+Requirement already satisfied: zipp>=0.5 in /appl/python/3.7.11/lib/python3.7/site-packages (from importlib-metadata>=4.8.1->gym<1.0.0,>=0.15.0->procgen) (3.5.0)
+Requirement already satisfied: glcontext<3,>=2 in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (from moderngl<6.0.0,>=5.5.4->gym3<1.0.0,>=0.3.3->procgen) (2.3.4)
+Installing collected packages: importlib-metadata
+Successfully installed importlib-metadata-4.8.2
+Requirement already satisfied: imageio in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (2.10.3)
+Requirement already satisfied: numpy in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (from imageio) (1.21.4)
+Requirement already satisfied: pillow>=8.3.2 in /zhome/fa/4/127501/.local/lib/python3.7/site-packages (from imageio) (8.4.0)
+Running plr-16
+Difference is 6235 ms
+Observation space: Box([[[0. 0. 0. ... 0. 0. 0.]
+  [0. 0. 0. ... 0. 0. 0.]
+  [0. 0. 0. ... 0. 0. 0.]
+  ...
+  [0. 0. 0. ... 0. 0. 0.]
+  [0. 0. 0. ... 0. 0. 0.]
+  [0. 0. 0. ... 0. 0. 0.]]
+
+ [[0. 0. 0. ... 0. 0. 0.]
+  [0. 0. 0. ... 0. 0. 0.]
+  [0. 0. 0. ... 0. 0. 0.]
+  ...
+  [0. 0. 0. ... 0. 0. 0.]
+  [0. 0. 0. ... 0. 0. 0.]
+  [0. 0. 0. ... 0. 0. 0.]]
+
+ [[0. 0. 0. ... 0. 0. 0.]
+  [0. 0. 0. ... 0. 0. 0.]
+  [0. 0. 0. ... 0. 0. 0.]
+  ...
+  [0. 0. 0. ... 0. 0. 0.]
+  [0. 0. 0. ... 0. 0. 0.]
+  [0. 0. 0. ... 0. 0. 0.]]], [[[1. 1. 1. ... 1. 1. 1.]
+  [1. 1. 1. ... 1. 1. 1.]
+  [1. 1. 1. ... 1. 1. 1.]
+  ...
+  [1. 1. 1. ... 1. 1. 1.]
+  [1. 1. 1. ... 1. 1. 1.]
+  [1. 1. 1. ... 1. 1. 1.]]
+
+ [[1. 1. 1. ... 1. 1. 1.]
+  [1. 1. 1. ... 1. 1. 1.]
+  [1. 1. 1. ... 1. 1. 1.]
+  ...
+  [1. 1. 1. ... 1. 1. 1.]
+  [1. 1. 1. ... 1. 1. 1.]
+  [1. 1. 1. ... 1. 1. 1.]]
+
+ [[1. 1. 1. ... 1. 1. 1.]
+  [1. 1. 1. ... 1. 1. 1.]
+  [1. 1. 1. ... 1. 1. 1.]
+  ...
+  [1. 1. 1. ... 1. 1. 1.]
+  [1. 1. 1. ... 1. 1. 1.]
+  [1. 1. 1. ... 1. 1. 1.]]], (3, 64, 64), float32)
+Action space: 15
+Step: 32768	 Game: chaser		Mean reward: 1.458437442779541
+Step: 65536	 Game: ninja		Mean reward: 2.421875
+Step: 98304	 Game: chaser		Mean reward: 1.3262499570846558
+Step: 131072	 Game: chaser		Mean reward: 1.4209375381469727
+Step: 163840	 Game: chaser		Mean reward: 1.454687476158142
+Step: 196608	 Game: chaser		Mean reward: 1.457187294960022
+Step: 229376	 Game: chaser		Mean reward: 1.4590623378753662
+Step: 262144	 Game: chaser		Mean reward: 1.4784374237060547
+Step: 294912	 Game: chaser		Mean reward: 1.566562533378601
+Step: 327680	 Game: chaser		Mean reward: 1.545937418937683
+Step: 360448	 Game: chaser		Mean reward: 1.6243749856948853
+Step: 393216	 Game: chaser		Mean reward: 1.5949997901916504
+Step: 425984	 Game: chaser		Mean reward: 1.6296873092651367
+Step: 458752	 Game: chaser		Mean reward: 1.528749942779541
+Step: 491520	 Game: chaser		Mean reward: 1.6281249523162842
+Step: 524288	 Game: chaser		Mean reward: 1.5890623331069946
+Step: 557056	 Game: chaser		Mean reward: 1.5831249952316284
+Step: 589824	 Game: chaser		Mean reward: 1.5709375143051147
+Step: 622592	 Game: chaser		Mean reward: 1.590000033378601
+Step: 655360	 Game: chaser		Mean reward: 1.6278122663497925
+Step: 688128	 Game: chaser		Mean reward: 1.6074998378753662
+Step: 720896	 Game: chaser		Mean reward: 1.6021873950958252
+Step: 753664	 Game: chaser		Mean reward: 1.5903123617172241
+Step: 786432	 Game: chaser		Mean reward: 1.5456249713897705
+Step: 819200	 Game: chaser		Mean reward: 1.5806248188018799
+Step: 851968	 Game: chaser		Mean reward: 1.586875081062317
+Step: 884736	 Game: chaser		Mean reward: 1.6353124380111694
+Step: 917504	 Game: chaser		Mean reward: 1.6496875286102295
+Step: 950272	 Game: chaser		Mean reward: 1.6299999952316284
+Step: 983040	 Game: chaser		Mean reward: 1.6659374237060547
+Step: 1015808	 Game: chaser		Mean reward: 1.6640625
+Step: 1048576	 Game: chaser		Mean reward: 1.6831250190734863
+Step: 1081344	 Game: chaser		Mean reward: 1.6515624523162842
+Step: 1114112	 Game: chaser		Mean reward: 1.5918747186660767
+Step: 1146880	 Game: chaser		Mean reward: 1.6706249713897705
+Step: 1179648	 Game: chaser		Mean reward: 1.6318750381469727
+Step: 1212416	 Game: chaser		Mean reward: 1.6496875286102295
+Step: 1245184	 Game: chaser		Mean reward: 1.62624990940094
+Step: 1277952	 Game: chaser		Mean reward: 1.6243748664855957
+Step: 1310720	 Game: chaser		Mean reward: 1.5828125476837158
+Step: 1343488	 Game: chaser		Mean reward: 1.6346874237060547
+Step: 1376256	 Game: chaser		Mean reward: 1.6203125715255737
+Step: 1409024	 Game: chaser		Mean reward: 1.613437533378601
+Step: 1441792	 Game: chaser		Mean reward: 1.5881249904632568
+Step: 1474560	 Game: chaser		Mean reward: 1.5609374046325684
+Step: 1507328	 Game: chaser		Mean reward: 1.6246874332427979
+Step: 1540096	 Game: chaser		Mean reward: 1.62624990940094
+Step: 1572864	 Game: chaser		Mean reward: 1.5762499570846558
+Step: 1605632	 Game: chaser		Mean reward: 1.5868748426437378
+Step: 1638400	 Game: chaser		Mean reward: 1.6134374141693115
+Step: 1671168	 Game: chaser		Mean reward: 1.5893750190734863
+Step: 1703936	 Game: chaser		Mean reward: 1.6037498712539673
+Step: 1736704	 Game: chaser		Mean reward: 1.5618749856948853
+Step: 1769472	 Game: chaser		Mean reward: 1.604374885559082
+Step: 1802240	 Game: chaser		Mean reward: 1.5828123092651367
+Step: 1835008	 Game: chaser		Mean reward: 1.606562614440918
+Step: 1867776	 Game: chaser		Mean reward: 1.5840624570846558
+Step: 1900544	 Game: chaser		Mean reward: 1.5862499475479126
+Step: 1933312	 Game: chaser		Mean reward: 1.5737498998641968
+Step: 1966080	 Game: chaser		Mean reward: 1.5796875953674316
+Step: 1998848	 Game: chaser		Mean reward: 1.6028125286102295
+Step: 2031616	 Game: chaser		Mean reward: 1.6218748092651367
+Step: 2064384	 Game: chaser		Mean reward: 1.613124966621399
+Step: 2097152	 Game: chaser		Mean reward: 1.5753124952316284
+Step: 2129920	 Game: chaser		Mean reward: 1.6243751049041748
+Step: 2162688	 Game: chaser		Mean reward: 1.6096874475479126
+Step: 2195456	 Game: chaser		Mean reward: 1.5175000429153442
+Step: 2228224	 Game: chaser		Mean reward: 1.5959374904632568
+Step: 2260992	 Game: chaser		Mean reward: 1.5590623617172241
+Step: 2293760	 Game: chaser		Mean reward: 1.591249942779541
+Step: 2326528	 Game: chaser		Mean reward: 1.5909373760223389
+Step: 2359296	 Game: chaser		Mean reward: 1.6315624713897705
+Step: 2392064	 Game: chaser		Mean reward: 1.5809375047683716
+Step: 2424832	 Game: chaser		Mean reward: 1.576562523841858
+Step: 2457600	 Game: chaser		Mean reward: 1.5543750524520874
+Step: 2490368	 Game: chaser		Mean reward: 1.571874976158142
+Step: 2523136	 Game: chaser		Mean reward: 1.566562294960022
+Step: 2555904	 Game: chaser		Mean reward: 1.5946873426437378
+Step: 2588672	 Game: chaser		Mean reward: 1.537500023841858
+Step: 2621440	 Game: chaser		Mean reward: 1.5771872997283936
+Step: 2654208	 Game: chaser		Mean reward: 1.5646873712539673
+Step: 2686976	 Game: chaser		Mean reward: 1.5768749713897705
+Step: 2719744	 Game: chaser		Mean reward: 1.5978124141693115
+Step: 2752512	 Game: chaser		Mean reward: 1.589687466621399
+Step: 2785280	 Game: chaser		Mean reward: 1.5087497234344482
+Step: 2818048	 Game: chaser		Mean reward: 1.5884374380111694
+Step: 2850816	 Game: chaser		Mean reward: 1.5293749570846558
+Step: 2883584	 Game: chaser		Mean reward: 1.5368750095367432
+Step: 2916352	 Game: chaser		Mean reward: 1.4759373664855957
+Step: 2949120	 Game: chaser		Mean reward: 1.4931248426437378
+Step: 2981888	 Game: chaser		Mean reward: 1.5790624618530273
+Step: 3014656	 Game: chaser		Mean reward: 1.5799999237060547
+Step: 3047424	 Game: chaser		Mean reward: 1.617499828338623
+Step: 3080192	 Game: chaser		Mean reward: 1.6181248426437378
+Step: 3112960	 Game: chaser		Mean reward: 1.5821874141693115
+Step: 3145728	 Game: chaser		Mean reward: 1.6387498378753662
+Step: 3178496	 Game: chaser		Mean reward: 1.5746874809265137
+Step: 3211264	 Game: chaser		Mean reward: 1.5968750715255737
+Step: 3244032	 Game: chaser		Mean reward: 1.6009374856948853
+Step: 3276800	 Game: chaser		Mean reward: 1.5946874618530273
+Step: 3309568	 Game: chaser		Mean reward: 1.5590624809265137
+Step: 3342336	 Game: chaser		Mean reward: 1.5774998664855957
+Step: 3375104	 Game: chaser		Mean reward: 1.5843749046325684
+Step: 3407872	 Game: chaser		Mean reward: 1.5934374332427979
+Step: 3440640	 Game: chaser		Mean reward: 1.6593748331069946
+Step: 3473408	 Game: chaser		Mean reward: 1.6581249237060547
+Step: 3506176	 Game: chaser		Mean reward: 1.5984374284744263
+Step: 3538944	 Game: chaser		Mean reward: 1.639687418937683
+Step: 3571712	 Game: chaser		Mean reward: 1.620312213897705
+Step: 3604480	 Game: chaser		Mean reward: 1.6725000143051147
+Step: 3637248	 Game: chaser		Mean reward: 1.6637499332427979
+Step: 3670016	 Game: chaser		Mean reward: 1.7149999141693115
+Step: 3702784	 Game: chaser		Mean reward: 1.7174999713897705
+Step: 3735552	 Game: chaser		Mean reward: 1.7074999809265137
+Step: 3768320	 Game: chaser		Mean reward: 1.708437442779541
+Step: 3801088	 Game: chaser		Mean reward: 1.7409374713897705
+Step: 3833856	 Game: chaser		Mean reward: 1.7268749475479126
+Step: 3866624	 Game: chaser		Mean reward: 1.74343740940094
+Step: 3899392	 Game: chaser		Mean reward: 1.7190624475479126
+Step: 3932160	 Game: chaser		Mean reward: 1.799687385559082
+Step: 3964928	 Game: chaser		Mean reward: 1.7437498569488525
+Step: 3997696	 Game: chaser		Mean reward: 1.7643749713897705
+Step: 4030464	 Game: chaser		Mean reward: 1.7274998426437378
+Step: 4063232	 Game: chaser		Mean reward: 1.7393748760223389
+Step: 4096000	 Game: chaser		Mean reward: 1.7699999809265137
+Step: 4128768	 Game: chaser		Mean reward: 1.760312557220459
+Step: 4161536	 Game: chaser		Mean reward: 1.7481248378753662
+Step: 4194304	 Game: chaser		Mean reward: 1.7084375619888306
+Step: 4227072	 Game: chaser		Mean reward: 1.7587499618530273
+Step: 4259840	 Game: chaser		Mean reward: 1.8099998235702515
+Step: 4292608	 Game: chaser		Mean reward: 1.7143748998641968
+Step: 4325376	 Game: chaser		Mean reward: 1.7159374952316284
+Step: 4358144	 Game: chaser		Mean reward: 1.7487499713897705
+Step: 4390912	 Game: chaser		Mean reward: 1.7843749523162842
+Step: 4423680	 Game: chaser		Mean reward: 1.748749852180481
+Step: 4456448	 Game: chaser		Mean reward: 1.7584375143051147
+Step: 4489216	 Game: chaser		Mean reward: 1.714687466621399
+Step: 4521984	 Game: chaser		Mean reward: 1.7228124141693115
+Step: 4554752	 Game: chaser		Mean reward: 1.7503125667572021
+Step: 4587520	 Game: chaser		Mean reward: 1.7374998331069946
+Step: 4620288	 Game: chaser		Mean reward: 1.6737499237060547
+Step: 4653056	 Game: chaser		Mean reward: 1.6878125667572021
+Step: 4685824	 Game: chaser		Mean reward: 1.6503125429153442
+Step: 4718592	 Game: chaser		Mean reward: 1.612187385559082
+Step: 4751360	 Game: chaser		Mean reward: 1.7243748903274536
+Step: 4784128	 Game: chaser		Mean reward: 1.6649999618530273
+Step: 4816896	 Game: chaser		Mean reward: 1.6996874809265137
+Step: 4849664	 Game: chaser		Mean reward: 1.717812418937683
+Step: 4882432	 Game: chaser		Mean reward: 1.7393749952316284
+Step: 4915200	 Game: chaser		Mean reward: 1.810312271118164
+Step: 4947968	 Game: chaser		Mean reward: 1.677499771118164
+Step: 4980736	 Game: chaser		Mean reward: 1.7137500047683716
+Step: 5013504	 Game: chaser		Mean reward: 1.6987498998641968
+Step: 5046272	 Game: chaser		Mean reward: 1.7168749570846558
+Step: 5079040	 Game: chaser		Mean reward: 1.734375
+Step: 5111808	 Game: chaser		Mean reward: 1.7387499809265137
+Step: 5144576	 Game: chaser		Mean reward: 1.7746875286102295
+Step: 5177344	 Game: chaser		Mean reward: 1.8096874952316284
+Step: 5210112	 Game: chaser		Mean reward: 1.7249999046325684
+Step: 5242880	 Game: chaser		Mean reward: 1.7803122997283936
+Step: 5275648	 Game: chaser		Mean reward: 1.8249999284744263
+Step: 5308416	 Game: chaser		Mean reward: 1.8037497997283936
+Step: 5341184	 Game: chaser		Mean reward: 1.751562476158142
+Step: 5373952	 Game: chaser		Mean reward: 1.7628124952316284
+Step: 5406720	 Game: chaser		Mean reward: 1.7074999809265137
+Step: 5439488	 Game: chaser		Mean reward: 1.8025000095367432
+Step: 5472256	 Game: chaser		Mean reward: 1.7587499618530273
+Step: 5505024	 Game: chaser		Mean reward: 1.730625033378601
+Step: 5537792	 Game: chaser		Mean reward: 1.7843750715255737
+Step: 5570560	 Game: chaser		Mean reward: 1.7459373474121094
+Step: 5603328	 Game: chaser		Mean reward: 1.6912498474121094
+Step: 5636096	 Game: chaser		Mean reward: 1.7656248807907104
+Step: 5668864	 Game: chaser		Mean reward: 1.7490622997283936
+Step: 5701632	 Game: chaser		Mean reward: 1.7815624475479126
+Step: 5734400	 Game: chaser		Mean reward: 1.7362499237060547
+Step: 5767168	 Game: chaser		Mean reward: 1.6893749237060547
+Step: 5799936	 Game: chaser		Mean reward: 1.7015622854232788
+Step: 5832704	 Game: chaser		Mean reward: 1.7624999284744263
+Step: 5865472	 Game: chaser		Mean reward: 1.8340624570846558
+Step: 5898240	 Game: chaser		Mean reward: 1.895937442779541
+Step: 5931008	 Game: chaser		Mean reward: 1.8599998950958252
+Step: 5963776	 Game: chaser		Mean reward: 1.8393747806549072
+Step: 5996544	 Game: chaser		Mean reward: 1.9309375286102295
+Step: 6029312	 Game: chaser		Mean reward: 1.9718749523162842
+Step: 6062080	 Game: chaser		Mean reward: 1.9390623569488525
+Step: 6094848	 Game: chaser		Mean reward: 1.9181249141693115
+Step: 6127616	 Game: chaser		Mean reward: 1.9424998760223389
+Step: 6160384	 Game: chaser		Mean reward: 1.9862500429153442
+Step: 6193152	 Game: chaser		Mean reward: 2.02593731880188
+Step: 6225920	 Game: chaser		Mean reward: 1.9928123950958252
+Step: 6258688	 Game: chaser		Mean reward: 2.0012500286102295
+Step: 6291456	 Game: chaser		Mean reward: 2.0431249141693115
+Step: 6324224	 Game: chaser		Mean reward: 2.0556249618530273
+Step: 6356992	 Game: chaser		Mean reward: 2.0059375762939453
+Step: 6389760	 Game: chaser		Mean reward: 1.9903124570846558
+Step: 6422528	 Game: chaser		Mean reward: 2.018749952316284
+Step: 6455296	 Game: chaser		Mean reward: 2.0646872520446777
+Step: 6488064	 Game: chaser		Mean reward: 2.09375
+Step: 6520832	 Game: chaser		Mean reward: 2.0296874046325684
+Step: 6553600	 Game: chaser		Mean reward: 2.06499981880188
+Step: 6586368	 Game: chaser		Mean reward: 2.047499895095825
+Step: 6619136	 Game: chaser		Mean reward: 2.0218746662139893
+Step: 6651904	 Game: chaser		Mean reward: 2.0971872806549072
+Step: 6684672	 Game: chaser		Mean reward: 2.0749998092651367
+Step: 6717440	 Game: chaser		Mean reward: 2.0484373569488525
+Step: 6750208	 Game: chaser		Mean reward: 2.0693750381469727
+Step: 6782976	 Game: chaser		Mean reward: 2.052812337875366
+Step: 6815744	 Game: chaser		Mean reward: 2.106562376022339
+Step: 6848512	 Game: chaser		Mean reward: 2.130312442779541
+Step: 6881280	 Game: chaser		Mean reward: 2.067499876022339
+Step: 6914048	 Game: chaser		Mean reward: 2.140312433242798
+Step: 6946816	 Game: chaser		Mean reward: 2.1237497329711914
+Step: 6979584	 Game: chaser		Mean reward: 2.062187433242798
+Step: 7012352	 Game: chaser		Mean reward: 2.0799996852874756
+Step: 7045120	 Game: chaser		Mean reward: 2.099687337875366
+Step: 7077888	 Game: chaser		Mean reward: 2.1703124046325684
+Step: 7110656	 Game: chaser		Mean reward: 2.1187500953674316
+Step: 7143424	 Game: chaser		Mean reward: 2.11968731880188
+Step: 7176192	 Game: chaser		Mean reward: 2.132499933242798
+Step: 7208960	 Game: chaser		Mean reward: 2.1009373664855957
+Step: 7241728	 Game: chaser		Mean reward: 2.1293747425079346
+Step: 7274496	 Game: chaser		Mean reward: 2.1318747997283936
+Step: 7307264	 Game: chaser		Mean reward: 2.0749998092651367
+Step: 7340032	 Game: chaser		Mean reward: 2.1165623664855957
+Step: 7372800	 Game: chaser		Mean reward: 2.0646872520446777
+Step: 7405568	 Game: chaser		Mean reward: 2.0971875190734863
+Step: 7438336	 Game: chaser		Mean reward: 2.112187385559082
+Step: 7471104	 Game: chaser		Mean reward: 2.1162500381469727
+Step: 7503872	 Game: chaser		Mean reward: 2.1237499713897705
+Step: 7536640	 Game: chaser		Mean reward: 2.099062442779541
+Step: 7569408	 Game: chaser		Mean reward: 2.154062271118164
+Step: 7602176	 Game: chaser		Mean reward: 2.119374990463257
+Step: 7634944	 Game: chaser		Mean reward: 2.1240625381469727
+Step: 7667712	 Game: chaser		Mean reward: 2.106562614440918
+Step: 7700480	 Game: chaser		Mean reward: 2.0640623569488525
+Step: 7733248	 Game: chaser		Mean reward: 2.122812509536743
+Step: 7766016	 Game: chaser		Mean reward: 2.034374952316284
+Step: 7798784	 Game: chaser		Mean reward: 2.0328125953674316
+Step: 7831552	 Game: chaser		Mean reward: 2.0565624237060547
+Step: 7864320	 Game: chaser		Mean reward: 2.1015625
+Step: 7897088	 Game: chaser		Mean reward: 2.076249837875366
+Step: 7929856	 Game: chaser		Mean reward: 2.114374876022339
+Step: 7962624	 Game: chaser		Mean reward: 2.140937328338623
+Step: 7995392	 Game: chaser		Mean reward: 2.1103124618530273
+Step: 8028160	 Game: chaser		Mean reward: 2.1240625381469727
+Step: 8060928	 Game: chaser		Mean reward: 2.0978124141693115
+Step: 8093696	 Game: chaser		Mean reward: 2.0981249809265137
+Step: 8126464	 Game: chaser		Mean reward: 2.0846874713897705
+Step: 8159232	 Game: chaser		Mean reward: 2.04156231880188
+Step: 8192000	 Game: chaser		Mean reward: 2.096250057220459
+Step: 8224768	 Game: chaser		Mean reward: 2.049375057220459
+Step: 8257536	 Game: chaser		Mean reward: 2.0740623474121094
+Step: 8290304	 Game: chaser		Mean reward: 2.078749895095825
+Step: 8323072	 Game: chaser		Mean reward: 2.128124713897705
+Step: 8355840	 Game: chaser		Mean reward: 2.0749998092651367
+Step: 8388608	 Game: chaser		Mean reward: 2.0971875190734863
+Step: 8421376	 Game: chaser		Mean reward: 2.0765624046325684
+Step: 8454144	 Game: chaser		Mean reward: 2.1024999618530273
+Step: 8486912	 Game: chaser		Mean reward: 2.0978124141693115
+Step: 8519680	 Game: chaser		Mean reward: 2.1059374809265137
+Step: 8552448	 Game: chaser		Mean reward: 2.0906248092651367
+Step: 8585216	 Game: chaser		Mean reward: 2.13531231880188
+Step: 8617984	 Game: chaser		Mean reward: 2.129999876022339
+Step: 8650752	 Game: chaser		Mean reward: 2.1471874713897705
+Step: 8683520	 Game: chaser		Mean reward: 2.151249885559082
+Step: 8716288	 Game: chaser		Mean reward: 2.1034374237060547
+Step: 8749056	 Game: chaser		Mean reward: 2.1165623664855957
+Step: 8781824	 Game: chaser		Mean reward: 2.0999999046325684
+Step: 8814592	 Game: chaser		Mean reward: 2.1496875286102295
+Step: 8847360	 Game: chaser		Mean reward: 2.1728124618530273
+Step: 8880128	 Game: chaser		Mean reward: 2.1656246185302734
+Step: 8912896	 Game: chaser		Mean reward: 2.1237499713897705
+Step: 8945664	 Game: chaser		Mean reward: 2.1518747806549072
+Step: 8978432	 Game: chaser		Mean reward: 2.1424999237060547
+Step: 9011200	 Game: chaser		Mean reward: 2.101562261581421
+Step: 9043968	 Game: chaser		Mean reward: 2.1140623092651367
+Step: 9076736	 Game: chaser		Mean reward: 2.091562271118164
+Step: 9109504	 Game: chaser		Mean reward: 2.0234375
+Step: 9142272	 Game: chaser		Mean reward: 2.0634372234344482
+Step: 9175040	 Game: chaser		Mean reward: 2.0546875
+Step: 9207808	 Game: chaser		Mean reward: 2.0271873474121094
+Step: 9240576	 Game: chaser		Mean reward: 2.0584373474121094
+Step: 9273344	 Game: chaser		Mean reward: 2.125312566757202
+Step: 9306112	 Game: chaser		Mean reward: 2.01812481880188
+Step: 9338880	 Game: chaser		Mean reward: 2.020624876022339
+Step: 9371648	 Game: chaser		Mean reward: 2.0793747901916504
+Step: 9404416	 Game: chaser		Mean reward: 2.0568747520446777
+Step: 9437184	 Game: chaser		Mean reward: 2.049999713897705
+Step: 9469952	 Game: chaser		Mean reward: 2.0228123664855957
+Step: 9502720	 Game: chaser		Mean reward: 2.0490622520446777
+Step: 9535488	 Game: chaser		Mean reward: 2.0509371757507324
+Step: 9568256	 Game: chaser		Mean reward: 2.0328123569488525
+Step: 9601024	 Game: chaser		Mean reward: 2.0715622901916504
+Step: 9633792	 Game: chaser		Mean reward: 2.0556249618530273
+Step: 9666560	 Game: chaser		Mean reward: 2.054999828338623
+Step: 9699328	 Game: chaser		Mean reward: 2.008124828338623
+Step: 9732096	 Game: chaser		Mean reward: 2.0299999713897705
+Step: 9764864	 Game: chaser		Mean reward: 2.065312385559082
+Step: 9797632	 Game: chaser		Mean reward: 2.0762500762939453
+Step: 9830400	 Game: chaser		Mean reward: 1.9887501001358032
+Step: 9863168	 Game: chaser		Mean reward: 1.9515624046325684
+Step: 9895936	 Game: chaser		Mean reward: 1.9903123378753662
+Step: 9928704	 Game: chaser		Mean reward: 2.018749952316284
+Step: 9961472	 Game: chaser		Mean reward: 2.0087499618530273
+Step: 9994240	 Game: chaser		Mean reward: 1.9921875
+Step: 10027008	 Game: chaser		Mean reward: 1.9915623664855957
+Step: 10059776	 Game: chaser		Mean reward: 2.020624876022339
+Step: 10092544	 Game: chaser		Mean reward: 2.0203123092651367
+Step: 10125312	 Game: chaser		Mean reward: 1.9912497997283936
+Step: 10158080	 Game: chaser		Mean reward: 1.9946874380111694
+Step: 10190848	 Game: chaser		Mean reward: 2.052499771118164
+Step: 10223616	 Game: chaser		Mean reward: 1.971250057220459
+Step: 10256384	 Game: chaser		Mean reward: 2.049999952316284
+Step: 10289152	 Game: chaser		Mean reward: 2.0703125
+Step: 10321920	 Game: chaser		Mean reward: 2.057812452316284
+Step: 10354688	 Game: chaser		Mean reward: 2.026562452316284
+Step: 10387456	 Game: chaser		Mean reward: 2.0643749237060547
+Step: 10420224	 Game: chaser		Mean reward: 2.024062395095825
+Step: 10452992	 Game: chaser		Mean reward: 2.036249876022339
+Step: 10485760	 Game: chaser		Mean reward: 2.054374933242798
+Step: 10518528	 Game: chaser		Mean reward: 2.10406231880188
+Step: 10551296	 Game: chaser		Mean reward: 2.1268749237060547
+Step: 10584064	 Game: chaser		Mean reward: 2.1112496852874756
+Step: 10616832	 Game: chaser		Mean reward: 2.1134374141693115
+Step: 10649600	 Game: chaser		Mean reward: 2.130937337875366
+Step: 10682368	 Game: chaser		Mean reward: 2.1190624237060547
+Step: 10715136	 Game: chaser		Mean reward: 2.148750066757202
+Step: 10747904	 Game: chaser		Mean reward: 2.2046875953674316
+Step: 10780672	 Game: chaser		Mean reward: 2.1831250190734863
+Step: 10813440	 Game: chaser		Mean reward: 2.1684372425079346
+Step: 10846208	 Game: chaser		Mean reward: 2.1531248092651367
+Step: 10878976	 Game: chaser		Mean reward: 2.1337499618530273
+Step: 10911744	 Game: chaser		Mean reward: 2.135312557220459
+Step: 10944512	 Game: chaser		Mean reward: 2.0646872520446777
+Step: 10977280	 Game: chaser		Mean reward: 2.0615622997283936
+Step: 11010048	 Game: chaser		Mean reward: 2.0668749809265137
+Step: 11042816	 Game: chaser		Mean reward: 2.0996875762939453
+Step: 11075584	 Game: chaser		Mean reward: 2.0425000190734863
+Step: 11108352	 Game: chaser		Mean reward: 2.010312557220459
+Step: 11141120	 Game: chaser		Mean reward: 2.084062099456787
+Step: 11173888	 Game: chaser		Mean reward: 2.0143747329711914
+Step: 11206656	 Game: chaser		Mean reward: 2.0390625
+Step: 11239424	 Game: chaser		Mean reward: 2.091874837875366
+Step: 11272192	 Game: chaser		Mean reward: 2.0215625762939453
+Step: 11304960	 Game: chaser		Mean reward: 2.008125066757202
+Step: 11337728	 Game: chaser		Mean reward: 2.0403125286102295
+Step: 11370496	 Game: chaser		Mean reward: 2.070625066757202
+Step: 11403264	 Game: chaser		Mean reward: 2.0818748474121094
+Step: 11436032	 Game: chaser		Mean reward: 2.1531248092651367
+Step: 11468800	 Game: chaser		Mean reward: 2.1478123664855957
+Step: 11501568	 Game: chaser		Mean reward: 2.164062261581421
+Step: 11534336	 Game: chaser		Mean reward: 2.138749837875366
+Step: 11567104	 Game: chaser		Mean reward: 2.1493749618530273
+Step: 11599872	 Game: chaser		Mean reward: 2.156874895095825
+Step: 11632640	 Game: chaser		Mean reward: 2.1915624141693115
+Step: 11665408	 Game: chaser		Mean reward: 2.1631250381469727
+Step: 11698176	 Game: chaser		Mean reward: 2.159374952316284
+Step: 11730944	 Game: chaser		Mean reward: 2.129999876022339
+Step: 11763712	 Game: chaser		Mean reward: 2.0718748569488525
+Step: 11796480	 Game: chaser		Mean reward: 2.096562623977661
+Step: 11829248	 Game: chaser		Mean reward: 2.1015625
+Step: 11862016	 Game: chaser		Mean reward: 2.119999885559082
+Step: 11894784	 Game: chaser		Mean reward: 2.1871871948242188
+Step: 11927552	 Game: chaser		Mean reward: 2.177187442779541
+Step: 11960320	 Game: chaser		Mean reward: 2.2249999046325684
+Step: 11993088	 Game: chaser		Mean reward: 2.184375047683716
+Step: 12025856	 Game: chaser		Mean reward: 2.1962499618530273
+Step: 12058624	 Game: chaser		Mean reward: 2.16656231880188
+Step: 12091392	 Game: chaser		Mean reward: 2.1734373569488525
+Step: 12124160	 Game: chaser		Mean reward: 2.1287498474121094
+Step: 12156928	 Game: chaser		Mean reward: 2.104687452316284
+Step: 12189696	 Game: chaser		Mean reward: 2.1399998664855957
+Step: 12222464	 Game: chaser		Mean reward: 2.0718750953674316
+Step: 12255232	 Game: chaser		Mean reward: 2.141249895095825
+Step: 12288000	 Game: chaser		Mean reward: 2.0846874713897705
+Step: 12320768	 Game: chaser		Mean reward: 2.109062433242798
+Step: 12353536	 Game: chaser		Mean reward: 2.0790624618530273
+Step: 12386304	 Game: chaser		Mean reward: 2.0537497997283936
+Step: 12419072	 Game: chaser		Mean reward: 2.0840625762939453
+Step: 12451840	 Game: chaser		Mean reward: 2.1240625381469727
+Step: 12484608	 Game: chaser		Mean reward: 2.1212501525878906
+Step: 12517376	 Game: chaser		Mean reward: 2.0878124237060547
+Step: 12550144	 Game: chaser		Mean reward: 2.1109373569488525
+Step: 12582912	 Game: chaser		Mean reward: 2.1571874618530273
+Step: 12615680	 Game: chaser		Mean reward: 2.091874837875366
+Step: 12648448	 Game: chaser		Mean reward: 2.1206250190734863
+Step: 12681216	 Game: chaser		Mean reward: 2.0896873474121094
+Step: 12713984	 Game: chaser		Mean reward: 2.1087498664855957
+Step: 12746752	 Game: chaser		Mean reward: 2.099687337875366
+Step: 12779520	 Game: chaser		Mean reward: 2.1596875190734863
+Step: 12812288	 Game: chaser		Mean reward: 2.153437614440918
+Step: 12845056	 Game: chaser		Mean reward: 2.1831247806549072
+Step: 12877824	 Game: chaser		Mean reward: 2.1968748569488525
+Step: 12910592	 Game: chaser		Mean reward: 2.2309372425079346
+Step: 12943360	 Game: chaser		Mean reward: 2.073437452316284
+Step: 12976128	 Game: chaser		Mean reward: 2.1687498092651367
+Step: 13008896	 Game: chaser		Mean reward: 2.114374876022339
+Step: 13041664	 Game: chaser		Mean reward: 2.086562395095825
+Step: 13074432	 Game: chaser		Mean reward: 2.0824997425079346
+Step: 13107200	 Game: chaser		Mean reward: 2.070312261581421
+Step: 13139968	 Game: chaser		Mean reward: 2.090625047683716
+Step: 13172736	 Game: chaser		Mean reward: 2.055312395095825
+Step: 13205504	 Game: chaser		Mean reward: 1.979374885559082
+Step: 13238272	 Game: chaser		Mean reward: 2.055312395095825
+Step: 13271040	 Game: chaser		Mean reward: 2.0634372234344482
+Step: 13303808	 Game: chaser		Mean reward: 2.0881247520446777
+Step: 13336576	 Game: chaser		Mean reward: 2.0984373092651367
+Step: 13369344	 Game: chaser		Mean reward: 2.130312442779541
+Step: 13402112	 Game: chaser		Mean reward: 2.1599998474121094
+Step: 13434880	 Game: chaser		Mean reward: 2.163750171661377
+Step: 13467648	 Game: chaser		Mean reward: 2.1703124046325684
+Step: 13500416	 Game: chaser		Mean reward: 2.1659374237060547
+Step: 13533184	 Game: chaser		Mean reward: 2.125624656677246
+Step: 13565952	 Game: chaser		Mean reward: 2.184687376022339
+Step: 13598720	 Game: chaser		Mean reward: 2.1787497997283936
+Step: 13631488	 Game: chaser		Mean reward: 2.1703124046325684
+Step: 13664256	 Game: chaser		Mean reward: 2.1484375
+Step: 13697024	 Game: chaser		Mean reward: 2.182187557220459
+Step: 13729792	 Game: chaser		Mean reward: 2.1109373569488525
+Step: 13762560	 Game: chaser		Mean reward: 2.16656231880188
+Step: 13795328	 Game: chaser		Mean reward: 2.125624656677246
+Step: 13828096	 Game: chaser		Mean reward: 2.1715621948242188
+Step: 13860864	 Game: chaser		Mean reward: 2.2103123664855957
+Step: 13893632	 Game: chaser		Mean reward: 2.2043747901916504
+Step: 13926400	 Game: chaser		Mean reward: 2.2303123474121094
+Step: 13959168	 Game: chaser		Mean reward: 2.198124885559082
+Step: 13991936	 Game: chaser		Mean reward: 2.184999942779541
+Step: 14024704	 Game: chaser		Mean reward: 2.2043747901916504
+Step: 14057472	 Game: chaser		Mean reward: 2.2309372425079346
+Step: 14090240	 Game: chaser		Mean reward: 2.1631247997283936
+Step: 14123008	 Game: chaser		Mean reward: 2.1640625
+Step: 14155776	 Game: chaser		Mean reward: 2.1818747520446777
+Step: 14188544	 Game: chaser		Mean reward: 2.1284375190734863
+Step: 14221312	 Game: chaser		Mean reward: 2.1493749618530273
+Step: 14254080	 Game: chaser		Mean reward: 2.0531249046325684
+Step: 14286848	 Game: chaser		Mean reward: 2.008124828338623
+Step: 14319616	 Game: chaser		Mean reward: 2.0309371948242188
+Step: 14352384	 Game: chaser		Mean reward: 2.083437442779541
+Step: 14385152	 Game: chaser		Mean reward: 2.023124933242798
+Step: 14417920	 Game: chaser		Mean reward: 2.0199999809265137
+Step: 14450688	 Game: chaser		Mean reward: 2.052499771118164
+Step: 14483456	 Game: chaser		Mean reward: 2.1059372425079346
+Step: 14516224	 Game: chaser		Mean reward: 2.0971872806549072
+Step: 14548992	 Game: chaser		Mean reward: 2.0359373092651367
+Step: 14581760	 Game: chaser		Mean reward: 2.0999999046325684
+Step: 14614528	 Game: chaser		Mean reward: 2.1812498569488525
+Step: 14647296	 Game: chaser		Mean reward: 2.1887500286102295
+Step: 14680064	 Game: chaser		Mean reward: 2.088749885559082
+Step: 14712832	 Game: chaser		Mean reward: 2.140937566757202
+Step: 14745600	 Game: chaser		Mean reward: 2.083749771118164
+Step: 14778368	 Game: chaser		Mean reward: 2.117500066757202
+Step: 14811136	 Game: chaser		Mean reward: 2.0999999046325684
+Step: 14843904	 Game: chaser		Mean reward: 2.0737500190734863
+Step: 14876672	 Game: chaser		Mean reward: 2.0409374237060547
+Step: 14909440	 Game: chaser		Mean reward: 2.070624828338623
+Step: 14942208	 Game: chaser		Mean reward: 2.112187623977661
+Step: 14974976	 Game: chaser		Mean reward: 2.1606249809265137
+Step: 15007744	 Game: chaser		Mean reward: 2.148437261581421
+Step: 15040512	 Game: chaser		Mean reward: 2.021562337875366
+Step: 15073280	 Game: chaser		Mean reward: 2.091249942779541
+Step: 15106048	 Game: chaser		Mean reward: 2.0840625762939453
+Step: 15138816	 Game: chaser		Mean reward: 2.049687385559082
+Step: 15171584	 Game: chaser		Mean reward: 2.008125066757202
+Step: 15204352	 Game: chaser		Mean reward: 2.0243749618530273
+Step: 15237120	 Game: chaser		Mean reward: 2.041249990463257
+Step: 15269888	 Game: chaser		Mean reward: 2.04156231880188
+Step: 15302656	 Game: chaser		Mean reward: 2.025937557220459
+Step: 15335424	 Game: chaser		Mean reward: 2.0193748474121094
+Step: 15368192	 Game: chaser		Mean reward: 2.0612499713897705
+Step: 15400960	 Game: chaser		Mean reward: 2.0662500858306885
+Step: 15433728	 Game: chaser		Mean reward: 2.135624885559082
+Step: 15466496	 Game: chaser		Mean reward: 2.145937442779541
+Step: 15499264	 Game: chaser		Mean reward: 2.143437385559082
+Step: 15532032	 Game: chaser		Mean reward: 2.184375047683716
+Step: 15564800	 Game: chaser		Mean reward: 2.1218748092651367
+Step: 15597568	 Game: chaser		Mean reward: 2.154374837875366
+Step: 15630336	 Game: chaser		Mean reward: 2.1178126335144043
+Step: 15663104	 Game: chaser		Mean reward: 2.158437490463257
+Step: 15695872	 Game: chaser		Mean reward: 2.153749942779541
+Step: 15728640	 Game: chaser		Mean reward: 2.1862497329711914
+Step: 15761408	 Game: chaser		Mean reward: 2.2156248092651367
+Step: 15794176	 Game: chaser		Mean reward: 2.247187376022339
+Step: 15826944	 Game: chaser		Mean reward: 2.169999837875366
+Step: 15859712	 Game: chaser		Mean reward: 2.1578123569488525
+Step: 15892480	 Game: chaser		Mean reward: 2.1453123092651367
+Step: 15925248	 Game: chaser		Mean reward: 2.1262500286102295
+Step: 15958016	 Game: chaser		Mean reward: 2.1399998664855957
+Step: 15990784	 Game: chaser		Mean reward: 2.1756248474121094
+Step: 16023552	 Game: chaser		Mean reward: 2.1843748092651367
+Step: 16056320	 Game: chaser		Mean reward: 2.1759371757507324
+Step: 16089088	 Game: chaser		Mean reward: 2.2590627670288086
+Step: 16121856	 Game: chaser		Mean reward: 2.211250066757202
+Step: 16154624	 Game: chaser		Mean reward: 2.223750114440918
+Step: 16187392	 Game: chaser		Mean reward: 2.291249990463257
+Step: 16220160	 Game: chaser		Mean reward: 2.2218751907348633
+Step: 16252928	 Game: chaser		Mean reward: 2.252187490463257
+Step: 16285696	 Game: chaser		Mean reward: 2.2653121948242188
+Step: 16318464	 Game: chaser		Mean reward: 2.239687442779541
+Step: 16351232	 Game: chaser		Mean reward: 2.211562395095825
+Step: 16384000	 Game: chaser		Mean reward: 2.2440624237060547
+Step: 16416768	 Game: chaser		Mean reward: 2.2590622901916504
+Step: 16449536	 Game: chaser		Mean reward: 2.2809371948242188
+Step: 16482304	 Game: chaser		Mean reward: 2.3109376430511475
+Step: 16515072	 Game: chaser		Mean reward: 2.3031251430511475
+Step: 16547840	 Game: chaser		Mean reward: 2.265937328338623
+Step: 16580608	 Game: chaser		Mean reward: 2.3006248474121094
+Step: 16613376	 Game: chaser		Mean reward: 2.281874895095825
+Step: 16646144	 Game: chaser		Mean reward: 2.281249761581421
+Step: 16678912	 Game: chaser		Mean reward: 2.270312547683716
+Step: 16711680	 Game: chaser		Mean reward: 2.286875009536743
+Step: 16744448	 Game: chaser		Mean reward: 2.296562671661377
+Step: 16777216	 Game: chaser		Mean reward: 2.2668747901916504
+Step: 16809984	 Game: chaser		Mean reward: 2.244999885559082
+Step: 16842752	 Game: chaser		Mean reward: 2.1909375190734863
+Step: 16875520	 Game: chaser		Mean reward: 2.206249952316284
+Step: 16908288	 Game: chaser		Mean reward: 2.16656231880188
+Step: 16941056	 Game: chaser		Mean reward: 2.1468749046325684
+Step: 16973824	 Game: chaser		Mean reward: 2.1609373092651367
+Step: 17006592	 Game: chaser		Mean reward: 2.1640625
+Step: 17039360	 Game: chaser		Mean reward: 2.117187261581421
+Step: 17072128	 Game: chaser		Mean reward: 2.135312557220459
+Step: 17104896	 Game: chaser		Mean reward: 2.161874771118164
+Step: 17137664	 Game: chaser		Mean reward: 2.193124771118164
+Step: 17170432	 Game: chaser		Mean reward: 2.1050000190734863
+Step: 17203200	 Game: chaser		Mean reward: 2.169687509536743
+Step: 17235968	 Game: chaser		Mean reward: 2.1684372425079346
+Step: 17268736	 Game: chaser		Mean reward: 2.1496875286102295
+Step: 17301504	 Game: chaser		Mean reward: 2.096250057220459
+Step: 17334272	 Game: chaser		Mean reward: 2.1399998664855957
+Step: 17367040	 Game: chaser		Mean reward: 2.192187547683716
+Step: 17399808	 Game: chaser		Mean reward: 2.167187452316284
+Step: 17432576	 Game: chaser		Mean reward: 2.150624990463257
+Step: 17465344	 Game: chaser		Mean reward: 2.1446874141693115
+Step: 17498112	 Game: chaser		Mean reward: 2.15625
+Step: 17530880	 Game: chaser		Mean reward: 2.2462499141693115
+Step: 17563648	 Game: chaser		Mean reward: 2.2274997234344482
+Step: 17596416	 Game: chaser		Mean reward: 2.2534375190734863
+Step: 17629184	 Game: chaser		Mean reward: 2.2093751430511475
+Step: 17661952	 Game: chaser		Mean reward: 2.2296876907348633
+Step: 17694720	 Game: chaser		Mean reward: 2.185312509536743
+Step: 17727488	 Game: chaser		Mean reward: 2.2196874618530273
+Step: 17760256	 Game: chaser		Mean reward: 2.218125104904175
+Step: 17793024	 Game: chaser		Mean reward: 2.21875
+Step: 17825792	 Game: chaser		Mean reward: 2.2287497520446777
+Step: 17858560	 Game: chaser		Mean reward: 2.1649999618530273
+Step: 17891328	 Game: chaser		Mean reward: 2.156874895095825
+Step: 17924096	 Game: chaser		Mean reward: 2.1159374713897705
+Step: 17956864	 Game: chaser		Mean reward: 2.1209373474121094
+Step: 17989632	 Game: chaser		Mean reward: 2.1346874237060547
+Step: 18022400	 Game: chaser		Mean reward: 2.1446874141693115
+Step: 18055168	 Game: chaser		Mean reward: 2.159062385559082
+Step: 18087936	 Game: chaser		Mean reward: 2.112499952316284
+Step: 18120704	 Game: chaser		Mean reward: 2.127187728881836
+Step: 18153472	 Game: chaser		Mean reward: 2.115000009536743
+Step: 18186240	 Game: chaser		Mean reward: 2.154062271118164
+Step: 18219008	 Game: chaser		Mean reward: 2.086250066757202
+Step: 18251776	 Game: chaser		Mean reward: 2.078124761581421
+Step: 18284544	 Game: chaser		Mean reward: 2.088124990463257
+Step: 18317312	 Game: chaser		Mean reward: 2.0425000190734863
+Step: 18350080	 Game: chaser		Mean reward: 2.068125009536743
+Step: 18382848	 Game: chaser		Mean reward: 2.103437662124634
+Step: 18415616	 Game: chaser		Mean reward: 2.0281248092651367
+Step: 18448384	 Game: chaser		Mean reward: 2.0562500953674316
+Step: 18481152	 Game: chaser		Mean reward: 2.1368749141693115
+Step: 18513920	 Game: chaser		Mean reward: 2.0165624618530273
+Step: 18546688	 Game: chaser		Mean reward: 2.036875009536743
+Step: 18579456	 Game: chaser		Mean reward: 2.106562376022339
+Step: 18612224	 Game: chaser		Mean reward: 2.0124998092651367
+Step: 18644992	 Game: chaser		Mean reward: 2.0668747425079346
+Step: 18677760	 Game: chaser		Mean reward: 2.1009373664855957
+Step: 18710528	 Game: chaser		Mean reward: 2.0690622329711914
+Step: 18743296	 Game: chaser		Mean reward: 2.148749828338623
+Step: 18776064	 Game: chaser		Mean reward: 2.135625123977661
+Step: 18808832	 Game: chaser		Mean reward: 2.068124771118164
+Step: 18841600	 Game: chaser		Mean reward: 2.106250047683716
+Step: 18874368	 Game: chaser		Mean reward: 2.1368749141693115
+Step: 18907136	 Game: chaser		Mean reward: 2.129687547683716
+Step: 18939904	 Game: chaser		Mean reward: 2.138124942779541
+Step: 18972672	 Game: chaser		Mean reward: 2.200312376022339
+Step: 19005440	 Game: chaser		Mean reward: 2.156562328338623
+Step: 19038208	 Game: chaser		Mean reward: 2.1031250953674316
+Step: 19070976	 Game: chaser		Mean reward: 2.0831246376037598
+Step: 19103744	 Game: chaser		Mean reward: 2.1496872901916504
+Step: 19136512	 Game: chaser		Mean reward: 2.1293749809265137
+Step: 19169280	 Game: chaser		Mean reward: 2.1243748664855957
+Step: 19202048	 Game: chaser		Mean reward: 2.227187395095825
+Step: 19234816	 Game: chaser		Mean reward: 2.1681249141693115
+Step: 19267584	 Game: chaser		Mean reward: 2.1796875
+Step: 19300352	 Game: chaser		Mean reward: 2.1896872520446777
+Step: 19333120	 Game: chaser		Mean reward: 2.190000057220459
+Step: 19365888	 Game: chaser		Mean reward: 2.203749895095825
+Step: 19398656	 Game: chaser		Mean reward: 2.143125057220459
+Step: 19431424	 Game: chaser		Mean reward: 2.2196874618530273
+Step: 19464192	 Game: chaser		Mean reward: 2.2143750190734863
+Step: 19496960	 Game: chaser		Mean reward: 2.294374942779541
+Step: 19529728	 Game: chaser		Mean reward: 2.248124837875366
+Step: 19562496	 Game: chaser		Mean reward: 2.3068747520446777
+Step: 19595264	 Game: chaser		Mean reward: 2.247499704360962
+Step: 19628032	 Game: chaser		Mean reward: 2.2390623092651367
+Step: 19660800	 Game: chaser		Mean reward: 2.187812328338623
+Step: 19693568	 Game: chaser		Mean reward: 2.1703124046325684
+Step: 19726336	 Game: chaser		Mean reward: 2.1556248664855957
+Step: 19759104	 Game: chaser		Mean reward: 2.169999837875366
+Step: 19791872	 Game: chaser		Mean reward: 2.1790623664855957
+Step: 19824640	 Game: chaser		Mean reward: 2.1843748092651367
+Step: 19857408	 Game: chaser		Mean reward: 2.2799999713897705
+Step: 19890176	 Game: chaser		Mean reward: 2.1762497425079346
+Step: 19922944	 Game: chaser		Mean reward: 2.279374837875366
+Step: 19955712	 Game: chaser		Mean reward: 2.3059372901916504
+Step: 19988480	 Game: chaser		Mean reward: 2.2459373474121094
+Step: 20021248	 Game: chaser		Mean reward: 2.288437604904175
+Completed training!
+Average return: tensor(4.1434)
