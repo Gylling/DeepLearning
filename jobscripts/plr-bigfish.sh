@@ -1,8 +1,6 @@
 
 #!/bin/sh
-NUM = 1
-NAME= "plr-bigfish"
-mkdir logs/$NAME
+mkdir logs/plr-bigfish
 
 source ~/.bashrc
 
@@ -19,4 +17,4 @@ source ~/.bashrc
 #BSUB -e logs/plr-bigfish/%J.err
 
 echo "Running plr-bigfish"
-python3 plr.py $NUM bigfish
+python3 plr.py 1 bigfish

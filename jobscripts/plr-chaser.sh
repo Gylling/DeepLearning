@@ -1,8 +1,6 @@
 
 #!/bin/sh
-NUM = 1
-NAME= "plr-chaser"
-mkdir logs/$NAME
+mkdir logs/plr-chaser
 
 source ~/.bashrc
 
@@ -19,4 +17,4 @@ source ~/.bashrc
 #BSUB -e logs/plr-chaser/%J.err
 
 echo "Running plr-chaser"
-python3 plr.py $NUM chaser
+python3 plr.py 1 chaser

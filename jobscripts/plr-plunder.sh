@@ -1,8 +1,6 @@
 
 #!/bin/sh
-NUM = 1
-NAME= "plr-plunder"
-mkdir logs/$NAME
+mkdir logs/plr-plunder
 
 source ~/.bashrc
 
@@ -19,4 +17,4 @@ source ~/.bashrc
 #BSUB -e logs/plr-plunder/%J.err
 
 echo "Running plr-plunder"
-python3 plr.py $NUM plunder
+python3 plr.py 1 plunder

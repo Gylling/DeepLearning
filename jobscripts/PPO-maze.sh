@@ -1,22 +1,20 @@
 
 #!/bin/sh
-NUM = 1
-NAME= "PPO-maze"
-mkdir logs/$NAME
+mkdir logs/PPO-maze
 
 source ~/.bashrc
 
 #BSUB -q gpua100
 #BSUB -gpu "num=1"
-#BSUB -J plr-maze
+#BSUB -J PPO-maze
 #BSUB -n 1
 #BSUB -W 16:00
 #BSUB -u gylling.erik@gmail.com
 #BSUB -B
 #BSUB -N
 #BSUB -R "rusage[mem=32GB]"
-#BSUB -o logs/plr-maze/%J.out
-#BSUB -e logs/plr-maze/%J.err
+#BSUB -o logs/PPO-maze/%J.out
+#BSUB -e logs/PPO-maze/%J.err
 
 echo "Running PPO-maze"
-python3 plr.py $NUM maze
+python3 plr.py 1 maze

@@ -1,8 +1,6 @@
 
 #!/bin/sh
-NUM = 1
-NAME= "plr-caveflyer"
-mkdir logs/$NAME
+mkdir logs/plr-caveflyer
 
 source ~/.bashrc
 
@@ -19,4 +17,4 @@ source ~/.bashrc
 #BSUB -e logs/plr-caveflyer/%J.err
 
 echo "Running plr-caveflyer"
-python3 plr.py $NUM caveflyer
+python3 plr.py 1 caveflyer

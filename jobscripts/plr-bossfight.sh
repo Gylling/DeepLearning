@@ -1,8 +1,6 @@
 
 #!/bin/sh
-NUM = 1
-NAME= "plr-bossfight"
-mkdir logs/$NAME
+mkdir logs/plr-bossfight
 
 source ~/.bashrc
 
@@ -19,4 +17,4 @@ source ~/.bashrc
 #BSUB -e logs/plr-bossfight/%J.err
 
 echo "Running plr-bossfight"
-python3 plr.py $NUM bossfight
+python3 plr.py 1 bossfight

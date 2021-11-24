@@ -1,22 +1,20 @@
 
 #!/bin/sh
-NUM = 1
-NAME= "PPO-caveflyer"
-mkdir logs/$NAME
+mkdir logs/PPO-caveflyer
 
 source ~/.bashrc
 
 #BSUB -q gpua100
 #BSUB -gpu "num=1"
-#BSUB -J plr-caveflyer
+#BSUB -J PPO-caveflyer
 #BSUB -n 1
 #BSUB -W 16:00
 #BSUB -u gylling.erik@gmail.com
 #BSUB -B
 #BSUB -N
 #BSUB -R "rusage[mem=32GB]"
-#BSUB -o logs/plr-caveflyer/%J.out
-#BSUB -e logs/plr-caveflyer/%J.err
+#BSUB -o logs/PPO-caveflyer/%J.out
+#BSUB -e logs/PPO-caveflyer/%J.err
 
 echo "Running PPO-caveflyer"
-python3 plr.py $NUM caveflyer
+python3 plr.py 1 caveflyer

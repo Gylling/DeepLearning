@@ -1,8 +1,6 @@
 
 #!/bin/sh
-NUM = 1
-NAME= "plr-ninja"
-mkdir logs/$NAME
+mkdir logs/plr-ninja
 
 source ~/.bashrc
 
@@ -19,4 +17,4 @@ source ~/.bashrc
 #BSUB -e logs/plr-ninja/%J.err
 
 echo "Running plr-ninja"
-python3 plr.py $NUM ninja
+python3 plr.py 1 ninja

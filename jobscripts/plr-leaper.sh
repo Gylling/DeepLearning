@@ -1,8 +1,6 @@
 
 #!/bin/sh
-NUM = 1
-NAME= "plr-leaper"
-mkdir logs/$NAME
+mkdir logs/plr-leaper
 
 source ~/.bashrc
 
@@ -19,4 +17,4 @@ source ~/.bashrc
 #BSUB -e logs/plr-leaper/%J.err
 
 echo "Running plr-leaper"
-python3 plr.py $NUM leaper
+python3 plr.py 1 leaper

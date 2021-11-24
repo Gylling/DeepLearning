@@ -1,22 +1,20 @@
 
 #!/bin/sh
-NUM = 1
-NAME= "PPO-coinrun"
-mkdir logs/$NAME
+mkdir logs/PPO-coinrun
 
 source ~/.bashrc
 
 #BSUB -q gpua100
 #BSUB -gpu "num=1"
-#BSUB -J plr-coinrun
+#BSUB -J PPO-coinrun
 #BSUB -n 1
 #BSUB -W 16:00
 #BSUB -u gylling.erik@gmail.com
 #BSUB -B
 #BSUB -N
 #BSUB -R "rusage[mem=32GB]"
-#BSUB -o logs/plr-coinrun/%J.out
-#BSUB -e logs/plr-coinrun/%J.err
+#BSUB -o logs/PPO-coinrun/%J.out
+#BSUB -e logs/PPO-coinrun/%J.err
 
 echo "Running PPO-coinrun"
-python3 plr.py $NUM coinrun
+python3 plr.py 1 coinrun

@@ -1,8 +1,6 @@
 
 #!/bin/sh
-NUM = 1
-NAME= "plr-coinrun"
-mkdir logs/$NAME
+mkdir logs/plr-coinrun
 
 source ~/.bashrc
 
@@ -19,4 +17,4 @@ source ~/.bashrc
 #BSUB -e logs/plr-coinrun/%J.err
 
 echo "Running plr-coinrun"
-python3 plr.py $NUM coinrun
+python3 plr.py 1 coinrun

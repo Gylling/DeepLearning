@@ -1,8 +1,6 @@
 
 #!/bin/sh
-NUM = 1
-NAME= "plr-dodgeball"
-mkdir logs/$NAME
+mkdir logs/plr-dodgeball
 
 source ~/.bashrc
 
@@ -19,4 +17,4 @@ source ~/.bashrc
 #BSUB -e logs/plr-dodgeball/%J.err
 
 echo "Running plr-dodgeball"
-python3 plr.py $NUM dodgeball
+python3 plr.py 1 dodgeball

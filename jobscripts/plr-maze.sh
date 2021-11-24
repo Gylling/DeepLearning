@@ -1,8 +1,6 @@
 
 #!/bin/sh
-NUM = 1
-NAME= "plr-maze"
-mkdir logs/$NAME
+mkdir logs/plr-maze
 
 source ~/.bashrc
 
@@ -19,4 +17,4 @@ source ~/.bashrc
 #BSUB -e logs/plr-maze/%J.err
 
 echo "Running plr-maze"
-python3 plr.py $NUM maze
+python3 plr.py 1 maze

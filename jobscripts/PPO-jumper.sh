@@ -1,22 +1,20 @@
 
 #!/bin/sh
-NUM = 1
-NAME= "PPO-jumper"
-mkdir logs/$NAME
+mkdir logs/PPO-jumper
 
 source ~/.bashrc
 
 #BSUB -q gpua100
 #BSUB -gpu "num=1"
-#BSUB -J plr-jumper
+#BSUB -J PPO-jumper
 #BSUB -n 1
 #BSUB -W 16:00
 #BSUB -u gylling.erik@gmail.com
 #BSUB -B
 #BSUB -N
 #BSUB -R "rusage[mem=32GB]"
-#BSUB -o logs/plr-jumper/%J.out
-#BSUB -e logs/plr-jumper/%J.err
+#BSUB -o logs/PPO-jumper/%J.out
+#BSUB -e logs/PPO-jumper/%J.err
 
 echo "Running PPO-jumper"
-python3 plr.py $NUM jumper
+python3 plr.py 1 jumper

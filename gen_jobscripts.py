@@ -18,30 +18,29 @@ games = [
     "bigfish"
 ]
 
-count = 0
+count = 1
 for type in types:
     for game in games:
+        name = f"{type}-{game}"
         text = f"""
 #!/bin/sh
-NUM = 1
-NAME= "{type}-{game}"
-mkdir logs/$NAME
+mkdir logs/{name}
 
 source ~/.bashrc
 
 #BSUB -q gpua100
 #BSUB -gpu "num=1"
-#BSUB -J plr-{game}
+#BSUB -J {name}
 #BSUB -n 1
 #BSUB -W 16:00
 #BSUB -u gylling.erik@gmail.com
 #BSUB -B
 #BSUB -N
 #BSUB -R "rusage[mem=32GB]"
-#BSUB -o logs/plr-{game}/%J.out
-#BSUB -e logs/plr-{game}/%J.err
+#BSUB -o logs/{name}/%J.out
+#BSUB -e logs/{name}/%J.err
 
-echo "Running {type}-{game}"
-python3 plr.py $NUM {game}"""
-        with open(f"jobscripts/{type}-{game}.sh", "w") as f:
+echo "Running {name}"
+python3 plr.py {count} {game}"""
+        with open(f"jobscripts/{name}.sh", "w") as f:
             f.write(text)

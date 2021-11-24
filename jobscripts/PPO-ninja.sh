@@ -1,22 +1,20 @@
 
 #!/bin/sh
-NUM = 1
-NAME= "PPO-ninja"
-mkdir logs/$NAME
+mkdir logs/PPO-ninja
 
 source ~/.bashrc
 
 #BSUB -q gpua100
 #BSUB -gpu "num=1"
-#BSUB -J plr-ninja
+#BSUB -J PPO-ninja
 #BSUB -n 1
 #BSUB -W 16:00
 #BSUB -u gylling.erik@gmail.com
 #BSUB -B
 #BSUB -N
 #BSUB -R "rusage[mem=32GB]"
-#BSUB -o logs/plr-ninja/%J.out
-#BSUB -e logs/plr-ninja/%J.err
+#BSUB -o logs/PPO-ninja/%J.out
+#BSUB -e logs/PPO-ninja/%J.err
 
 echo "Running PPO-ninja"
-python3 plr.py $NUM ninja
+python3 plr.py 1 ninja

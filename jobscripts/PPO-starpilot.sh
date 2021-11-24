@@ -1,22 +1,20 @@
 
 #!/bin/sh
-NUM = 1
-NAME= "PPO-starpilot"
-mkdir logs/$NAME
+mkdir logs/PPO-starpilot
 
 source ~/.bashrc
 
 #BSUB -q gpua100
 #BSUB -gpu "num=1"
-#BSUB -J plr-starpilot
+#BSUB -J PPO-starpilot
 #BSUB -n 1
 #BSUB -W 16:00
 #BSUB -u gylling.erik@gmail.com
 #BSUB -B
 #BSUB -N
 #BSUB -R "rusage[mem=32GB]"
-#BSUB -o logs/plr-starpilot/%J.out
-#BSUB -e logs/plr-starpilot/%J.err
+#BSUB -o logs/PPO-starpilot/%J.out
+#BSUB -e logs/PPO-starpilot/%J.err
 
 echo "Running PPO-starpilot"
-python3 plr.py $NUM starpilot
+python3 plr.py 1 starpilot

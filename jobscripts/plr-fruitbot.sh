@@ -1,8 +1,6 @@
 
 #!/bin/sh
-NUM = 1
-NAME= "plr-fruitbot"
-mkdir logs/$NAME
+mkdir logs/plr-fruitbot
 
 source ~/.bashrc
 
@@ -19,4 +17,4 @@ source ~/.bashrc
 #BSUB -e logs/plr-fruitbot/%J.err
 
 echo "Running plr-fruitbot"
-python3 plr.py $NUM fruitbot
+python3 plr.py 1 fruitbot

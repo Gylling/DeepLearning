@@ -1,8 +1,6 @@
 
 #!/bin/sh
-NUM = 1
-NAME= "plr-jumper"
-mkdir logs/$NAME
+mkdir logs/plr-jumper
 
 source ~/.bashrc
 
@@ -19,4 +17,4 @@ source ~/.bashrc
 #BSUB -e logs/plr-jumper/%J.err
 
 echo "Running plr-jumper"
-python3 plr.py $NUM jumper
+python3 plr.py 1 jumper

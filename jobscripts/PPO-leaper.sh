@@ -1,22 +1,20 @@
 
 #!/bin/sh
-NUM = 1
-NAME= "PPO-leaper"
-mkdir logs/$NAME
+mkdir logs/PPO-leaper
 
 source ~/.bashrc
 
 #BSUB -q gpua100
 #BSUB -gpu "num=1"
-#BSUB -J plr-leaper
+#BSUB -J PPO-leaper
 #BSUB -n 1
 #BSUB -W 16:00
 #BSUB -u gylling.erik@gmail.com
 #BSUB -B
 #BSUB -N
 #BSUB -R "rusage[mem=32GB]"
-#BSUB -o logs/plr-leaper/%J.out
-#BSUB -e logs/plr-leaper/%J.err
+#BSUB -o logs/PPO-leaper/%J.out
+#BSUB -e logs/PPO-leaper/%J.err
 
 echo "Running PPO-leaper"
-python3 plr.py $NUM leaper
+python3 plr.py 1 leaper

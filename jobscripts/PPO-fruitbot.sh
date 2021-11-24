@@ -1,22 +1,20 @@
 
 #!/bin/sh
-NUM = 1
-NAME= "PPO-fruitbot"
-mkdir logs/$NAME
+mkdir logs/PPO-fruitbot
 
 source ~/.bashrc
 
 #BSUB -q gpua100
 #BSUB -gpu "num=1"
-#BSUB -J plr-fruitbot
+#BSUB -J PPO-fruitbot
 #BSUB -n 1
 #BSUB -W 16:00
 #BSUB -u gylling.erik@gmail.com
 #BSUB -B
 #BSUB -N
 #BSUB -R "rusage[mem=32GB]"
-#BSUB -o logs/plr-fruitbot/%J.out
-#BSUB -e logs/plr-fruitbot/%J.err
+#BSUB -o logs/PPO-fruitbot/%J.out
+#BSUB -e logs/PPO-fruitbot/%J.err
 
 echo "Running PPO-fruitbot"
-python3 plr.py $NUM fruitbot
+python3 plr.py 1 fruitbot

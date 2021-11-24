@@ -1,8 +1,6 @@
 
 #!/bin/sh
-NUM = 1
-NAME= "plr-heist"
-mkdir logs/$NAME
+mkdir logs/plr-heist
 
 source ~/.bashrc
 
@@ -19,4 +17,4 @@ source ~/.bashrc
 #BSUB -e logs/plr-heist/%J.err
 
 echo "Running plr-heist"
-python3 plr.py $NUM heist
+python3 plr.py 1 heist

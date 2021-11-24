@@ -1,8 +1,6 @@
 
 #!/bin/sh
-NUM = 1
-NAME= "plr-starpilot"
-mkdir logs/$NAME
+mkdir logs/plr-starpilot
 
 source ~/.bashrc
 
@@ -19,4 +17,4 @@ source ~/.bashrc
 #BSUB -e logs/plr-starpilot/%J.err
 
 echo "Running plr-starpilot"
-python3 plr.py $NUM starpilot
+python3 plr.py 1 starpilot

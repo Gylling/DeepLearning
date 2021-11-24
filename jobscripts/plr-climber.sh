@@ -1,8 +1,6 @@
 
 #!/bin/sh
-NUM = 1
-NAME= "plr-climber"
-mkdir logs/$NAME
+mkdir logs/plr-climber
 
 source ~/.bashrc
 
@@ -19,4 +17,4 @@ source ~/.bashrc
 #BSUB -e logs/plr-climber/%J.err
 
 echo "Running plr-climber"
-python3 plr.py $NUM climber
+python3 plr.py 1 climber

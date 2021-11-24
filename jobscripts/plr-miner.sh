@@ -1,8 +1,6 @@
 
 #!/bin/sh
-NUM = 1
-NAME= "plr-miner"
-mkdir logs/$NAME
+mkdir logs/plr-miner
 
 source ~/.bashrc
 
@@ -19,4 +17,4 @@ source ~/.bashrc
 #BSUB -e logs/plr-miner/%J.err
 
 echo "Running plr-miner"
-python3 plr.py $NUM miner
+python3 plr.py 1 miner

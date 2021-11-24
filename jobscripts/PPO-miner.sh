@@ -1,22 +1,20 @@
 
 #!/bin/sh
-NUM = 1
-NAME= "PPO-miner"
-mkdir logs/$NAME
+mkdir logs/PPO-miner
 
 source ~/.bashrc
 
 #BSUB -q gpua100
 #BSUB -gpu "num=1"
-#BSUB -J plr-miner
+#BSUB -J PPO-miner
 #BSUB -n 1
 #BSUB -W 16:00
 #BSUB -u gylling.erik@gmail.com
 #BSUB -B
 #BSUB -N
 #BSUB -R "rusage[mem=32GB]"
-#BSUB -o logs/plr-miner/%J.out
-#BSUB -e logs/plr-miner/%J.err
+#BSUB -o logs/PPO-miner/%J.out
+#BSUB -e logs/PPO-miner/%J.err
 
 echo "Running PPO-miner"
-python3 plr.py $NUM miner
+python3 plr.py 1 miner
