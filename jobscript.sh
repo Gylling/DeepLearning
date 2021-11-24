@@ -1,22 +1,33 @@
- #!/bin/sh
- NUM = 1
- GAME = "starpilot"
- NAME= "plr-$GAME"
- mkdir logs/$NAME
-
- source ~/.bashrc
-
- #BSUB -q gpua100
- #BSUB -gpu "num=1"
- #BSUB -J plr-starpilot
- #BSUB -n 1
- #BSUB -W 16:00
- #BSUB -u gylling.erik@gmail.com
- #BSUB -B
- #BSUB -N
- #BSUB -R "rusage[mem=32GB]"
- #BSUB -o logs/plr-starpilot/%J.out
- #BSUB -e logs/plr-starpilot/%J.err
-
- echo "Running $NAME"
- python3 plr.py $NUM $GAME
+#!/bin/sh
+bsub < jobscripts/PPO-plunder.sh
+bsub < jobscripts/PPO-starpilot.sh
+bsub < jobscripts/PPO-bossfight.sh
+bsub < jobscripts/PPO-caveflyer.sh
+bsub < jobscripts/PPO-dodgeball.sh
+bsub < jobscripts/PPO-chaser.sh
+bsub < jobscripts/PPO-miner.sh
+bsub < jobscripts/PPO-heist.sh
+bsub < jobscripts/PPO-maze.sh
+bsub < jobscripts/PPO-climber.sh
+bsub < jobscripts/PPO-coinrun.sh
+bsub < jobscripts/PPO-jumper.sh
+bsub < jobscripts/PPO-ninja.sh
+bsub < jobscripts/PPO-leaper.sh
+bsub < jobscripts/PPO-fruitbot.sh
+bsub < jobscripts/PPO-bigfish.sh
+bsub < jobscripts/plr-plunder.sh
+bsub < jobscripts/plr-starpilot.sh
+bsub < jobscripts/plr-bossfight.sh
+bsub < jobscripts/plr-caveflyer.sh
+bsub < jobscripts/plr-dodgeball.sh
+bsub < jobscripts/plr-chaser.sh
+bsub < jobscripts/plr-miner.sh
+bsub < jobscripts/plr-heist.sh
+bsub < jobscripts/plr-maze.sh
+bsub < jobscripts/plr-climber.sh
+bsub < jobscripts/plr-coinrun.sh
+bsub < jobscripts/plr-jumper.sh
+bsub < jobscripts/plr-ninja.sh
+bsub < jobscripts/plr-leaper.sh
+bsub < jobscripts/plr-fruitbot.sh
+bsub < jobscripts/plr-bigfish.sh
