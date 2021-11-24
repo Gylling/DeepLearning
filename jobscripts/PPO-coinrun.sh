@@ -1,8 +1,7 @@
 
 #!/bin/sh
-GAME = coinrun
 NUM = 1
-NAME= "PPO-$GAME"
+NAME= "PPO-coinrun"
 mkdir logs/$NAME
 
 source ~/.bashrc
@@ -19,5 +18,5 @@ source ~/.bashrc
 #BSUB -o logs/plr-coinrun/%J.out
 #BSUB -e logs/plr-coinrun/%J.err
 
-echo "Running $NAME"
-python3 plr.py $NUM $GAME
+echo "Running PPO-coinrun"
+python3 plr.py $NUM coinrun

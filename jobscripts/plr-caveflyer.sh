@@ -1,8 +1,7 @@
 
 #!/bin/sh
-GAME = caveflyer
 NUM = 1
-NAME= "plr-$GAME"
+NAME= "plr-caveflyer"
 mkdir logs/$NAME
 
 source ~/.bashrc
@@ -19,5 +18,5 @@ source ~/.bashrc
 #BSUB -o logs/plr-caveflyer/%J.out
 #BSUB -e logs/plr-caveflyer/%J.err
 
-echo "Running $NAME"
-python3 plr.py $NUM $GAME
+echo "Running plr-caveflyer"
+python3 plr.py $NUM caveflyer

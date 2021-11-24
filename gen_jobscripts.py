@@ -23,9 +23,8 @@ for type in types:
     for game in games:
         text = f"""
 #!/bin/sh
-GAME = {game}
 NUM = 1
-NAME= "{type}-$GAME"
+NAME= "{type}-{game}"
 mkdir logs/$NAME
 
 source ~/.bashrc
@@ -42,7 +41,7 @@ source ~/.bashrc
 #BSUB -o logs/plr-{game}/%J.out
 #BSUB -e logs/plr-{game}/%J.err
 
-echo "Running $NAME"
-python3 plr.py $NUM $GAME"""
+echo "Running {type}-{game}"
+python3 plr.py $NUM {game}"""
         with open(f"jobscripts/{type}-{game}.sh", "w") as f:
             f.write(text)

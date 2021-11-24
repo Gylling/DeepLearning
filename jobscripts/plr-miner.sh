@@ -1,8 +1,7 @@
 
 #!/bin/sh
-GAME = miner
 NUM = 1
-NAME= "plr-$GAME"
+NAME= "plr-miner"
 mkdir logs/$NAME
 
 source ~/.bashrc
@@ -19,5 +18,5 @@ source ~/.bashrc
 #BSUB -o logs/plr-miner/%J.out
 #BSUB -e logs/plr-miner/%J.err
 
-echo "Running $NAME"
-python3 plr.py $NUM $GAME
+echo "Running plr-miner"
+python3 plr.py $NUM miner

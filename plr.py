@@ -25,13 +25,6 @@ import os
 import numpy as np
 
 
-if not "procgen" in sys.modules:
-  ! pip install procgen
-
-if not os.path.isfile("utils.py"):
-  ! wget https://raw.githubusercontent.com/nicklashansen/ppo-procgen-utils/main/utils.py
-
-
 from utils import make_env, Storage, orthogonal_init
 
 

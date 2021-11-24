@@ -1,8 +1,7 @@
 
 #!/bin/sh
-GAME = chaser
 NUM = 1
-NAME= "PPO-$GAME"
+NAME= "PPO-chaser"
 mkdir logs/$NAME
 
 source ~/.bashrc
@@ -19,5 +18,5 @@ source ~/.bashrc
 #BSUB -o logs/plr-chaser/%J.out
 #BSUB -e logs/plr-chaser/%J.err
 
-echo "Running $NAME"
-python3 plr.py $NUM $GAME
+echo "Running PPO-chaser"
+python3 plr.py $NUM chaser

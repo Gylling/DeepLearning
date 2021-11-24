@@ -1,8 +1,7 @@
 
 #!/bin/sh
-GAME = bigfish
 NUM = 1
-NAME= "plr-$GAME"
+NAME= "plr-bigfish"
 mkdir logs/$NAME
 
 source ~/.bashrc
@@ -19,5 +18,5 @@ source ~/.bashrc
 #BSUB -o logs/plr-bigfish/%J.out
 #BSUB -e logs/plr-bigfish/%J.err
 
-echo "Running $NAME"
-python3 plr.py $NUM $GAME
+echo "Running plr-bigfish"
+python3 plr.py $NUM bigfish

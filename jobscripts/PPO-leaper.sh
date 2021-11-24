@@ -1,8 +1,7 @@
 
 #!/bin/sh
-GAME = leaper
 NUM = 1
-NAME= "PPO-$GAME"
+NAME= "PPO-leaper"
 mkdir logs/$NAME
 
 source ~/.bashrc
@@ -19,5 +18,5 @@ source ~/.bashrc
 #BSUB -o logs/plr-leaper/%J.out
 #BSUB -e logs/plr-leaper/%J.err
 
-echo "Running $NAME"
-python3 plr.py $NUM $GAME
+echo "Running PPO-leaper"
+python3 plr.py $NUM leaper

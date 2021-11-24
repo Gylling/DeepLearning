@@ -1,8 +1,7 @@
 
 #!/bin/sh
-GAME = bossfight
 NUM = 1
-NAME= "PPO-$GAME"
+NAME= "PPO-bossfight"
 mkdir logs/$NAME
 
 source ~/.bashrc
@@ -19,5 +18,5 @@ source ~/.bashrc
 #BSUB -o logs/plr-bossfight/%J.out
 #BSUB -e logs/plr-bossfight/%J.err
 
-echo "Running $NAME"
-python3 plr.py $NUM $GAME
+echo "Running PPO-bossfight"
+python3 plr.py $NUM bossfight

@@ -1,8 +1,7 @@
 
 #!/bin/sh
-GAME = climber
 NUM = 1
-NAME= "PPO-$GAME"
+NAME= "PPO-climber"
 mkdir logs/$NAME
 
 source ~/.bashrc
@@ -19,5 +18,5 @@ source ~/.bashrc
 #BSUB -o logs/plr-climber/%J.out
 #BSUB -e logs/plr-climber/%J.err
 
-echo "Running $NAME"
-python3 plr.py $NUM $GAME
+echo "Running PPO-climber"
+python3 plr.py $NUM climber

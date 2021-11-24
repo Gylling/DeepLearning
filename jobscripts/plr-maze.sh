@@ -1,8 +1,7 @@
 
 #!/bin/sh
-GAME = maze
 NUM = 1
-NAME= "plr-$GAME"
+NAME= "plr-maze"
 mkdir logs/$NAME
 
 source ~/.bashrc
@@ -19,5 +18,5 @@ source ~/.bashrc
 #BSUB -o logs/plr-maze/%J.out
 #BSUB -e logs/plr-maze/%J.err
 
-echo "Running $NAME"
-python3 plr.py $NUM $GAME
+echo "Running plr-maze"
+python3 plr.py $NUM maze

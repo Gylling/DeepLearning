@@ -1,8 +1,7 @@
 
 #!/bin/sh
-GAME = dodgeball
 NUM = 1
-NAME= "PPO-$GAME"
+NAME= "PPO-dodgeball"
 mkdir logs/$NAME
 
 source ~/.bashrc
@@ -19,5 +18,5 @@ source ~/.bashrc
 #BSUB -o logs/plr-dodgeball/%J.out
 #BSUB -e logs/plr-dodgeball/%J.err
 
-echo "Running $NAME"
-python3 plr.py $NUM $GAME
+echo "Running PPO-dodgeball"
+python3 plr.py $NUM dodgeball

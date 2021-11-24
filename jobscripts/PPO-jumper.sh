@@ -1,8 +1,7 @@
 
 #!/bin/sh
-GAME = jumper
 NUM = 1
-NAME= "PPO-$GAME"
+NAME= "PPO-jumper"
 mkdir logs/$NAME
 
 source ~/.bashrc
@@ -19,5 +18,5 @@ source ~/.bashrc
 #BSUB -o logs/plr-jumper/%J.out
 #BSUB -e logs/plr-jumper/%J.err
 
-echo "Running $NAME"
-python3 plr.py $NUM $GAME
+echo "Running PPO-jumper"
+python3 plr.py $NUM jumper

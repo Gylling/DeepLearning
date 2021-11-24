@@ -1,8 +1,7 @@
 
 #!/bin/sh
-GAME = fruitbot
 NUM = 1
-NAME= "PPO-$GAME"
+NAME= "PPO-fruitbot"
 mkdir logs/$NAME
 
 source ~/.bashrc
@@ -19,5 +18,5 @@ source ~/.bashrc
 #BSUB -o logs/plr-fruitbot/%J.out
 #BSUB -e logs/plr-fruitbot/%J.err
 
-echo "Running $NAME"
-python3 plr.py $NUM $GAME
+echo "Running PPO-fruitbot"
+python3 plr.py $NUM fruitbot

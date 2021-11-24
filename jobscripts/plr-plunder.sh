@@ -1,8 +1,7 @@
 
 #!/bin/sh
-GAME = plunder
 NUM = 1
-NAME= "plr-$GAME"
+NAME= "plr-plunder"
 mkdir logs/$NAME
 
 source ~/.bashrc
@@ -19,5 +18,5 @@ source ~/.bashrc
 #BSUB -o logs/plr-plunder/%J.out
 #BSUB -e logs/plr-plunder/%J.err
 
-echo "Running $NAME"
-python3 plr.py $NUM $GAME
+echo "Running plr-plunder"
+python3 plr.py $NUM plunder

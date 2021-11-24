@@ -1,8 +1,7 @@
 
 #!/bin/sh
-GAME = ninja
 NUM = 1
-NAME= "plr-$GAME"
+NAME= "plr-ninja"
 mkdir logs/$NAME
 
 source ~/.bashrc
@@ -19,5 +18,5 @@ source ~/.bashrc
 #BSUB -o logs/plr-ninja/%J.out
 #BSUB -e logs/plr-ninja/%J.err
 
-echo "Running $NAME"
-python3 plr.py $NUM $GAME
+echo "Running plr-ninja"
+python3 plr.py $NUM ninja
