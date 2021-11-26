@@ -469,7 +469,6 @@ def write_rewards_to_file():
 if __name__ == '__main__':
     default_game = "starpilot"
     category = int(sys.argv[1])
-    category = 16
     if len(sys.argv) > 2:
         default_game = sys.argv[2]
     FOLDER_NAME = f"plr-{default_game if category == 1 else category}"
