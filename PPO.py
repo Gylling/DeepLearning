@@ -28,7 +28,8 @@ def checkfolder(path):
 total_steps = 20e6
 num_envs = 32
 num_levels = 200
-val_levels = 100
+val_levels = 10
+val_interval = 1e6
 num_steps = 256
 num_epochs = 3
 batch_size = 512
@@ -230,7 +231,7 @@ def create_and_train_network():
         print(f'{step},{game},{storage.get_reward()}')
 
         # Save mean reward
-        if count % 5 == 0:
+        if count % val_interval == 0:
             train_rewards.append(storage.get_reward())
 
             # Evaluate network

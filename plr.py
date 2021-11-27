@@ -41,7 +41,8 @@ total_steps = 20e6  # procgen recommends 25e6
 num_envs = 32
 num_levels = 200  # procgen recommends 200
 total_levels = 200
-val_levels = 100
+val_levels = 10
+val_interval = 1e6
 num_steps = 256
 num_epochs = 3
 batch_size = 512
@@ -394,7 +395,7 @@ def create_and_train_network():
         # print(f'{step},{game},{storage.get_reward()},{level.score}')
 
         # Save mean reward
-        if current_level % 5 == 0:
+        if current_level % val_interval == 0:
             train_rewards.append(storage.get_reward())
 
             # Evaluate network

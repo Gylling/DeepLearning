@@ -1,21 +1,9 @@
 types = ["PPO", "plr"]
 games = [
-    "plunder",
     "starpilot",
     "bossfight",
-    "caveflyer",
-    "dodgeball",
-    "chaser",
-    "miner",
-    "heist",
-    "maze",
-    "climber",
     "coinrun",
-    "jumper",
-    "ninja",
-    "leaper",
-    "fruitbot",
-    "bigfish"
+    "jumper"
 ]
 
 count = 0
