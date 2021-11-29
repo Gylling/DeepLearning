@@ -490,7 +490,7 @@ if __name__ == '__main__':
     category = int(sys.argv[1])
     error_function = 0
     if len(sys.argv) > 3:
-        error_function = sys.argv[2]
+        error_function = int(sys.argv[2])
         default_game = sys.argv[3]
     error_functions = ["GAEMag", "OneStep", "GAE"]
     FOLDER_NAME = f"plr-{default_game if category == 1 else category}-{error_functions[error_function]}"
