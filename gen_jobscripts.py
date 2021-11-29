@@ -1,28 +1,17 @@
-types = ["PPO", "plr"]
+types = ["plr"]
 games = [
-    "plunder",
     "starpilot",
-    "bossfight",
-    "caveflyer",
-    "dodgeball",
-    "chaser",
-    "miner",
-    "heist",
-    "maze",
-    "climber",
     "coinrun",
-    "jumper",
-    "ninja",
-    "leaper",
-    "fruitbot",
-    "bigfish"
+    "jumper"
 ]
+error_functions = ["GAEMag", "OneStep", "GAE"]
 
-count = 1
+
 for type in types:
     for game in games:
-        name = f"{type}-{game}"
-        text = f"""
+        for err in range(3):
+            name = f"{type}-{game}-{error_functions[err]}"
+            text = f"""
 #!/bin/sh
 mkdir logs/{name}
 
@@ -41,6 +30,6 @@ source ~/.bashrc
 #BSUB -e logs/{name}/%J.err
 
 echo "Running {name}"
-python3 {type}.py {count} {game}"""
-        with open(f"jobscripts/{name}.sh", "w") as f:
-            f.write(text)
+python3 {type}.py 1 {err} {game}"""
+            with open(f"jobscripts/{name}.sh", "w") as f:
+                f.write(text)

@@ -78,9 +78,26 @@ class Level:
     score: float = field(default=False, hash=True, compare=True)
     rank = 1
 
-    def set_score(self, advantages):
-        self.score = torch.abs(advantages.mean(1)).mean(0).item()
+    def set_score(self, storage):
+        if error_function == 1:
+            self.score = one_step_TD_error(storage)
+        elif error_function == 2:
+            self.score = GAE(storage)
+        else:
+            self.score = GAE_magnitude(storage)
 
+def GAE_magnitude(storage):
+  return torch.abs(storage.advantage.mean(1)).mean(0).item()
+
+def GAE(storage):
+  return storage.advantage.mean(1).mean(0).item()
+
+def one_step_TD_error(storage):
+  advantages = np.zeros(num_steps)
+  for i in range(num_steps):
+    delta = (storage.reward[i] + storage.gamma * storage.value[i + 1] * (1 - storage.done[i])) - storage.value[i]
+    advantages[i] = torch.abs(delta).mean(0)
+  return advantages.mean(0)
 
 def current_milli_time():
     return round(time.time() * 1000)
@@ -389,7 +406,7 @@ def create_and_train_network():
             level.last_played = current_level
 
         # Update score of level
-        level.set_score(storage.advantage)
+        level.set_score(storage)
         print(
             f'Step: {step}\tGame: {game},\tSeed: {seed},\tMean reward: {storage.get_reward()}\tMean error: {level.score}')
         # print(f'{step},{game},{storage.get_reward()},{level.score}')
@@ -471,8 +488,11 @@ def write_rewards_to_file():
 if __name__ == '__main__':
     default_game = "starpilot"
     category = int(sys.argv[1])
-    if len(sys.argv) > 2:
-        default_game = sys.argv[2]
-    FOLDER_NAME = f"plr-{default_game if category == 1 else category}"
+    error_function = 0
+    if len(sys.argv) > 3:
+        error_function = sys.argv[2]
+        default_game = sys.argv[3]
+    error_functions = ["GAEMag", "OneStep", "GAE"]
+    FOLDER_NAME = f"plr-{default_game if category == 1 else category}-{error_functions[error_function]}"
     create_and_train_network()
     write_rewards_to_file()
