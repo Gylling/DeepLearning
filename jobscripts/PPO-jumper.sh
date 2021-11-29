@@ -17,4 +17,4 @@ source ~/.bashrc
 #BSUB -e logs/PPO-jumper/%J.err
 
 echo "Running PPO-jumper"
-python3 plr.py 1 jumper
+python3 PPO.py 1 jumper

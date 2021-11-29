@@ -17,4 +17,4 @@ source ~/.bashrc
 #BSUB -e logs/PPO-dodgeball/%J.err
 
 echo "Running PPO-dodgeball"
-python3 plr.py 1 dodgeball
+python3 PPO.py 1 dodgeball

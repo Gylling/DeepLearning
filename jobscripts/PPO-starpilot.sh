@@ -17,4 +17,4 @@ source ~/.bashrc
 #BSUB -e logs/PPO-starpilot/%J.err
 
 echo "Running PPO-starpilot"
-python3 plr.py 1 starpilot
+python3 PPO.py 1 starpilot

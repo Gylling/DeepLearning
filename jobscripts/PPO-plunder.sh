@@ -17,4 +17,4 @@ source ~/.bashrc
 #BSUB -e logs/PPO-plunder/%J.err
 
 echo "Running PPO-plunder"
-python3 plr.py 1 plunder
+python3 PPO.py 1 plunder

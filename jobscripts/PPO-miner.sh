@@ -17,4 +17,4 @@ source ~/.bashrc
 #BSUB -e logs/PPO-miner/%J.err
 
 echo "Running PPO-miner"
-python3 plr.py 1 miner
+python3 PPO.py 1 miner

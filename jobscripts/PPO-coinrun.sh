@@ -17,4 +17,4 @@ source ~/.bashrc
 #BSUB -e logs/PPO-coinrun/%J.err
 
 echo "Running PPO-coinrun"
-python3 plr.py 1 coinrun
+python3 PPO.py 1 coinrun

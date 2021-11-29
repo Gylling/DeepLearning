@@ -17,4 +17,4 @@ source ~/.bashrc
 #BSUB -e logs/PPO-bigfish/%J.err
 
 echo "Running PPO-bigfish"
-python3 plr.py 1 bigfish
+python3 PPO.py 1 bigfish

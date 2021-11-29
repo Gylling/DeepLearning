@@ -17,4 +17,4 @@ source ~/.bashrc
 #BSUB -e logs/PPO-climber/%J.err
 
 echo "Running PPO-climber"
-python3 plr.py 1 climber
+python3 PPO.py 1 climber

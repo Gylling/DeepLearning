@@ -17,4 +17,4 @@ source ~/.bashrc
 #BSUB -e logs/PPO-ninja/%J.err
 
 echo "Running PPO-ninja"
-python3 plr.py 1 ninja
+python3 PPO.py 1 ninja

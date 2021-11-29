@@ -29,7 +29,7 @@ total_steps = 20e6
 num_envs = 32
 num_levels = 200
 val_levels = 10
-val_interval = 1e6
+val_interval = 122
 num_steps = 256
 num_epochs = 3
 batch_size = 512
@@ -140,6 +140,7 @@ def create_and_train_network():
     # Define environment
     # check the utils.py file for info on arguments
     count = 0
+    current_level = 0
     game = choose_game(count)
     env = make_env(num_envs, env_name=game, num_levels=num_levels)
     channels_in = env.observation_space.shape[0]
@@ -231,14 +232,15 @@ def create_and_train_network():
         print(f'{step},{game},{storage.get_reward()}')
 
         # Save mean reward
-        if count % val_interval == 0:
+        last_iteration = step >= total_steps
+        if current_level % val_interval == 0 or last_iteration:
             train_rewards.append(storage.get_reward())
 
             # Evaluate network
-            last_iteration = step >= total_steps
             record_and_eval_policy(policy, last_iteration)
 
         count = (count + 1) % num_levels
+        current_level += 1
         game = choose_game(count)
         env = make_env(num_envs, env_name=game,
                        start_level=count, num_levels=1)
@@ -291,16 +293,17 @@ def record_and_eval_policy(policy, record_video):
         checkfolder(video_folder)
         frames = torch.stack(frames)
         imageio.mimsave(
-            video_folder+f'/video-{time.time()}.mp4', frames, fps=25)
+            f'{video_folder}/video-{time.time()}.mp4', frames, fps=25)
 
 
 def write_rewards_to_file():
     rewards_folder = f"rewards/{FOLDER_NAME}"
     checkfolder(rewards_folder)
-    np.savetxt(rewards_folder+f"test_rewards-{time.time()}.csv",
+    np.savetxt(f"{rewards_folder}/test_rewards-{time.time()}.csv",
                np.array(test_rewards), delimiter=",", fmt="%10.5f")
-    np.savetxt(rewards_folder+f"train_rewards-{time.time()}.csv",
+    np.savetxt(f"{rewards_folder}/train_rewards-{time.time()}.csv",
                np.array(train_rewards), delimiter=",", fmt="%10.5f")
+
 
 
 if __name__ == '__main__':

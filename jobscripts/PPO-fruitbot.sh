@@ -17,4 +17,4 @@ source ~/.bashrc
 #BSUB -e logs/PPO-fruitbot/%J.err
 
 echo "Running PPO-fruitbot"
-python3 plr.py 1 fruitbot
+python3 PPO.py 1 fruitbot

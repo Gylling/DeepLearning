@@ -17,4 +17,4 @@ source ~/.bashrc
 #BSUB -e logs/PPO-chaser/%J.err
 
 echo "Running PPO-chaser"
-python3 plr.py 1 chaser
+python3 PPO.py 1 chaser

@@ -17,4 +17,4 @@ source ~/.bashrc
 #BSUB -e logs/PPO-leaper/%J.err
 
 echo "Running PPO-leaper"
-python3 plr.py 1 leaper
+python3 PPO.py 1 leaper

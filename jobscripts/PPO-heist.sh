@@ -17,4 +17,4 @@ source ~/.bashrc
 #BSUB -e logs/PPO-heist/%J.err
 
 echo "Running PPO-heist"
-python3 plr.py 1 heist
+python3 PPO.py 1 heist

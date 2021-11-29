@@ -17,4 +17,4 @@ source ~/.bashrc
 #BSUB -e logs/PPO-caveflyer/%J.err
 
 echo "Running PPO-caveflyer"
-python3 plr.py 1 caveflyer
+python3 PPO.py 1 caveflyer

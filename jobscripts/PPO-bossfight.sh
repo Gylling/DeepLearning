@@ -17,4 +17,4 @@ source ~/.bashrc
 #BSUB -e logs/PPO-bossfight/%J.err
 
 echo "Running PPO-bossfight"
-python3 plr.py 1 bossfight
+python3 PPO.py 1 bossfight

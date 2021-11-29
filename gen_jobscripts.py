@@ -41,6 +41,6 @@ source ~/.bashrc
 #BSUB -e logs/{name}/%J.err
 
 echo "Running {name}"
-python3 plr.py {count} {game}"""
+python3 {type}.py {count} {game}"""
         with open(f"jobscripts/{name}.sh", "w") as f:
             f.write(text)
