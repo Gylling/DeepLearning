@@ -1,4 +1,4 @@
-
+types = ["PPO", "plr"]
 games = [
     "starpilot",
     "coinrun",
@@ -12,9 +12,16 @@ for game in games:
         text += f"""
 bsub < jobscripts/PPO-{game}.sh"""
 
+
 for game in games:
     for err in range(3):
         name = f"plr-{game}-{error_functions[err]}"
+        text += f"""
+bsub < jobscripts/{name}.sh"""
+
+for category in [2,3]:
+    for type in types:
+        name = f"{type}-{category}"
         text += f"""
 bsub < jobscripts/{name}.sh"""
 

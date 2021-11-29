@@ -101,22 +101,9 @@ class Policy(nn.Module):
 
 
 games = [
-    "plunder",
     "starpilot",
-    "bossfight",
-    "caveflyer",
-    "dodgeball",
-    "chaser",
-    "miner",
-    "heist",
-    "maze",
-    "climber",
     "coinrun",
-    "jumper",
-    "ninja",
-    "leaper",
-    "fruitbot",
-    "bigfish"
+    "jumper"
 ]
 
 
@@ -124,13 +111,9 @@ def choose_game(seed):
     if category == 1:
         return default_game
     elif category == 2:
-        return games[:5][seed % 5]
+        return games[:2][seed % 2]
     elif category == 3:
-        return games[5:9][seed % 4]
-    elif category == 4:
-        return games[9:13][seed % 4]
-    elif category == 5:
-        return games[13:16][seed % 3]
+        return games[1:][seed % 2]
     else:
         return games[seed % category]
 
