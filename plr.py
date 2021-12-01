@@ -202,8 +202,8 @@ games_dict = {
 
 games = [
     "starpilot",
-    "coinrun",
-    "jumper"
+    "maze",
+    "heist"
 ]
 
 
@@ -423,6 +423,7 @@ def record_and_eval_policy(policy, record_video):
                             num_levels=1, start_level=seed)
         obs = eval_env.reset()
 
+        temp_reward = []
         # Evaluate policy
         policy.eval()
         for _ in range(num_steps*2):
@@ -431,7 +432,7 @@ def record_and_eval_policy(policy, record_video):
 
             # Take step in environment
             obs, reward, done, info = eval_env.step(action)
-            total_reward.append(torch.Tensor(reward))
+            temp_reward.append(torch.Tensor(reward))
 
             # Render environment and store
             if record_video:
@@ -443,8 +444,11 @@ def record_and_eval_policy(policy, record_video):
             if done.all():
                 break
 
+        total_reward.append(torch.stack(temp_reward).mean(1).sum(0))
+        
+
     # Calculate average return
-    total_reward = torch.stack(total_reward).sum(0).mean(0)
+    total_reward = torch.stack(total_reward).mean(0)
 
     # Save mean reward
     test_rewards.append(total_reward)
