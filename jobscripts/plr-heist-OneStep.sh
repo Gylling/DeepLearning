@@ -4,7 +4,7 @@ mkdir logs/plr-heist-OneStep
 
 source ~/.bashrc
 
-#BSUB -q gpua100
+#BSUB -q hpc
 #BSUB -gpu "num=1"
 #BSUB -J plr-heist-OneStep
 #BSUB -n 1

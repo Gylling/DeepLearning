@@ -4,7 +4,7 @@ mkdir logs/plr-heist-GAE
 
 source ~/.bashrc
 
-#BSUB -q gpua100
+#BSUB -q hpc
 #BSUB -gpu "num=1"
 #BSUB -J plr-heist-GAE
 #BSUB -n 1

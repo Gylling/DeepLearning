@@ -4,7 +4,7 @@ mkdir logs/plr-starpilot-GAE
 
 source ~/.bashrc
 
-#BSUB -q gpua100
+#BSUB -q hpc
 #BSUB -gpu "num=1"
 #BSUB -J plr-starpilot-GAE
 #BSUB -n 1

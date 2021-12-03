@@ -4,7 +4,7 @@ mkdir logs/plr-maze-GAEMag
 
 source ~/.bashrc
 
-#BSUB -q gpua100
+#BSUB -q hpc
 #BSUB -gpu "num=1"
 #BSUB -J plr-maze-GAEMag
 #BSUB -n 1

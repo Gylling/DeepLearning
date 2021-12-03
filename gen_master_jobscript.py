@@ -25,5 +25,5 @@ for category in [2,3]:
         text += f"""
 bsub < jobscripts/{name}.sh"""
 
-with open(f"jobscript.sh", "w") as f:
+with open(f"jobscript-hpc.sh", "w") as f:
             f.write(text)

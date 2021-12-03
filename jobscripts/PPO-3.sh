@@ -4,7 +4,7 @@ mkdir logs/PPO-3
 
 source ~/.bashrc
 
-#BSUB -q gpua100
+#BSUB -q hpc
 #BSUB -gpu "num=1"
 #BSUB -J PPO-3
 #BSUB -n 1
