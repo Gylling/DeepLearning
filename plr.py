@@ -219,7 +219,7 @@ def choose_game(seed):
 
 
 def normalize_reward(reward, min_score, max_score):
-    return (reward-min_score)/(max_score-min_score)
+    return (reward-min_score)/(max_score-min_score) if category > 1 else reward
 
 
 class Flatten(nn.Module):
@@ -391,13 +391,13 @@ def create_and_train_network():
         # Update score of level
         level.set_score(storage)
         print(
-            f'Step: {step}\tGame: {game},\tSeed: {seed},\tMean reward: {storage.get_reward()}\tMean error: {level.score}')
+            f'Step: {step}\tGame: {game},\tSeed: {seed},\tMean reward: {storage.get_reward(False)}\tMean error: {level.score}')
         # print(f'{step},{game},{storage.get_reward()},{level.score}')
 
         # Save mean reward
         last_iteration = step >= total_steps
         if current_level % val_interval == 0 or last_iteration:
-            train_rewards.append(storage.get_reward())
+            train_rewards.append(storage.get_reward(False))
 
             # Evaluate network
             record_and_eval_policy(policy, last_iteration)
@@ -418,7 +418,7 @@ def record_and_eval_policy(policy, record_video):
     # Make evaluation environment
     for seed in test_sequence:
         seed = int(seed)
-        game, _, _ = choose_game(seed)
+        game, min_score, max_score = choose_game(seed)
         eval_env = make_env(num_envs, env_name=game,
                             num_levels=1, start_level=seed)
         obs = eval_env.reset()
@@ -432,6 +432,7 @@ def record_and_eval_policy(policy, record_video):
 
             # Take step in environment
             obs, reward, done, info = eval_env.step(action)
+            reward = normalize_reward(reward, min_score, max_score)
             temp_reward.append(torch.Tensor(reward))
 
             # Render environment and store

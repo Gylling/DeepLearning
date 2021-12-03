@@ -100,6 +100,25 @@ class Policy(nn.Module):
         return dist, value
 
 
+games_dict = {
+    "plunder": ("plunder", 4.5, 30),
+    "starpilot": ("starpilot", 2.5, 64),
+    "bossfight": ("bossfight", 0.5, 13),
+    "caveflyer": ("caveflyer", 3.5, 12),
+    "dodgeball": ("dodgeball", 1.5, 19),
+    "chaser": ("chaser", 0.5, 13),
+    "miner": ("miner", 1.5, 13),
+    "heist": ("heist", 3.5, 10),
+    "maze": ("maze", 5, 10),
+    "climber": ("climber", 2, 12.6),
+    "coinrun": ("coinrun", 5, 10),
+    "jumper": ("jumper", 3, 10),
+    "ninja": ("ninja", 3.5, 10),
+    "leaper": ("leaper", 3, 10),
+    "fruitbot": ("fruitbot", -1.5, 32),
+    "bigfish": ("bigfish", 1, 40)
+}
+
 games = [
     "starpilot",
     "maze",
@@ -109,13 +128,16 @@ games = [
 
 def choose_game(seed):
     if category == 1:
-        return default_game
+        return games_dict[default_game]
     elif category == 2:
-        return games[:2][seed % 2]
+        return games_dict[games[:2][seed % 2]]
     elif category == 3:
-        return games[1:][seed % 2]
+        return games_dict[games[1:][seed % 2]]
     else:
-        return games[seed % category]
+        return games_dict[games[seed % category]]
+
+def normalize_reward(reward, min_score, max_score):
+    return (reward-min_score)/(max_score-min_score) if category > 1 else reward
 
 
 def create_and_train_network():
@@ -124,7 +146,7 @@ def create_and_train_network():
     # check the utils.py file for info on arguments
     count = 0
     current_level = 0
-    game = choose_game(count)
+    game, min_score, max_score = choose_game(count)
     env = make_env(num_envs, env_name=game, num_levels=num_levels)
     channels_in = env.observation_space.shape[0]
     actions = env.action_space.n
@@ -159,6 +181,8 @@ def create_and_train_network():
 
             # Take step in environment
             next_obs, reward, done, info = env.step(action)
+
+            reward = normalize_reward(reward, min_score, max_score)
 
             # Store data
             storage.store(obs, action, reward, done, info, log_prob, value)
@@ -212,19 +236,19 @@ def create_and_train_network():
 
         # Update stats
         step += num_envs * num_steps
-        print(f'{step},{game},{storage.get_reward()}')
+        print(f'{step},{game},{storage.get_reward(False)}')
 
         # Save mean reward
         last_iteration = step >= total_steps
         if current_level % val_interval == 0 or last_iteration:
-            train_rewards.append(storage.get_reward())
+            train_rewards.append(storage.get_reward(False))
 
             # Evaluate network
             record_and_eval_policy(policy, last_iteration)
 
         count = (count + 1) % num_levels
         current_level += 1
-        game = choose_game(count)
+        game, min_score, max_score = choose_game(count)
         env = make_env(num_envs, env_name=game,
                        start_level=count, num_levels=1)
         obs = env.reset()
@@ -239,7 +263,7 @@ def record_and_eval_policy(policy, record_video):
     # Make evaluation environment
     for seed in test_sequence:
         seed = int(seed)
-        game = choose_game(seed)
+        game, min_score, max_score = choose_game(seed)
         eval_env = make_env(num_envs, env_name=game,
                             num_levels=1, start_level=seed)
         obs = eval_env.reset()
@@ -253,6 +277,7 @@ def record_and_eval_policy(policy, record_video):
 
             # Take step in environment
             obs, reward, done, info = eval_env.step(action)
+            reward = normalize_reward(reward, min_score, max_score)
             temp_reward.append(torch.Tensor(reward))
 
             # Render environment and store
