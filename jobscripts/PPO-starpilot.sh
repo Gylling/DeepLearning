@@ -4,7 +4,7 @@ mkdir logs/PPO-starpilot
 
 source ~/.bashrc
 
-#BSUB -q hpc
+#BSUB -q gpua100
 #BSUB -gpu "num=1"
 #BSUB -J PPO-starpilot
 #BSUB -n 1

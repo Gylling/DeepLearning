@@ -4,7 +4,7 @@ mkdir logs/plr-2
 
 source ~/.bashrc
 
-#BSUB -q hpc
+#BSUB -q gpua100
 #BSUB -gpu "num=1"
 #BSUB -J plr-2
 #BSUB -n 1

@@ -14,7 +14,7 @@ mkdir logs/{name}
 
 source ~/.bashrc
 
-#BSUB -q hpc
+#BSUB -q gpua100
 #BSUB -gpu "num=1"
 #BSUB -J {name}
 #BSUB -n 1
@@ -41,7 +41,7 @@ mkdir logs/{name}
 
 source ~/.bashrc
 
-#BSUB -q hpc
+#BSUB -q gpua100
 #BSUB -gpu "num=1"
 #BSUB -J {name}
 #BSUB -n 1
@@ -69,7 +69,7 @@ mkdir logs/{name}
 
 source ~/.bashrc
 
-#BSUB -q hpc
+#BSUB -q gpua100
 #BSUB -gpu "num=1"
 #BSUB -J {name}
 #BSUB -n 1

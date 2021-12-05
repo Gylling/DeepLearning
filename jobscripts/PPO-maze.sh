@@ -4,7 +4,7 @@ mkdir logs/PPO-maze
 
 source ~/.bashrc
 
-#BSUB -q hpc
+#BSUB -q gpua100
 #BSUB -gpu "num=1"
 #BSUB -J PPO-maze
 #BSUB -n 1

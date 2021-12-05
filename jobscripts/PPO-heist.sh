@@ -4,7 +4,7 @@ mkdir logs/PPO-heist
 
 source ~/.bashrc
 
-#BSUB -q hpc
+#BSUB -q gpua100
 #BSUB -gpu "num=1"
 #BSUB -J PPO-heist
 #BSUB -n 1
