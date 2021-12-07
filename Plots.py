@@ -118,13 +118,13 @@ for label in label_names:
         name, min_score, max_score = games_dict[game]
         test = pd.read_csv(file_dict[label][game]["test"], header=None)
         train = pd.read_csv(file_dict[label][game]["train"], header=None)
-        df_test[i] = (test- min_score) / (max_score - min_score)
-        df_train[i] = (train- min_score) / (max_score - min_score)
+        df_test[i] = (test- test.mean()) / test.std()
+        df_train[i] = (train- train.mean()) / train.std()
 
     df_test_mean = pd.concat(df_test, axis=1).mean(axis=1)
     plt.plot(x, df_test_mean, ":", label="test", color=colors[label])
 
-    df = pd.concat(df_train, axis=1)
-    plt.plot(x, df.mean(axis=1), "--", label="train", color=colors[label])
+    df_train_mean = pd.concat(df_train, axis=1).mean(axis=1)
+    plt.plot(x, df_train_mean, "--", label="train", color=colors[label])
 
 plt.show()
