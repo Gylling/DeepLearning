@@ -25,17 +25,17 @@ file_dict = {
     },
     "plr-td": {
         "starpilot": {"test": "rewards/plr-starpilot-OneStep/test_rewards-1638828612.513363.csv", "train": "rewards/plr-starpilot-OneStep/train_rewards-1638828612.5180354.csv"},
-        "heist": {"test": "", "train": ""},
+        "heist": {"test": "rewards/plr-heist-OneStep/test_rewards-1638910258.7899933.csv", "train": "rewards/plr-heist-OneStep/train_rewards-1638910258.794794.csv"},
         "maze": {"test": "rewards/plr-maze-OneStep/test_rewards-1638809491.8857126.csv", "train": "rewards/plr-maze-OneStep/train_rewards-1638809491.8898652.csv"}
     },
     "plr-gae": {
         "starpilot": {"test": "rewards/plr-starpilot-GAE/test_rewards-1638867795.0073612.csv", "train": "rewards/plr-starpilot-GAE/train_rewards-1638867795.0123215.csv"},
         "heist": {"test": "", "train": ""},
-        "maze": {"test": "", "train": ""}
+        "maze": {"test": "rewards/plr-maze-GAE/test_rewards-1638909761.2664955.csv", "train": "rewards/plr-maze-GAE/train_rewards-1638909761.2712605.csv"}
     },
     "plr-gaem": {
         "starpilot": {"test": "rewards/plr-starpilot-GAEMag/test_rewards-1638825768.9538002.csv", "train": "rewards/plr-starpilot-GAEMag/train_rewards-1638825768.960656.csv"},
-        "heist": {"test": "", "train": ""},
+        "heist": {"test": "rewards/plr-heist-GAEMag/test_rewards-1638907811.9192955.csv", "train": "rewards/plr-heist-GAEMag/train_rewards-1638907811.9240243.csv"},
         "maze": {"test": "rewards/plr-maze-GAEMag/test_rewards-1638815208.0819683.csv", "train": "rewards/plr-maze-GAEMag/train_rewards-1638815208.0867116.csv"}
     }
 }
@@ -122,10 +122,10 @@ for label in label_names:
         if len(test_path) > 0:
             test = pd.read_csv(test_path, header=None)
             train = pd.read_csv(train_path, header=None)
-            df_test[i] = (test- min_score) / (max_score- min_score)
-            df_train[i] = (train- min_score) / (max_score- min_score)
-            # df_test[i] = (test- test.mean()) / test.std()
-            # df_train[i] = (train- train.mean()) / train.std()
+            #df_test[i] = (test- min_score) / (max_score- min_score)
+            #df_train[i] = (train- min_score) / (max_score- min_score)
+            df_test[i] = (test- test.mean()) / test.std()
+            df_train[i] = (train- train.mean()) / train.std()
 
     df_test = [d for d in df_test if len(d)>0]
     df_test_mean = pd.concat(df_test, axis=1).mean(axis=1)
@@ -138,7 +138,9 @@ for label in label_names:
 plt.xlabel("Steps in M")
 plt.ylabel("Rewards")
 plt.title("Mean normalized rewards")
-plt.legend(loc='best', ncol=2)
+#plt.legend(loc='best', ncol=4)
+plt.legend(loc='center right', bbox_to_anchor=(1.4, 0.5),
+          ncol=1, fancybox=True, shadow=False)
 plt.tight_layout()
 plt.savefig('gap.png')
 plt.show()
