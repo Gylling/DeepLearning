@@ -19,24 +19,24 @@ Plot 1..n:
 
 file_dict = {
     "ppo": {
-        "starpilot": {"test": "rand.csv", "train": "rand.csv"},
-        "heist": {"test": "rand.csv", "train": "rand.csv"},
-        "maze": {"test": "rand.csv", "train": "rand.csv"}
+        "starpilot": {"test": "rewards/ppo-starpilot/test_rewards-1638731995.6470635.csv", "train": "rewards/ppo-starpilot/train_rewards-1638731995.6521041.csv"},
+        "heist": {"test": "rewards/ppo-heist/test_rewards-1638789892.8010404.csv", "train": "rewards/ppo-heist/train_rewards-1638789892.8077898.csv"},
+        "maze": {"test": "rewards/ppo-maze/test_rewards-1638797839.9878278.csv", "train": "rewards/ppo-maze/train_rewards-1638797839.9934442.csv"}
     },
     "plr-td": {
-        "starpilot": {"test": "rand2.csv", "train": "rand.csv"},
+        "starpilot": {"test": "rewards/plr-starpilot-OneStep/test_rewards-1638828612.513363.csv", "train": "rewards/plr-starpilot-OneStep/train_rewards-1638828612.5180354.csv"},
         "heist": {"test": "rand2.csv", "train": "rand.csv"},
-        "maze": {"test": "rand2.csv", "train": "rand.csv"}
+        "maze": {"test": "rewards/plr-maze-OneStep/test_rewards-1638809491.8857126.csv", "train": "rewards/plr-maze-OneStep/train_rewards-1638809491.8898652.csv"}
     },
     "plr-gae": {
-        "starpilot": {"test": "rand3.csv", "train": "rand.csv"},
+        "starpilot": {"test": "rrewards/plr-starpilot-GAE/test_rewards-1638867795.0073612.csv", "train": "rewards/plr-starpilot-GAE/train_rewards-1638867795.0123215.csv"},
         "heist": {"test": "rand3.csv", "train": "rand.csv"},
         "maze": {"test": "rand3.csv", "train": "rand.csv"}
     },
     "plr-gaem": {
-        "starpilot": {"test": "rand4.csv", "train": "rand.csv"},
+        "starpilot": {"test": "rewards/plr-starpilot-GAEMag/test_rewards-1638825768.9538002.csv", "train": "rewards/plr-starpilot-GAEMag/train_rewards-1638825768.960656.csv"},
         "heist": {"test": "rand4.csv", "train": "rand.csv"},
-        "maze": {"test": "rand4.csv", "train": "rand.csv"}
+        "maze": {"test": "rewards/plr-maze-GAEMag/test_rewards-1638815208.0819683.csv", "train": "rewards/plr-maze-GAEMag/train_rewards-1638815208.0867116.csv"}
     }
 }
 
