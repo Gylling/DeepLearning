@@ -96,6 +96,7 @@ fig.delaxes(axs[1][1])
 fig.tight_layout()
 plt.savefig('rewards.png')
 fig.show()
+plt.clf()
 
 """
 Figure 2
@@ -116,15 +117,28 @@ for label in label_names:
     df_test = [[] for i in range(3)]
     for i, game in enumerate(games):
         name, min_score, max_score = games_dict[game]
-        test = pd.read_csv(file_dict[label][game]["test"], header=None)
-        train = pd.read_csv(file_dict[label][game]["train"], header=None)
-        df_test[i] = (test- test.mean()) / test.std()
-        df_train[i] = (train- train.mean()) / train.std()
+        test_path = file_dict[label][game]["test"]
+        train_path = file_dict[label][game]["train"]
+        if len(test_path) > 0:
+            test = pd.read_csv(test_path, header=None)
+            train = pd.read_csv(train_path, header=None)
+            df_test[i] = (test- min_score) / (max_score- min_score)
+            df_train[i] = (train- min_score) / (max_score- min_score)
+            # df_test[i] = (test- test.mean()) / test.std()
+            # df_train[i] = (train- train.mean()) / train.std()
 
+    df_test = [d for d in df_test if len(d)>0]
     df_test_mean = pd.concat(df_test, axis=1).mean(axis=1)
-    plt.plot(x, df_test_mean, ":", label="test", color=colors[label])
+    plt.plot(x, df_test_mean, ":", label=f"{label} test", color=colors[label])
 
+    df_train = [d for d in df_train if len(d)>0]
     df_train_mean = pd.concat(df_train, axis=1).mean(axis=1)
-    plt.plot(x, df_train_mean, "--", label="train", color=colors[label])
+    plt.plot(x, df_train_mean, "--", label=f"{label} train", color=colors[label])
 
+plt.xlabel("Steps in M")
+plt.ylabel("Rewards")
+plt.title("Mean normalized rewards")
+plt.legend(loc='best', ncol=2)
+plt.tight_layout()
+plt.savefig('gap.png')
 plt.show()
