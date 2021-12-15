@@ -28,6 +28,14 @@ import numpy as np
 from utils import make_env, Storage, orthogonal_init
 
 
+def create_envs():
+    envs = {}
+    for i in range(total_levels):
+        envs[i] = make_env(num_envs, num_levels=1, start_level=i)
+
+    print(f"Created all {total_levels} levels")
+    return envs
+
 def checkfolder(path):
     if not os.path.exists(path):
         os.makedirs(path, exist_ok=True)
@@ -312,9 +320,11 @@ def create_and_train_network():
     # Run training
     obs = env.reset()
     step = 0
+    envs = create_envs()
     while step < total_steps:
 
         # Use policy to collect data for num_steps steps
+        cur_done = np.zeros(num_envs)
         policy.eval()
         for _ in range(num_steps):
             # Use policy
@@ -323,6 +333,8 @@ def create_and_train_network():
             # Take step in environment
             next_obs, reward, done, info = env.step(action)
 
+            cur_done = np.logical_or(cur_done, done)
+
             reward = normalize_reward(reward, min_score, max_score)
 
             # Store data
@@ -330,6 +342,12 @@ def create_and_train_network():
 
             # Update current observation
             obs = next_obs
+
+            if cur_done.all():
+                new_seed = get_new_level_seed()
+                # print(f"Level changed from {seed} to {new_seed}")
+                env.reset()
+                env = envs[new_seed]
 
         # Add the last observation to collected data
         _, _, value = policy.act(obs)

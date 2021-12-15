@@ -7,6 +7,7 @@ import time
 import os
 import sys
 import numpy as np
+import secrets
 
 # The cell below installs `procgen` and downloads a small `utils.py` script that contains some utility functions. You
 # may want to inspect the file for more details.
@@ -21,6 +22,16 @@ def checkfolder(path):
     if not os.path.exists(path):
         os.makedirs(path, exist_ok=True)
 
+def create_envs():
+    envs = {}
+    for i in range(num_levels):
+        envs[i] = make_env(num_envs, num_levels=1, start_level=i)
+
+    print(f"Created all {num_levels} envs")
+    return envs
+
+def get_new_level_seed():
+    return secrets.randbelow(num_levels)
 
 # Hyperparameters. These values should be a good starting point. You can modify them later once you have a working
 # implementation.
@@ -171,10 +182,13 @@ def create_and_train_network():
     # Run training
     obs = env.reset()
     step = 0
+
+    envs = create_envs()
     while step < total_steps:
 
         # Use policy to collect data for num_steps steps
         policy.eval()
+        cur_done = np.zeros(num_envs)
         for _ in range(num_steps):
             # Use policy
             action, log_prob, value = policy.act(obs)
@@ -184,11 +198,21 @@ def create_and_train_network():
 
             reward = normalize_reward(reward, min_score, max_score)
 
+            cur_done = np.logical_or(cur_done, done)
+
+            reward = normalize_reward(reward, min_score, max_score)
             # Store data
             storage.store(obs, action, reward, done, info, log_prob, value)
 
             # Update current observation
             obs = next_obs
+
+            if cur_done.all():
+                new_seed = get_new_level_seed()
+                # print(f"Level changed from {seed} to {new_seed}")
+                env.reset()
+                env = envs[new_seed]
+
 
         # Add the last observation to collected data
         _, _, value = policy.act(obs)
