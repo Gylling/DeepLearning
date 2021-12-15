@@ -346,8 +346,8 @@ def create_and_train_network():
             if cur_done.all():
                 new_seed = get_new_level_seed()
                 # print(f"Level changed from {seed} to {new_seed}")
-                env.reset()
                 env = envs[new_seed]
+                obs = env.reset()
 
         # Add the last observation to collected data
         _, _, value = policy.act(obs)
