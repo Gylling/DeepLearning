@@ -30,7 +30,7 @@ from utils import make_env, Storage, orthogonal_init
 
 def create_envs():
     envs = {}
-    for i in range(total_levels):
+    for i in range(total_levels+val_levels):
         envs[i] = make_env(num_envs, num_levels=1, start_level=i)
 
     print(f"Created all {total_levels} levels")
@@ -432,13 +432,12 @@ def record_and_eval_policy(policy, record_video):
     global test_rewards
     frames = []
     total_reward = []
-
+    envs = create_envs()
     # Make evaluation environment
     for seed in test_sequence:
         seed = int(seed)
         game, min_score, max_score = choose_game(seed)
-        eval_env = make_env(num_envs, env_name=game,
-                            num_levels=1, start_level=seed)
+        eval_env = envs[seed]
         obs = eval_env.reset()
 
         temp_reward = []
