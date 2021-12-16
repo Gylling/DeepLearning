@@ -443,6 +443,7 @@ def record_and_eval_policy(policy, record_video):
 
         temp_reward = []
         # Evaluate policy
+        cur_done = np.zeros(num_envs)
         policy.eval()
         for _ in range(num_steps*2):
             # Use policy
@@ -459,8 +460,9 @@ def record_and_eval_policy(policy, record_video):
                     mode='rgb_array')) * 255.).byte()
                 frames.append(frame)
 
+            cur_done = np.logical_or(cur_done, done)
             # A level is played once.
-            if done.all():
+            if cur_done.all():
                 break
 
         total_reward.append(torch.stack(temp_reward).mean(1).sum(0))
