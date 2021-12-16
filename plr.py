@@ -320,7 +320,7 @@ def create_and_train_network():
     # Run training
     obs = env.reset()
     step = 0
-    envs = create_envs()
+    # envs = create_envs()
     while step < total_steps:
 
         # Use policy to collect data for num_steps steps
@@ -432,8 +432,8 @@ def record_and_eval_policy(policy, record_video):
     global test_rewards
     frames = []
     total_reward = []
-    envs = create_envs()
     # Make evaluation environment
+    # envs = create_envs()
     for seed in test_sequence:
         seed = int(seed)
         game, min_score, max_score = choose_game(seed)
@@ -501,5 +501,6 @@ if __name__ == '__main__':
         default_game = sys.argv[3]
     error_functions = ["GAEMag", "OneStep", "GAE"]
     FOLDER_NAME = f"plr-{default_game if category == 1 else category}-{error_functions[error_function]}"
+    envs = create_envs()
     create_and_train_network()
     write_rewards_to_file()

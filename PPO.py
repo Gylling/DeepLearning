@@ -186,7 +186,7 @@ def create_and_train_network():
     obs = env.reset()
     step = 0
 
-    envs = create_envs()
+    # envs = create_envs()
     while step < total_steps:
 
         # Use policy to collect data for num_steps steps
@@ -285,7 +285,7 @@ def record_and_eval_policy(policy, record_video):
     total_reward = []
 
     # Make evaluation environment
-    envs = create_envs()
+    # envs = create_envs()
     for seed in test_sequence:
         seed = int(seed)
         game, min_score, max_score = choose_game(seed)
@@ -348,5 +348,6 @@ if __name__ == '__main__':
     if len(sys.argv) > 2:
         default_game = sys.argv[2]
     FOLDER_NAME = f"ppo-{default_game if category == 1 else category}"
+    envs = create_envs()
     create_and_train_network()
     write_rewards_to_file()
