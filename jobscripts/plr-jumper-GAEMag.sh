@@ -8,7 +8,7 @@ source ~/.bashrc
 #BSUB -gpu "num=1"
 #BSUB -J plr-jumper-GAEMag
 #BSUB -n 1
-#BSUB -W 24:00
+#BSUB -W 36:00
 #BSUB -u gylling.erik@gmail.com
 #BSUB -B
 #BSUB -N

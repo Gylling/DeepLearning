@@ -1,8 +1,8 @@
 types = ["PPO", "plr"]
 games = [
-    "starpilot",
-    "maze",
-    "heist"
+    "bigfish",
+    "ninja",
+    "jumper"
 ]
 error_functions = ["GAEMag", "OneStep", "GAE"]
 

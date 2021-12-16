@@ -201,9 +201,9 @@ games_dict = {
 }
 
 games = [
-    "starpilot",
-    "maze",
-    "heist"
+    "bigfish",
+    "ninja",
+    "jumper"
 ]
 
 

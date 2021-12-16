@@ -30,7 +30,7 @@ file_dict = {
     },
     "plr-gae": {
         "starpilot": {"test": "rewards/plr-starpilot-GAE/test_rewards-1638867795.0073612.csv", "train": "rewards/plr-starpilot-GAE/train_rewards-1638867795.0123215.csv"},
-        "heist": {"test": "", "train": ""},
+        "heist": {"test": "rewards/plr-heist-GAE/test_rewards-1638935332.7869308.csv", "train": "rewards/plr-heist-GAE/train_rewards-1638935332.791826.csv"},
         "maze": {"test": "rewards/plr-maze-GAE/test_rewards-1638909761.2664955.csv", "train": "rewards/plr-maze-GAE/train_rewards-1638909761.2712605.csv"}
     },
     "plr-gaem": {
