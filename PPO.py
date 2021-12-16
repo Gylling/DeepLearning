@@ -199,8 +199,6 @@ def create_and_train_network():
             # Take step in environment
             next_obs, reward, done, info = env.step(action)
 
-            reward = normalize_reward(reward, min_score, max_score)
-
             cur_done = np.logical_or(cur_done, done)
 
             reward = normalize_reward(reward, min_score, max_score)
