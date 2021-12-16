@@ -28,6 +28,14 @@ import numpy as np
 from utils import make_env, Storage, orthogonal_init
 
 
+def create_envs():
+    envs = {}
+    for i in range(total_levels+val_levels):
+        envs[i] = make_env(num_envs, num_levels=1, start_level=i)
+
+    print(f"Created all {total_levels} levels")
+    return envs
+
 def checkfolder(path):
     if not os.path.exists(path):
         os.makedirs(path, exist_ok=True)
@@ -312,9 +320,11 @@ def create_and_train_network():
     # Run training
     obs = env.reset()
     step = 0
+    envs = create_envs()
     while step < total_steps:
 
         # Use policy to collect data for num_steps steps
+        cur_done = np.zeros(num_envs)
         policy.eval()
         for _ in range(num_steps):
             # Use policy
@@ -323,6 +333,8 @@ def create_and_train_network():
             # Take step in environment
             next_obs, reward, done, info = env.step(action)
 
+            cur_done = np.logical_or(cur_done, done)
+
             reward = normalize_reward(reward, min_score, max_score)
 
             # Store data
@@ -330,6 +342,12 @@ def create_and_train_network():
 
             # Update current observation
             obs = next_obs
+
+            if cur_done.all():
+                new_seed = get_new_level_seed()
+                # print(f"Level changed from {seed} to {new_seed}")
+                env = envs[new_seed]
+                obs = env.reset()
 
         # Add the last observation to collected data
         _, _, value = policy.act(obs)
@@ -414,17 +432,17 @@ def record_and_eval_policy(policy, record_video):
     global test_rewards
     frames = []
     total_reward = []
-
+    envs = create_envs()
     # Make evaluation environment
     for seed in test_sequence:
         seed = int(seed)
         game, min_score, max_score = choose_game(seed)
-        eval_env = make_env(num_envs, env_name=game,
-                            num_levels=1, start_level=seed)
+        eval_env = envs[seed]
         obs = eval_env.reset()
 
         temp_reward = []
         # Evaluate policy
+        cur_done = np.zeros(num_envs)
         policy.eval()
         for _ in range(num_steps*2):
             # Use policy
@@ -441,8 +459,9 @@ def record_and_eval_policy(policy, record_video):
                     mode='rgb_array')) * 255.).byte()
                 frames.append(frame)
 
+            cur_done = np.logical_or(cur_done, done)
             # A level is played once.
-            if done.all():
+            if cur_done.all():
                 break
 
         total_reward.append(torch.stack(temp_reward).mean(1).sum(0))

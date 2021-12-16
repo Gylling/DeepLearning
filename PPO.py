@@ -1,25 +1,38 @@
-import torch
+import os
+import secrets
+import sys
+import time
+
 import imageio
+import numpy as np
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import random
-import time
-import os
-import sys
-import numpy as np
+from utils import make_env, Storage, orthogonal_init
+
 
 # The cell below installs `procgen` and downloads a small `utils.py` script that contains some utility functions. You
 # may want to inspect the file for more details.
-
 # ! pip install procgen
 # ! wget https://raw.githubusercontent.com/nicklashansen/ppo-procgen-utils/main/utils.py
-
-from utils import make_env, Storage, orthogonal_init
 
 
 def checkfolder(path):
     if not os.path.exists(path):
         os.makedirs(path, exist_ok=True)
+
+
+def create_envs():
+    envs = {}
+    for i in range(num_levels + val_levels):
+        envs[i] = make_env(num_envs, num_levels=1, start_level=i)
+
+    print(f"Created all {num_levels} envs")
+    return envs
+
+
+def get_new_level_seed():
+    return secrets.randbelow(num_levels)
 
 
 # Hyperparameters. These values should be a good starting point. You can modify them later once you have a working
@@ -40,7 +53,7 @@ entropy_coef = .01
 test_rewards = []
 train_rewards = []
 # choose levels above seen levels
-test_sequence = np.arange(num_levels, num_levels+val_levels)
+test_sequence = np.arange(num_levels, num_levels + val_levels)
 
 
 # Network definitions. We have defined a policy network for you in advance. It uses the popular `NatureDQN` encoder
@@ -136,8 +149,9 @@ def choose_game(seed):
     else:
         return games_dict[games[seed % category]]
 
+
 def normalize_reward(reward, min_score, max_score):
-    return (reward-min_score)/(max_score-min_score) if category > 1 else reward
+    return (reward - min_score) / (max_score - min_score) if category > 1 else reward
 
 
 def create_and_train_network():
@@ -171,10 +185,13 @@ def create_and_train_network():
     # Run training
     obs = env.reset()
     step = 0
+
+    envs = create_envs()
     while step < total_steps:
 
         # Use policy to collect data for num_steps steps
         policy.eval()
+        cur_done = np.zeros(num_envs)
         for _ in range(num_steps):
             # Use policy
             action, log_prob, value = policy.act(obs)
@@ -184,11 +201,20 @@ def create_and_train_network():
 
             reward = normalize_reward(reward, min_score, max_score)
 
+            cur_done = np.logical_or(cur_done, done)
+
+            reward = normalize_reward(reward, min_score, max_score)
             # Store data
             storage.store(obs, action, reward, done, info, log_prob, value)
 
             # Update current observation
             obs = next_obs
+
+            if cur_done.all():
+                new_seed = get_new_level_seed()
+                # print(f"Level changed from {seed} to {new_seed}")
+                env = envs[new_seed]
+                obs = env.reset()
 
         # Add the last observation to collected data
         _, _, value = policy.act(obs)
@@ -261,17 +287,18 @@ def record_and_eval_policy(policy, record_video):
     total_reward = []
 
     # Make evaluation environment
+    envs = create_envs()
     for seed in test_sequence:
         seed = int(seed)
         game, min_score, max_score = choose_game(seed)
-        eval_env = make_env(num_envs, env_name=game,
-                            num_levels=1, start_level=seed)
+        eval_env = envs[seed]
         obs = eval_env.reset()
 
         temp_reward = []
         # Evaluate policy
+        cur_done = np.zeros(num_envs)
         policy.eval()
-        for _ in range(num_steps*2):
+        for _ in range(num_steps * 2):
             # Use policy
             action, log_prob, value = policy.act(obs)
 
@@ -286,12 +313,12 @@ def record_and_eval_policy(policy, record_video):
                     mode='rgb_array')) * 255.).byte()
                 frames.append(frame)
 
+            cur_done = np.logical_or(cur_done, done)
             # A level is played once.
-            if done.all():
+            if cur_done.all():
                 break
 
         total_reward.append(torch.stack(temp_reward).mean(1).sum(0))
-        
 
     # Calculate average return
     total_reward = torch.stack(total_reward).mean(0)
@@ -315,7 +342,6 @@ def write_rewards_to_file():
                np.array(test_rewards), delimiter=",", fmt="%10.5f")
     np.savetxt(f"{rewards_folder}/train_rewards-{time.time()}.csv",
                np.array(train_rewards), delimiter=",", fmt="%10.5f")
-
 
 
 if __name__ == '__main__':
