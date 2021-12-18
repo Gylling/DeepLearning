@@ -8,6 +8,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import random
 from utils import make_env, Storage, orthogonal_init
 
 
@@ -24,10 +25,16 @@ def checkfolder(path):
 
 def create_envs():
     envs = {}
-    for i in range(num_levels + val_levels):
-        envs[i] = make_env(num_envs, num_levels=1, start_level=i)
+    i = 0
+    while i < num_levels+val_levels:
+        try:
+            envs[i] = make_env(num_envs, num_levels=1, start_level=i)
+            i = i + 1
+        except:
+            delay = random.randint(0,300)
+            time.sleep(delay)
 
-    print(f"Created all {num_levels} envs")
+    print(f"Created all {num_levels} levels")
     return envs
 
 

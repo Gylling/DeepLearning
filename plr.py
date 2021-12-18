@@ -30,8 +30,14 @@ from utils import make_env, Storage, orthogonal_init
 
 def create_envs():
     envs = {}
-    for i in range(total_levels+val_levels):
-        envs[i] = make_env(num_envs, num_levels=1, start_level=i)
+    i = 0
+    while i < total_levels+val_levels:
+        try:
+            envs[i] = make_env(num_envs, num_levels=1, start_level=i)
+            i = i + 1
+        except:
+            delay = random.randint(0,300)
+            time.sleep(delay)
 
     print(f"Created all {total_levels} levels")
     return envs
