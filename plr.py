@@ -28,20 +28,6 @@ import numpy as np
 from utils import make_env, Storage, orthogonal_init
 
 
-def create_envs():
-    envs = {}
-    i = 0
-    while i < total_levels+val_levels:
-        try:
-            envs[i] = make_env(num_envs, num_levels=1, start_level=i)
-            i = i + 1
-        except:
-            delay = random.randint(0,300)
-            time.sleep(delay)
-
-    print(f"Created all {total_levels} levels")
-    return envs
-
 def checkfolder(path):
     if not os.path.exists(path):
         os.makedirs(path, exist_ok=True)
@@ -113,9 +99,6 @@ def one_step_TD_error(storage):
     advantages[i] = torch.abs(delta).mean(0)
   return advantages.mean(0)
 
-def current_milli_time():
-    return round(time.time() * 1000)
-
 
 def get_new_level_seed():
     global played_levels
@@ -135,7 +118,6 @@ def get_new_level_seed():
 
 def get_unseen_level():
     global level_sequence
-    level_sequence
     lvl_seed, level_sequence = int(level_sequence[-1]), level_sequence[:-1]
     return lvl_seed
 
@@ -294,12 +276,10 @@ def create_and_train_network():
     global train_rewards
     # Define environment
     # check the utils.py file for info on arguments
-    x = current_milli_time()
     seed = get_new_level_seed()
     game, min_score, max_score = choose_game(seed)
     env = make_env(num_envs, env_name=game,
                    num_levels=1, start_level=seed)
-    y = current_milli_time()
     channels_in = env.observation_space.shape[0]
     actions = env.action_space.n
 
@@ -332,7 +312,8 @@ def create_and_train_network():
         # Use policy to collect data for num_steps steps
         cur_done = np.zeros(num_envs)
         policy.eval()
-        for _ in range(num_steps):
+        current_step = 0
+        for current_step in range(num_steps):
             # Use policy
             action, log_prob, value = policy.act(obs)
 
@@ -350,10 +331,7 @@ def create_and_train_network():
             obs = next_obs
 
             if cur_done.all():
-                new_seed = get_new_level_seed()
-                # print(f"Level changed from {seed} to {new_seed}")
-                env = envs[new_seed]
-                obs = env.reset()
+                break
 
         # Add the last observation to collected data
         _, _, value = policy.act(obs)
@@ -400,7 +378,7 @@ def create_and_train_network():
                 optimizer.zero_grad()
 
          # Update stats
-        step += num_envs * num_steps
+        step += num_envs * current_step
 
         level_seed = storage.info[0][1]['level_seed']
         level = None
@@ -443,7 +421,7 @@ def record_and_eval_policy(policy, record_video):
     for seed in test_sequence:
         seed = int(seed)
         game, min_score, max_score = choose_game(seed)
-        eval_env = envs[seed]
+        eval_env = make_env(num_envs, env_name=game, start_level=seed, num_levels=1)
         obs = eval_env.reset()
 
         temp_reward = []
@@ -507,6 +485,5 @@ if __name__ == '__main__':
         default_game = sys.argv[3]
     error_functions = ["GAEMag", "OneStep", "GAE"]
     FOLDER_NAME = f"plr-{default_game if category == 1 else category}-{error_functions[error_function]}"
-    envs = create_envs()
     create_and_train_network()
     write_rewards_to_file()

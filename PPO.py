@@ -23,25 +23,6 @@ def checkfolder(path):
         os.makedirs(path, exist_ok=True)
 
 
-def create_envs():
-    envs = {}
-    i = 0
-    while i < num_levels+val_levels:
-        try:
-            envs[i] = make_env(num_envs, num_levels=1, start_level=i)
-            i = i + 1
-        except:
-            delay = random.randint(0,300)
-            time.sleep(delay)
-
-    print(f"Created all {num_levels} levels")
-    return envs
-
-
-def get_new_level_seed():
-    return secrets.randbelow(num_levels)
-
-
 # Hyperparameters. These values should be a good starting point. You can modify them later once you have a working
 # implementation.
 # Hyperparameters
@@ -199,7 +180,8 @@ def create_and_train_network():
         # Use policy to collect data for num_steps steps
         policy.eval()
         cur_done = np.zeros(num_envs)
-        for _ in range(num_steps):
+        current_step = 0
+        for current_step in range(num_steps):
             # Use policy
             action, log_prob, value = policy.act(obs)
 
@@ -216,10 +198,7 @@ def create_and_train_network():
             obs = next_obs
 
             if cur_done.all():
-                new_seed = get_new_level_seed()
-                # print(f"Level changed from {seed} to {new_seed}")
-                env = envs[new_seed]
-                obs = env.reset()
+                break
 
         # Add the last observation to collected data
         _, _, value = policy.act(obs)
@@ -266,7 +245,7 @@ def create_and_train_network():
                 optimizer.zero_grad()
 
         # Update stats
-        step += num_envs * num_steps
+        step += num_envs * current_step
         print(f'{step},{game},{storage.get_reward(False)}')
 
         # Save mean reward
@@ -296,7 +275,8 @@ def record_and_eval_policy(policy, record_video):
     for seed in test_sequence:
         seed = int(seed)
         game, min_score, max_score = choose_game(seed)
-        eval_env = envs[seed]
+        eval_env = make_env(num_envs, env_name=game,
+                       start_level=seed, num_levels=1)
         obs = eval_env.reset()
 
         temp_reward = []
@@ -355,6 +335,5 @@ if __name__ == '__main__':
     if len(sys.argv) > 2:
         default_game = sys.argv[2]
     FOLDER_NAME = f"ppo-{default_game if category == 1 else category}"
-    envs = create_envs()
     create_and_train_network()
     write_rewards_to_file()
