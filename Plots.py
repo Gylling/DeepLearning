@@ -19,24 +19,24 @@ Plot 1..n:
 
 file_dict = {
     "ppo": {
-        "starpilot": {"test": "rewards/ppo-starpilot/test_rewards-1638731995.6470635.csv", "train": "rewards/ppo-starpilot/train_rewards-1638731995.6521041.csv"},
-        "heist": {"test": "rewards/ppo-heist/test_rewards-1638789892.8010404.csv", "train": "rewards/ppo-heist/train_rewards-1638789892.8077898.csv"},
-        "maze": {"test": "rewards/ppo-maze/test_rewards-1638797839.9878278.csv", "train": "rewards/ppo-maze/train_rewards-1638797839.9934442.csv"}
+        "junper": {"test": "rewards/ppo-jumper/test_rewards-1640046985.3327672.csv", "train": "rewards/ppo-jumper/train_rewards-1640046985.3378258.csv"},
+        "ninja": {"test": "rewards/ppo-ninja/test_rewards-1640011771.8472745.csv", "train": "rewards/ppo-ninja/train_rewards-1640011771.8518178.csv"},
+        "bigfish": {"test": "rewards/ppo-bigfish/test_rewards-1639986849.5726612.csv", "train": "rewards/ppo-bigfish/train_rewards-1639986849.5768883.csv"}
     },
     "plr-td": {
-        "starpilot": {"test": "rewards/plr-starpilot-OneStep/test_rewards-1638828612.513363.csv", "train": "rewards/plr-starpilot-OneStep/train_rewards-1638828612.5180354.csv"},
-        "heist": {"test": "rewards/plr-heist-OneStep/test_rewards-1638910258.7899933.csv", "train": "rewards/plr-heist-OneStep/train_rewards-1638910258.794794.csv"},
-        "maze": {"test": "rewards/plr-maze-OneStep/test_rewards-1638809491.8857126.csv", "train": "rewards/plr-maze-OneStep/train_rewards-1638809491.8898652.csv"}
+        "junper": {"test": "rewards/plr-jumper-OneStep/test_rewards-1640123833.4178863.csv", "train": "rewards/plr-jumper-OneStep/train_rewards-1640123833.4224465.csv"},
+        "ninja": {"test": "rewards/plr-ninja-OneStep/test_rewards-1640145094.9311488.csv", "train": "rewards/plr-ninja-OneStep/train_rewards-1640145094.9371839.csv"},
+        "bigfish": {"test": "rewards/plr-bigfish-OneStep/test_rewards-1640061956.0442092.csv", "train": "rewards/plr-bigfish-OneStep/train_rewards-1640061956.04891.csv"}
     },
     "plr-gae": {
-        "starpilot": {"test": "rewards/plr-starpilot-GAE/test_rewards-1638867795.0073612.csv", "train": "rewards/plr-starpilot-GAE/train_rewards-1638867795.0123215.csv"},
-        "heist": {"test": "rewards/plr-heist-GAE/test_rewards-1638935332.7869308.csv", "train": "rewards/plr-heist-GAE/train_rewards-1638935332.791826.csv"},
-        "maze": {"test": "rewards/plr-maze-GAE/test_rewards-1638909761.2664955.csv", "train": "rewards/plr-maze-GAE/train_rewards-1638909761.2712605.csv"}
+        "junper": {"test": "rewards/plr-jumper-GAE/test_rewards-1640360949.4017658.csv", "train": "rewards/plr-jumper-GAE/train_rewards-1640360949.407864.csv"},
+        "ninja": {"test": "rewards/plr-ninja-GAE/test_rewards-1640090183.7667.csv", "train": "rewards/plr-ninja-GAE/train_rewards-1640090183.7718542.csv"},
+        "bigfish": {"test": "rewards/plr-bigfish-GAE/test_rewards-1640075308.8060634.csv", "train": "rewards/plr-bigfish-GAE/train_rewards-1640075308.8102653.csv"}
     },
     "plr-gaem": {
-        "starpilot": {"test": "rewards/plr-starpilot-GAEMag/test_rewards-1638825768.9538002.csv", "train": "rewards/plr-starpilot-GAEMag/train_rewards-1638825768.960656.csv"},
-        "heist": {"test": "rewards/plr-heist-GAEMag/test_rewards-1638907811.9192955.csv", "train": "rewards/plr-heist-GAEMag/train_rewards-1638907811.9240243.csv"},
-        "maze": {"test": "rewards/plr-maze-GAEMag/test_rewards-1638815208.0819683.csv", "train": "rewards/plr-maze-GAEMag/train_rewards-1638815208.0867116.csv"}
+        "junper": {"test": "rewards/plr-jumper-GAEMag/test_rewards-1640124835.600524.csv", "train": "rewards/plr-jumper-GAEMag/train_rewards-1640124835.6055303.csv"},
+        "ninja": {"test": "rewards/plr-ninja-GAEMag/test_rewards-1640101918.664596.csv", "train": "rewards/plr-ninja-GAEMag/train_rewards-1640101918.6686788.csv"},
+        "bigfish": {"test": "rewards/plr-bigfish-GAEMag/test_rewards-1640018769.8121777.csv", "train": "rewards/plr-bigfish-GAEMag/train_rewards-1640018769.817248.csv"}
     }
 }
 
@@ -52,6 +52,7 @@ def generate_graph(fig, colors, ax, ax_coord, list_of_paths, label_names, title=
             continue
         else:
             df = pd.read_csv(path, header=None)
+        print(path)
         ax[ax_x, ax_y].plot(x, df, label=label, c=color)
 
         ax[ax_x, ax_y].set_xlabel(xlabel)
@@ -74,9 +75,9 @@ label_names = [
 coords = [(0, 0), (0, 1), (1, 0)]
 # Starpilot
 games = [
-    "starpilot",
-    "maze",
-    "heist"
+    "bigfish",
+    "jumper",
+    "ninja"
 ]
 
 for game, coord in zip(games, coords):
@@ -103,9 +104,9 @@ Figure 2
 """
 
 games_dict = {
-    "starpilot": ("starpilot", 2.5, 64),
-    "heist": ("heist", 3.5, 10),
-    "maze": ("maze", 5, 10)
+    "jumper": ("jumper", 3, 10),
+    "ninja": ("ninja", 3.5, 10),
+    "bigfish": ("bigfish", 1, 40)
 }
 
 colors = {}
