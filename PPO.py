@@ -149,7 +149,7 @@ def create_and_train_network():
     count = 0
     current_level = 0
     game, min_score, max_score = choose_game(count)
-    env = make_env(num_envs, env_name=game, num_levels=num_levels)
+    env = make_env(num_envs, env_name=game, num_levels=1)
     channels_in = env.observation_space.shape[0]
     actions = env.action_space.n
 
@@ -198,7 +198,12 @@ def create_and_train_network():
             obs = next_obs
 
             if cur_done.all():
-                break
+                count += 1
+                game, _, _ = choose_game(count)
+                env = make_env(num_envs, env_name=game,
+                               start_level=count, num_levels=1)
+                obs = env.reset()
+                cur_done = np.zeros(num_envs)
 
         # Add the last observation to collected data
         _, _, value = policy.act(obs)

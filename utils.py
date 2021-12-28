@@ -1,18 +1,16 @@
 import contextlib
 import os
-from abc import ABC, abstractmethod
-import numpy as np
-import gym
 import random
-from gym import spaces
-import time
+from abc import ABC, abstractmethod
 from collections import deque
-import os
+
+import gym
+import numpy as np
 import torch
 import torch.nn as nn
-from torch.utils.data.sampler import BatchSampler, SubsetRandomSampler
+from gym import spaces
 from procgen import ProcgenEnv
-from collections import deque
+from torch.utils.data.sampler import BatchSampler, SubsetRandomSampler
 
 """
 Utility functions for the deep RL projects that I supervise in 02456 Deep Learning @ DTU.
@@ -87,6 +85,18 @@ class Storage():
     def store_last(self, obs, value):
         self.obs[-1] = obs.clone()
         self.value[-1] = value.clone()
+
+    def compute_return_advantage_2(self, steps):
+        advantage = 0
+        advantages = torch.zeros(steps + 1, self.num_envs)
+        print(f"Ended at {self.step}: And walking {steps}. That means we're starting at {self.step-steps}")
+
+        for idx, i in enumerate(reversed(range((self.step - steps), self.step))):
+            delta = (self.reward[i] + self.gamma * self.value[i + 1] * (1 - self.done[i])) - self.value[i]
+            advantage = self.gamma * self.lmbda * advantage * (1 - self.done[i]) + delta
+            advantages[idx] = advantage
+
+        return reversed(advantages)
 
     def compute_return_advantage(self):
         advantage = 0

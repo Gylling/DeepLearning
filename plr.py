@@ -7,30 +7,27 @@ Original file is located at
     https://colab.research.google.com/drive/1xN2_zPtrx-ZVBlGVeOCgpP6ZPLQ1uD-9
 """
 
+import os
+import os.path
+import secrets
+import sys
+import time
+from dataclasses import dataclass, field
 
 import imageio
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch.distributions.categorical import Categorical
-from torch.distributions.uniform import Uniform
 from torch.distributions.bernoulli import Bernoulli
-import secrets
-import sys
-import os.path
-import time
-from dataclasses import dataclass, field
-import random
-import os
-import numpy as np
-
-
+from torch.distributions.categorical import Categorical
 from utils import make_env, Storage, orthogonal_init
 
 
 def checkfolder(path):
     if not os.path.exists(path):
         os.makedirs(path, exist_ok=True)
+
 
 # Hyperparameters. These values should be a good starting point. You can modify them later once you have a working
 # implementation.
@@ -53,7 +50,7 @@ entropy_coef = .01
 played_levels = set()
 level_sequence = np.random.choice(np.arange(total_levels), total_levels, False)
 # choose levels above seen levels
-test_sequence = np.arange(total_levels, total_levels+val_levels)
+test_sequence = np.arange(total_levels, total_levels + val_levels)
 current_level = 0
 beta = 0.1
 gamma = 0.99
@@ -78,26 +75,36 @@ class Level:
     score: float = field(default=False, hash=True, compare=True)
     rank = 1
 
-    def set_score(self, storage):
+    def set_score(self, storage, advantage, steps):
         if error_function == 1:
-            self.score = one_step_TD_error(storage)
+            self.score = one_step_TD_error(storage, advantage=advantage, steps=steps)
         elif error_function == 2:
-            self.score = GAE(storage)
+            self.score = GAE(storage, advantages=advantage, steps=steps)
         else:
-            self.score = GAE_magnitude(storage)
+            self.score = GAE_magnitude(storage, advantages=advantage, steps=steps)
 
-def GAE_magnitude(storage):
-  return torch.abs(storage.advantage.mean(1)).mean(0).item()
 
-def GAE(storage):
-  return storage.advantage.mean(1).mean(0).item()
+def GAE_magnitude(storage, advantages=None, steps=None):
+    if advantages is None:
+        return torch.abs(storage.advantage.mean(1)).mean(0).item()
+    else:
+        return torch.abs(advantages.mean(1)).mean(0).item()
 
-def one_step_TD_error(storage):
-  advantages = np.zeros(num_steps)
-  for i in range(num_steps):
-    delta = (storage.reward[i] + storage.gamma * storage.value[i + 1] * (1 - storage.done[i])) - storage.value[i]
-    advantages[i] = torch.abs(delta).mean(0)
-  return advantages.mean(0)
+
+def GAE(storage, advantages = None, steps=None):
+    if advantages is None:
+        return storage.advantage.mean(1).mean(0).item()
+    else:
+        return advantages.mean(1).mean(0).item()
+
+
+
+def one_step_TD_error(storage, advantage, steps):
+    advantages = np.zeros(steps)
+    for idx, i in enumerate(range(storage.step - steps, storage.step)):
+        delta = (storage.reward[i] + storage.gamma * storage.value[i + 1] * (1 - storage.done[i])) - storage.value[i]
+        advantages[idx] = torch.abs(delta).mean(0)
+    return advantages.mean(0)
 
 
 def get_new_level_seed():
@@ -107,7 +114,7 @@ def get_new_level_seed():
     torch.manual_seed(secrets.randbelow(10000))
 
     # Bernoulli distribution decides between seen and unseen levels
-    d = len(played_levels)/total_levels
+    d = len(played_levels) / total_levels
     play_replay_level = Bernoulli(torch.tensor([d])).sample().item()
 
     if len(level_sequence) == 0 or play_replay_level == 1:
@@ -123,7 +130,7 @@ def get_unseen_level():
 
 
 def get_replay_level():
-    probs = [0]*len(played_levels)
+    probs = [0] * len(played_levels)
     lvls_list = list(played_levels)
 
     # Calculate ranks once and save it on levels
@@ -136,8 +143,8 @@ def get_replay_level():
     # Calculate probabilities
     for i in range(len(lvls_list)):
         lvl = lvls_list[i]
-        probs[i] = (1-rho)*score_dist(lvl, score_sum)+rho * \
-            staleness_dist(lvl, summed_episode_diffs)
+        probs[i] = (1 - rho) * score_dist(lvl, score_sum) + rho * \
+                   staleness_dist(lvl, summed_episode_diffs)
 
     # Create distribution and retrieve an index
     lvl_index = Categorical(torch.FloatTensor(probs)).sample().item()
@@ -148,19 +155,19 @@ def get_replay_level():
 
 def update_ranks(lvls_seen):
     ranks = sorted(lvls_seen, reverse=True, key=lambda lvl: lvl.score)
-    for i in range(1, len(ranks)+1):
-        ranks[i-1].rank = i
+    for i in range(1, len(ranks) + 1):
+        ranks[i - 1].rank = i
 
 
 def sum_of_score_dist():
     sum = 0
     for lvl in played_levels:
-        sum += (1/lvl.rank)**(1/beta)
+        sum += (1 / lvl.rank) ** (1 / beta)
     return sum if sum > 0 else 1
 
 
 def score_dist(lvl, score_sum):
-    return (1/lvl.rank)**(1/beta)/score_sum
+    return (1 / lvl.rank) ** (1 / beta) / score_sum
 
 
 def sum_staleness():
@@ -173,7 +180,7 @@ def sum_staleness():
 
 def staleness_dist(lvl, summed_episode_diffs):
     staleness = current_level - lvl.last_played
-    staleness_weight = staleness/summed_episode_diffs
+    staleness_weight = staleness / summed_episode_diffs
     return staleness_weight
 
 
@@ -215,7 +222,7 @@ def choose_game(seed):
 
 
 def normalize_reward(reward, min_score, max_score):
-    return (reward-min_score)/(max_score-min_score) if category > 1 else reward
+    return (reward - min_score) / (max_score - min_score) if category > 1 else reward
 
 
 class Flatten(nn.Module):
@@ -307,18 +314,21 @@ def create_and_train_network():
     obs = env.reset()
     step = 0
     # envs = create_envs()
+    level_step = 0
     while step < total_steps:
 
         # Use policy to collect data for num_steps steps
         cur_done = np.zeros(num_envs)
         policy.eval()
         current_step = 0
+        level_step = 0
         for current_step in range(num_steps):
             # Use policy
             action, log_prob, value = policy.act(obs)
 
             # Take step in environment
             next_obs, reward, done, info = env.step(action)
+            level_step += 1
 
             cur_done = np.logical_or(cur_done, done)
 
@@ -331,7 +341,9 @@ def create_and_train_network():
             obs = next_obs
 
             if cur_done.all():
-                break
+                env, _ = save_level_and_get_next(current_level, storage, step, policy, level_step)
+                level_step = 0
+                cur_done = np.zeros(num_envs)
 
         # Add the last observation to collected data
         _, _, value = policy.act(obs)
@@ -377,38 +389,47 @@ def create_and_train_network():
                 optimizer.step()
                 optimizer.zero_grad()
 
-         # Update stats
+        # Update stats
         step += num_envs * current_step
 
-        level_seed = storage.info[0][1]['level_seed']
-        level = None
-        if not storage.info[0][1]['level_seed'] in [x.seed for x in played_levels]:
-            level = Level(seed=level_seed, last_played=current_level)
-            played_levels.add(level)
-        else:
-            level = [
-                level for level in played_levels if level_seed == level.seed][0]
-            level.last_played = current_level
+        env, level = save_level_and_get_next(current_level, storage, step, policy, level_step)
 
-        # Update score of level
-        level.set_score(storage)
         print(
-            f'Step: {step}\tGame: {game},\tSeed: {seed},\tMean reward: {storage.get_reward(False)}\tMean error: {level.score}')
+            f'Step: {step}\tGame: {game},\tSeed: {level.seed},\tMean reward: {storage.get_reward(False)}\tMean error: {level.score}')
         # print(f'{step},{game},{storage.get_reward()},{level.score}')
 
-        # Save mean reward
-        last_iteration = step >= total_steps
-        if current_level % val_interval == 0 or last_iteration:
-            train_rewards.append(storage.get_reward(False))
-
-            # Evaluate network
-            record_and_eval_policy(policy, last_iteration)
-
-        current_level += 1
-        seed = get_new_level_seed()
-        game, min_score, max_score = choose_game(seed)
-        env = make_env(num_envs, env_name=game, start_level=seed, num_levels=1)
         obs = env.reset()
+
+
+def save_level_and_get_next(current_level, storage, step, policy, level_step):
+    level_seed = storage.info[0][1]['level_seed']
+    level = None
+    if not storage.info[0][1]['level_seed'] in [x.seed for x in played_levels]:
+        level = Level(seed=level_seed, last_played=current_level)
+        played_levels.add(level)
+    else:
+        level = [
+            level for level in played_levels if level_seed == level.seed][0]
+        level.last_played = current_level
+
+    # Save mean reward
+    last_iteration = step >= total_steps
+    if current_level % val_interval == 0 or last_iteration:
+        train_rewards.append(storage.get_reward(False))
+
+        # Evaluate network
+        record_and_eval_policy(policy, last_iteration)
+
+    advantage = storage.compute_return_advantage_2(level_step)
+
+    current_level += 1
+    seed = get_new_level_seed()
+    game, min_score, max_score = choose_game(seed)
+    env = make_env(num_envs, env_name=game, start_level=seed, num_levels=1)
+    # Update score of level
+    level.set_score(storage, steps=level_step, advantage=advantage)
+
+    return env, level
 
 
 # Below cell can be used for policy evaluation and saves an episode to mp4 for you to view.
@@ -428,7 +449,7 @@ def record_and_eval_policy(policy, record_video):
         # Evaluate policy
         cur_done = np.zeros(num_envs)
         policy.eval()
-        for _ in range(num_steps*2):
+        for _ in range(num_steps * 2):
             # Use policy
             action, log_prob, value = policy.act(obs)
 
@@ -449,7 +470,6 @@ def record_and_eval_policy(policy, record_video):
                 break
 
         total_reward.append(torch.stack(temp_reward).mean(1).sum(0))
-        
 
     # Calculate average return
     total_reward = torch.stack(total_reward).mean(0)
@@ -473,7 +493,6 @@ def write_rewards_to_file():
                np.array(test_rewards), delimiter=",", fmt="%10.5f")
     np.savetxt(f"{rewards_folder}/train_rewards-{time.time()}.csv",
                np.array(train_rewards), delimiter=",", fmt="%10.5f")
-
 
 
 if __name__ == '__main__':
