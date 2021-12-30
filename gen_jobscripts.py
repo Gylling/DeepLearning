@@ -18,7 +18,7 @@ source ~/.bashrc
 #BSUB -gpu "num=1"
 #BSUB -J {name}
 #BSUB -n 1
-#BSUB -W 36:00
+#BSUB -W 56:00
 #BSUB -u gylling.erik@gmail.com
 #BSUB -B
 #BSUB -N
@@ -73,7 +73,7 @@ source ~/.bashrc
 #BSUB -gpu "num=1"
 #BSUB -J {name}
 #BSUB -n 1
-#BSUB -W 36:00
+#BSUB -W 56:00
 #BSUB -u gylling.erik@gmail.com
 #BSUB -B
 #BSUB -N
