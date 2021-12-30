@@ -1,6 +1,6 @@
 
 #!/bin/sh
-mkdir logs/PPO-3
+mkdir finallogs/PPO-3
 
 source ~/.bashrc
 
@@ -13,8 +13,8 @@ source ~/.bashrc
 #BSUB -B
 #BSUB -N
 #BSUB -R "rusage[mem=32GB]"
-#BSUB -o logs/PPO-3/%J.out
-#BSUB -e logs/PPO-3/%J.err
+#BSUB -o finallogs/PPO-3/%J.out
+#BSUB -e finallogs/PPO-3/%J.err
 
 echo "Running PPO-3"
 python3 PPO.py 3

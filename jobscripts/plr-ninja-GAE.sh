@@ -1,6 +1,6 @@
 
 #!/bin/sh
-mkdir logs/plr-ninja-GAE
+mkdir finallogs/plr-ninja-GAE
 
 source ~/.bashrc
 
@@ -13,8 +13,8 @@ source ~/.bashrc
 #BSUB -B
 #BSUB -N
 #BSUB -R "rusage[mem=32GB]"
-#BSUB -o logs/plr-ninja-GAE/%J.out
-#BSUB -e logs/plr-ninja-GAE/%J.err
+#BSUB -o finallogs/plr-ninja-GAE/%J.out
+#BSUB -e finallogs/plr-ninja-GAE/%J.err
 
 echo "Running plr-ninja-GAE"
 python3 plr.py 1 2 ninja

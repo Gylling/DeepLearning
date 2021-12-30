@@ -1,6 +1,6 @@
 
 #!/bin/sh
-mkdir logs/plr-2
+mkdir finallogs/plr-2
 
 source ~/.bashrc
 
@@ -13,8 +13,8 @@ source ~/.bashrc
 #BSUB -B
 #BSUB -N
 #BSUB -R "rusage[mem=32GB]"
-#BSUB -o logs/plr-2/%J.out
-#BSUB -e logs/plr-2/%J.err
+#BSUB -o finallogs/plr-2/%J.out
+#BSUB -e finallogs/plr-2/%J.err
 
 echo "Running plr-2"
 python3 plr.py 2

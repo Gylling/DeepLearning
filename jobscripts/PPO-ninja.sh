@@ -1,6 +1,6 @@
 
 #!/bin/sh
-mkdir logs/PPO-ninja
+mkdir finallogs/PPO-ninja
 
 source ~/.bashrc
 
@@ -13,8 +13,8 @@ source ~/.bashrc
 #BSUB -B
 #BSUB -N
 #BSUB -R "rusage[mem=32GB]"
-#BSUB -o logs/PPO-ninja/%J.out
-#BSUB -e logs/PPO-ninja/%J.err
+#BSUB -o finallogs/PPO-ninja/%J.out
+#BSUB -e finallogs/PPO-ninja/%J.err
 
 echo "Running PPO-ninja"
 python3 PPO.py 1 ninja

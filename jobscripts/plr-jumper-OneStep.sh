@@ -1,6 +1,6 @@
 
 #!/bin/sh
-mkdir logs/plr-jumper-OneStep
+mkdir finallogs/plr-jumper-OneStep
 
 source ~/.bashrc
 
@@ -13,8 +13,8 @@ source ~/.bashrc
 #BSUB -B
 #BSUB -N
 #BSUB -R "rusage[mem=32GB]"
-#BSUB -o logs/plr-jumper-OneStep/%J.out
-#BSUB -e logs/plr-jumper-OneStep/%J.err
+#BSUB -o finallogs/plr-jumper-OneStep/%J.out
+#BSUB -e finallogs/plr-jumper-OneStep/%J.err
 
 echo "Running plr-jumper-OneStep"
 python3 plr.py 1 1 jumper

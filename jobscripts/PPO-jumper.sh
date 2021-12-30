@@ -1,6 +1,6 @@
 
 #!/bin/sh
-mkdir logs/PPO-jumper
+mkdir finallogs/PPO-jumper
 
 source ~/.bashrc
 
@@ -13,8 +13,8 @@ source ~/.bashrc
 #BSUB -B
 #BSUB -N
 #BSUB -R "rusage[mem=32GB]"
-#BSUB -o logs/PPO-jumper/%J.out
-#BSUB -e logs/PPO-jumper/%J.err
+#BSUB -o finallogs/PPO-jumper/%J.out
+#BSUB -e finallogs/PPO-jumper/%J.err
 
 echo "Running PPO-jumper"
 python3 PPO.py 1 jumper

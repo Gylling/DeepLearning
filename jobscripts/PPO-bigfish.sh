@@ -1,6 +1,6 @@
 
 #!/bin/sh
-mkdir logs/PPO-bigfish
+mkdir finallogs/PPO-bigfish
 
 source ~/.bashrc
 
@@ -13,8 +13,8 @@ source ~/.bashrc
 #BSUB -B
 #BSUB -N
 #BSUB -R "rusage[mem=32GB]"
-#BSUB -o logs/PPO-bigfish/%J.out
-#BSUB -e logs/PPO-bigfish/%J.err
+#BSUB -o finallogs/PPO-bigfish/%J.out
+#BSUB -e finallogs/PPO-bigfish/%J.err
 
 echo "Running PPO-bigfish"
 python3 PPO.py 1 bigfish

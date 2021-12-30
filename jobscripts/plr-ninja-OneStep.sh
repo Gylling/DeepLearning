@@ -1,6 +1,6 @@
 
 #!/bin/sh
-mkdir logs/plr-ninja-OneStep
+mkdir finallogs/plr-ninja-OneStep
 
 source ~/.bashrc
 
@@ -13,8 +13,8 @@ source ~/.bashrc
 #BSUB -B
 #BSUB -N
 #BSUB -R "rusage[mem=32GB]"
-#BSUB -o logs/plr-ninja-OneStep/%J.out
-#BSUB -e logs/plr-ninja-OneStep/%J.err
+#BSUB -o finallogs/plr-ninja-OneStep/%J.out
+#BSUB -e finallogs/plr-ninja-OneStep/%J.err
 
 echo "Running plr-ninja-OneStep"
 python3 plr.py 1 1 ninja

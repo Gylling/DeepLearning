@@ -1,6 +1,6 @@
 
 #!/bin/sh
-mkdir logs/plr-jumper-GAEMag
+mkdir finallogs/plr-jumper-GAEMag
 
 source ~/.bashrc
 
@@ -13,8 +13,8 @@ source ~/.bashrc
 #BSUB -B
 #BSUB -N
 #BSUB -R "rusage[mem=32GB]"
-#BSUB -o logs/plr-jumper-GAEMag/%J.out
-#BSUB -e logs/plr-jumper-GAEMag/%J.err
+#BSUB -o finallogs/plr-jumper-GAEMag/%J.out
+#BSUB -e finallogs/plr-jumper-GAEMag/%J.err
 
 echo "Running plr-jumper-GAEMag"
 python3 plr.py 1 0 jumper
