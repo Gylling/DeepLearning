@@ -18,22 +18,22 @@ Plot 1..n:
 """
 
 file_dict = {
-    "ppo": {
+    "PPO": {
         "jumper": {"test": "rewards/ppo-jumper/test_rewards-1640046985.3327672.csv", "train": "rewards/ppo-jumper/train_rewards-1640046985.3378258.csv"},
         "ninja": {"test": "rewards/ppo-ninja/test_rewards-1640011771.8472745.csv", "train": "rewards/ppo-ninja/train_rewards-1640011771.8518178.csv"},
         "bigfish": {"test": "rewards/ppo-bigfish/test_rewards-1639986849.5726612.csv", "train": "rewards/ppo-bigfish/train_rewards-1639986849.5768883.csv"}
     },
-    "plr-td": {
+    "PLR 1-Step TD Error": {
         "jumper": {"test": "rewards/plr-jumper-OneStep/test_rewards-1640123833.4178863.csv", "train": "rewards/plr-jumper-OneStep/train_rewards-1640123833.4224465.csv"},
         "ninja": {"test": "rewards/plr-ninja-OneStep/test_rewards-1640145094.9311488.csv", "train": "rewards/plr-ninja-OneStep/train_rewards-1640145094.9371839.csv"},
         "bigfish": {"test": "rewards/plr-bigfish-OneStep/test_rewards-1640061956.0442092.csv", "train": "rewards/plr-bigfish-OneStep/train_rewards-1640061956.04891.csv"}
     },
-    "plr-gae": {
+    "PLR GAE": {
         "jumper": {"test": "rewards/plr-jumper-GAE/test_rewards-1640360949.4017658.csv", "train": "rewards/plr-jumper-GAE/train_rewards-1640360949.407864.csv"},
         "ninja": {"test": "rewards/plr-ninja-GAE/test_rewards-1640090183.7667.csv", "train": "rewards/plr-ninja-GAE/train_rewards-1640090183.7718542.csv"},
         "bigfish": {"test": "rewards/plr-bigfish-GAE/test_rewards-1640075308.8060634.csv", "train": "rewards/plr-bigfish-GAE/train_rewards-1640075308.8102653.csv"}
     },
-    "plr-gaem": {
+    "PLR GAE Magnitude": {
         "jumper": {"test": "rewards/plr-jumper-GAEMag/test_rewards-1640124835.600524.csv", "train": "rewards/plr-jumper-GAEMag/train_rewards-1640124835.6055303.csv"},
         "ninja": {"test": "rewards/plr-ninja-GAEMag/test_rewards-1640101918.664596.csv", "train": "rewards/plr-ninja-GAEMag/train_rewards-1640101918.6686788.csv"},
         "bigfish": {"test": "rewards/plr-bigfish-GAEMag/test_rewards-1640018769.8121777.csv", "train": "rewards/plr-bigfish-GAEMag/train_rewards-1640018769.817248.csv"}
@@ -68,10 +68,10 @@ fig, axs = plt.subplots(2, 2, sharey=False)
 # DO THIS 4 times, one for each subplot
 
 label_names = [
-    "ppo",
-    "plr-td",
-    "plr-gae",
-    "plr-gaem"
+    "PPO",
+    "PLR 1-Step TD Error",
+    "PLR GAE",
+    "PLR GAE Magnitude"
 ]
 
 coords = [(0, 0), (0, 1), (1, 0)]
@@ -84,10 +84,10 @@ games = [
 
 for game, coord in zip(games, coords):
     generate_graph(colors=layout_colorway, fig=fig, ax=axs, ax_coord=coord, list_of_paths=[
-        file_dict["ppo"][game]["test"],
-        file_dict["plr-td"][game]["test"],
-        file_dict["plr-gae"][game]["test"],
-        file_dict["plr-gaem"][game]["test"]
+        file_dict["PPO"][game]["test"],
+        file_dict["PLR 1-Step TD Error"][game]["test"],
+        file_dict["PLR GAE"][game]["test"],
+        file_dict["PLR GAE Magnitude"][game]["test"]
     ], label_names=label_names, title=game)
 
 fig.delaxes(axs[1][1])
@@ -143,8 +143,7 @@ plt.xlabel("Steps in M")
 plt.ylabel("Rewards")
 plt.title("Mean normalized rewards")
 #plt.legend(loc='best', ncol=4)
-plt.legend(loc='center right', bbox_to_anchor=(1.4, 0.5),
-          ncol=1, fancybox=True, shadow=False)
+plt.legend(loc='lower left', ncol=2, fancybox=True, shadow=False)
 plt.tight_layout()
 plt.savefig('gap.png')
 plt.show()
