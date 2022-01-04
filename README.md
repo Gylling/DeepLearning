@@ -1,5 +1,14 @@
 # Deep Learning Project for the DTU course, 02456
 
+## Libraries
+Make sure to have the following libraries, numpy, imageio, procgen, and pytorch:
+
+    pip3 install --user torch==1.10.0+cu113 torchvision==0.11.1+cu113 torchaudio==0.10.0+cu113 -f https://download.pytorch.org/whl/cu113/torch_stable.html
+
+    pip3 install --user procgen
+    pip3 install --user imageio
+    pip3 install --user numpy
+
 ## Reproduce rewards
 To reproduce results of this project you should run the following commands:
 
